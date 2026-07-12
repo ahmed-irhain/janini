@@ -1,0 +1,25 @@
+{
+  "common": {
+    "appName": "جنيني",
+    "loading": "جارٍ التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "home": {
+    "welcome": "أهلاً بكِ",
+    "weekLabel": "الأسبوع {{week}}"
+  },
+  "discover": {
+    "title": "اكتشفي",
+    "comingSoon": "المحتوى الأسبوعي قريباً"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "comingSoon": "قريباً"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "discover": "اكتشفي",
+    "settings": "الإعدادات"
+  }
+}

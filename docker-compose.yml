@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: janini
+      POSTGRES_PASSWORD: janini
+      POSTGRES_DB: janini
+    ports:
+      # Host port 5433, not 5432 — avoids clashing with a native Postgres install/service
+      # that may already be bound to 5432 on the dev machine.
+      - "5433:5432"
+    volumes:
+      - .pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U janini"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
