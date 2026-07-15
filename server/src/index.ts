@@ -2,6 +2,9 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { weeklyContentRouter } from "./routes/weeklyContent.js";
+import { recommendationsRouter } from "./routes/recommendations.js";
+import { articlesRouter } from "./routes/articles.js";
+import { authRouter } from "./routes/auth.js";
 
 const app = express();
 app.use(cors());
@@ -12,6 +15,9 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/weekly-content", weeklyContentRouter);
+app.use("/recommendations", recommendationsRouter);
+app.use("/articles", articlesRouter);
+app.use("/auth", authRouter);
 
 const port = Number(process.env.PORT ?? 3000);
 app.listen(port, () => {

@@ -1,31 +1,45 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/AuthContext";
+import { Screen } from "../components/Screen";
 import { FONTS } from "../theme/fonts";
 
 export function SettingsScreen() {
   const { t } = useTranslation();
+  const { signOut } = useAuth();
 
   return (
-    <View style={styles.container}>
+    <Screen center style={styles.content}>
       <Text style={styles.title}>{t("settings.title")}</Text>
-      <Text style={styles.subtitle}>{t("settings.comingSoon")}</Text>
-    </View>
+
+      <Pressable style={styles.signOutButton} onPress={() => signOut()}>
+        <Text style={styles.signOutButtonText}>{t("settings.signOutButton")}</Text>
+      </Pressable>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  content: {
     alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
+    gap: 16,
   },
   title: {
     fontSize: 24,
     fontFamily: FONTS.bold,
+    lineHeight: 32,
+    paddingVertical: 6,
   },
-  subtitle: {
+  signOutButton: {
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#B3261E",
+  },
+  signOutButtonText: {
+    color: "#B3261E",
+    fontFamily: FONTS.medium,
     fontSize: 16,
-    fontFamily: FONTS.regular,
   },
 });

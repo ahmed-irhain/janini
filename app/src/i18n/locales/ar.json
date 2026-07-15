@@ -3,23 +3,101 @@
     "appName": "جنيني",
     "loading": "جارٍ التحميل...",
     "save": "حفظ",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "home": {
-    "welcome": "أهلاً بكِ",
-    "weekLabel": "الأسبوع {{week}}"
+    "welcome": "أهلاً مامي!",
+    "welcomeWithName": "أهلاً مامي {{name}}!",
+    "weekLabel": "الأسبوع {{week}}",
+    "monthLabel": "الشهر {{month}}",
+    "dueDateLabel": "الموعد المتوقع للولادة",
+    "dueInDaysLabel": "متبقٍ {{days}} يومًا على الموعد المتوقع",
+    "babySizeSectionTitle": "حجم الجنين ووزنه التقريبي",
+    "weightLabel": "الوزن التقريبي {{grams}} غرام",
+    "babyChangesTitle": "تغيّرات الجنين هذا الأسبوع",
+    "momChangesTitle": "تغيّراتكِ هذا الأسبوع",
+    "recommendationsTitle": "توصيات هذا الأسبوع",
+    "viewFullWeekButton": "عرض تفاصيل الأسبوع"
   },
   "discover": {
     "title": "اكتشفي",
-    "comingSoon": "المحتوى الأسبوعي قريباً"
+    "disclaimerBanner": "محتوى تعليمي عام مبني على مصادر موثوقة، وليس بديلاً عن استشارة طبيبك المختص",
+    "weekRowLabel": "الأسبوع {{week}}",
+    "babySizeLabel": "حجم الجنين",
+    "sourceLabel": "المصدر: {{source}}"
+  },
+  "track": {
+    "tabTitle": "المتابعة",
+    "recentSymptomsTitle": "الأعراض الأخيرة",
+    "logSymptomButton": "تسجيل عرض",
+    "upcomingAppointmentsTitle": "المواعيد القادمة",
+    "addAppointmentButton": "إضافة موعد",
+    "emptySymptoms": "لا توجد أعراض مسجَّلة بعد",
+    "emptyAppointments": "لا توجد مواعيد قادمة بعد"
+  },
+  "symptomLog": {
+    "symptomLabel": "العرض",
+    "severityLabel": "الشدة",
+    "severityMild": "خفيف",
+    "severityModerate": "متوسط",
+    "severitySevere": "شديد",
+    "noteLabel": "ملاحظة (اختياري)",
+    "consultDoctorNote": "هذا السجل للمتابعة فقط وليس بديلاً عن استشارة الطبيب",
+    "saveButton": "حفظ"
+  },
+  "appointment": {
+    "titleLabel": "عنوان الموعد",
+    "locationLabel": "المكان (اختياري)",
+    "dateLabel": "التاريخ والوقت",
+    "notesLabel": "ملاحظات (اختياري)",
+    "saveButton": "حفظ"
   },
   "settings": {
     "title": "الإعدادات",
-    "comingSoon": "قريباً"
+    "signOutButton": "تسجيل الخروج"
+  },
+  "auth": {
+    "welcomeSubtitle": "تابعي رحلة حملك بثقة",
+    "signUpCta": "إنشاء حساب",
+    "signInCta": "تسجيل الدخول",
+    "emailLabel": "البريد الإلكتروني",
+    "passwordLabel": "كلمة المرور",
+    "signUpButton": "إنشاء الحساب",
+    "signInButton": "دخول",
+    "genericError": "تعذر إتمام العملية، تحقق من البيانات المدخلة وحاولي مرة أخرى",
+    "emailTakenError": "هذا البريد الإلكتروني مسجَّل بالفعل، جرّبي تسجيل الدخول بدلاً من ذلك"
+  },
+  "onboarding": {
+    "introSubtitle": "خلال دقيقة وحدة، بنجهز لك تجربة مخصصة لرحلة حملك",
+    "startButton": "متابعة",
+    "skipButton": "تخطي",
+    "nextButton": "التالي",
+    "feature1Title": "متابعة أسبوعية بالعربية",
+    "feature1Desc": "محتوى مبني على مصادر طبية موثوقة",
+    "feature2Title": "سجّلي أعراضك ومواعيدك",
+    "feature2Desc": "كل بياناتك محفوظة على جهازك، حتى بدون إنترنت",
+    "feature3Title": "تقويم هجري وميلادي معًا",
+    "feature3Desc": "حساب دقيق لتاريخك الهجري، لأن التفاصيل مهمة",
+    "title": "بيانات الحمل",
+    "lmpModeLabel": "أعرف تاريخ آخر دورة",
+    "dueDateModeLabel": "أعرف الموعد المتوقع للولادة",
+    "datePickerLabel": "اختاري التاريخ",
+    "dataPrivacyNote": "بياناتكِ الصحية تُحفظ على جهازك بأمان",
+    "continueButton": "متابعة",
+    "confirmationLeadIn": "أنتِ الآن في",
+    "confirmationCta": "بدينا !"
   },
   "navigation": {
     "home": "الرئيسية",
     "discover": "اكتشفي",
+    "track": "المتابعة",
     "settings": "الإعدادات"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "الرجاء إدخال بريد إلكتروني صحيح",
+    "passwordTooShort": "كلمة المرور يجب ألا تقل عن 8 أحرف",
+    "saveFailed": "تعذر الحفظ، حاولي مرة ثانية"
   }
 }

@@ -39,16 +39,25 @@ user explicitly asks for it by name.
 
 ## Non-negotiable rules
 
-- **No week-by-week content reaches a user unless `weekly_content.reviewedByObGyn = true`.**
-  See `docs/plan.md` Section 6.2 — this is both an ethical requirement (health guidance to
-  pregnant women) and a regulatory one (Apple / SFDA scrutinize accuracy claims in this
-  category). `server/src/routes/weeklyContent.ts` enforces this at the API layer; don't add a
-  code path that bypasses it, including for admin/preview tooling — gate previews separately.
+- **Week-by-week content must cite trusted authoritative sources — there is no OB-GYN review
+  gate.** See `docs/plan.md` Section 6.2 — the OB-GYN-review pipeline was cancelled; content is
+  instead grounded in and cites recognized health authorities (WHO, Saudi MOH/SFDA, ACOG, Mayo
+  Clinic, etc.) via the `sourceCitations` field on `weekly_content` and the `sourceUrl` fields on
+  `recommendations`/`articles`. Every piece of content should carry at least one citation before
+  it ships — don't add uncited medical content.
 - **Arabic (MSA) is the default, not a translation layer.** The app defaults to Arabic and RTL
   layout (`app/src/i18n/index.ts` forces `I18nManager` RTL when locale is `ar`) regardless of
   device locale detection failing. Medical/weekly content is MSA; push notifications,
   onboarding, and community copy can use a lighter Gulf-conversational register (plan.md
-  Section 4). Don't commit to a single country's dialect.
+  Section 4) — e.g. the homepage's "أهلاً مامي!" welcome greeting. Don't commit to a single
+  country's dialect.
+  - **Text alignment on content screens:** set `textAlign: "right"` explicitly on every `Text`
+    style in the main tab screens (`HomeScreen`, `DiscoverScreen`, `TrackScreen`,
+    `WeeklyContentDetailScreen`) rather than relying on the `"auto"` default — don't center
+    titles/banners on these screens. `TextInput`s already do this via `textAlign="right"` props
+    (`DateField`, `AuthTextField`, form screens) — that convention is unchanged. Auth/onboarding
+    hero screens (`WelcomeScreen`, `SignInScreen`, `SignUpScreen`, `LmpEntryScreen`) intentionally
+    keep centered branding-style text; this rule doesn't apply to them.
 - **Hijri dates use the `hijri-converter` library** (`shared/src/dates.ts`), which is
   Umm al-Qura-based. Don't hand-roll Hijri math — plan.md Section 4 flags this as a fast way to
   lose trust with a religiously observant audience if subtly wrong.

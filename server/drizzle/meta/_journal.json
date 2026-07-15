@@ -8,6 +8,20 @@
       "when": 1783873348627,
       "tag": "0000_chunky_khan",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783959905339,
+      "tag": "0001_whole_red_ghost",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784310000000,
+      "tag": "0002_giant_stranger",
+      "breakpoints": true
     }
   ]
 }

@@ -19,11 +19,33 @@ export interface WeeklyContent {
   id: string;
   weekNumber: number; // 1-42
   titleAr: string;
-  bodyAr: string;
+  babyChangesAr: string;
+  momChangesAr: string | null;
   babySizeComparisonAr: string | null;
-  reviewedByObGyn: boolean;
-  reviewedAt: string | null;
+  babyWeightApproxGrams: number | null;
   sourceCitations: string[];
+  updatedAt: string;
+}
+
+export interface Recommendation {
+  id: string;
+  weekNumber: number;
+  textAr: string;
+  sourceUrl: string | null;
+  sortOrder: number;
+  createdAt: string;
+}
+
+export interface Article {
+  id: string;
+  weekNumber: number | null;
+  titleAr: string;
+  summaryAr: string;
+  bodyAr: string | null;
+  sourceName: string | null;
+  sourceUrl: string | null;
+  publishedAt: string | null;
+  createdAt: string;
 }
 
 export type SymptomSeverity = "mild" | "moderate" | "severe";

@@ -23,6 +23,11 @@ export function AppTabs() {
         <Label>{t("navigation.discover")}</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="track">
+        <Icon sf="heart.text.square.fill" androidSrc={<VectorIcon family={Ionicons} name="pulse" />} />
+        <Label>{t("navigation.track")}</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         <Icon sf="gearshape.fill" androidSrc={<VectorIcon family={Ionicons} name="settings" />} />
         <Label>{t("navigation.settings")}</Label>

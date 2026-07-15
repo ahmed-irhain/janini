@@ -3,10 +3,21 @@ import { useEffect } from "react";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { AppTabs } from "../components/AppTabs";
+import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context";
+import { AuthProvider } from "../context/AuthContext";
+import { PregnancyDataProvider } from "../context/PregnancyDataContext";
+import { RootNavigator } from "../components/RootNavigator";
 import { FONTS } from "../theme/fonts";
 
 SplashScreen.preventAutoHideAsync();
+
+if (!process.env.EXPO_PUBLIC_API_URL) {
+  throw new Error(
+    "Missing EXPO_PUBLIC_API_URL — copy app/.env.example to app/.env and set it to your dev " +
+      "machine's LAN IP (e.g. http://192.168.1.23:3000). 'localhost' will not work from a " +
+      "physical iPhone running Expo Go."
+  );
+}
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -24,8 +35,14 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <AppTabs />
-    </ThemeProvider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <AuthProvider>
+        <ThemeProvider value={DefaultTheme}>
+          <PregnancyDataProvider>
+            <RootNavigator />
+          </PregnancyDataProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }

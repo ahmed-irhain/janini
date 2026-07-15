@@ -19,6 +19,7 @@ export const severityEnum = pgEnum("symptom_severity", [
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
   displayName: text("display_name"),
   locale: localeEnum("locale").notNull().default("ar"),
   createdAt: timestamp("created_at", { withTimezone: true })
@@ -40,21 +41,51 @@ export const pregnancies = pgTable("pregnancies", {
 });
 
 /**
- * Week-by-week content lives in the DB (not hardcoded) so an OB-GYN reviewer
- * can update medical content without an app-store release. See docs/plan.md
- * Section 5.1 and Section 6 — reviewedByObGyn must be true before any row
- * is served to users.
+ * Week-by-week content lives in the DB (not hardcoded) so it can be updated
+ * without an app-store release. See docs/plan.md Section 5.1 and Section 6 —
+ * there is no OB-GYN review gate; content is grounded in and cited to
+ * trusted authorities (WHO, Saudi MOH/SFDA, ACOG, Mayo Clinic, etc.) via
+ * sourceCitations.
  */
 export const weeklyContent = pgTable("weekly_content", {
   id: uuid("id").primaryKey().defaultRandom(),
   weekNumber: integer("week_number").notNull().unique(),
   titleAr: text("title_ar").notNull(),
-  bodyAr: text("body_ar").notNull(),
+  babyChangesAr: text("baby_changes_ar").notNull(),
+  momChangesAr: text("mom_changes_ar"),
   babySizeComparisonAr: text("baby_size_comparison_ar"),
-  reviewedByObGyn: boolean("reviewed_by_ob_gyn").notNull().default(false),
-  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  babyWeightApproxGrams: integer("baby_weight_approx_grams"),
   sourceCitations: text("source_citations").array().notNull().default([]),
   updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const recommendations = pgTable("recommendations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  weekNumber: integer("week_number")
+    .notNull()
+    .references(() => weeklyContent.weekNumber, { onDelete: "cascade" }),
+  textAr: text("text_ar").notNull(),
+  sourceUrl: text("source_url"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const articles = pgTable("articles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  weekNumber: integer("week_number").references(() => weeklyContent.weekNumber, {
+    onDelete: "set null",
+  }),
+  titleAr: text("title_ar").notNull(),
+  summaryAr: text("summary_ar").notNull(),
+  bodyAr: text("body_ar"),
+  sourceName: text("source_name"),
+  sourceUrl: text("source_url"),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 });

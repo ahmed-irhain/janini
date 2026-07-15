@@ -108,9 +108,19 @@ Recent Apple policy changes make this more involved than it used to be, and you 
 
 ### 6.2 Recommended low-cost path for a solo, unfunded developer
 
-Combine options 2 and 3: draft week-by-week content yourself with an AI assistant, **explicitly grounded in and citing WHO and Saudi Ministry of Health guidance** as your factual source material, then have a single OB-GYN consultant review the full set in batches rather than week-by-week as you go. A flat-fee or hourly consulting arrangement to review, say, 42 weeks of pregnancy content plus a postpartum section in a few concentrated review sessions will be dramatically cheaper than an ongoing per-article review relationship, and is realistic to budget for even without funding. Plan to re-review content annually or whenever a guideline source updates.
+**Update: the OB-GYN review pipeline described in earlier drafts of this plan has been
+cancelled.** Instead, draft week-by-week content yourself with an AI assistant, **explicitly
+grounded in and citing recognized health authorities** — the World Health Organization (WHO),
+the Saudi Ministry of Health/SFDA, the American College of Obstetricians and Gynecologists
+(ACOG), Mayo Clinic, and similar trusted sources — as your factual source material. Every
+content row (weekly content, recommendations, articles) carries its source citation(s) directly
+(the `sourceCitations`/`sourceUrl` fields), rather than routing through a paid human reviewer
+before publication. Re-check citations periodically, and whenever a cited guideline updates.
 
-**Where this review must happen in your plan, non-negotiably:** every piece of medical content must be OB-GYN-reviewed *before* it ships to any user, not after — this applies even to your MVP's week-by-week content, not just to later phases. Do not treat this as a "we'll get to it after launch" item. This is both an ethical requirement (you are giving health guidance to pregnant women) and, per Section 5.3, a regulatory one — Apple and the SFDA both scrutinize accuracy claims in this category.
+This removes the earlier non-negotiable pre-publish OB-GYN sign-off requirement. It does **not**
+remove the underlying obligation to be factually accurate and to avoid diagnostic/treatment
+language (see Section 5.3 and Section 7.1) — it changes *how* accuracy is backed, from a paid
+human reviewer to citable authoritative sources.
 
 ---
 
@@ -119,7 +129,7 @@ Combine options 2 and 3: draft week-by-week content yourself with an AI assistan
 ### 7.1 Biggest risks
 
 - **Regulatory drift:** the line between "wellness app" and "regulated medical device" is judged by your actual features and marketing claims, not your intentions. The AI chat feature (Phase 3) is your highest-risk feature on this front — plan its guardrails (no diagnostic language, clear "not medical advice" framing, mandatory doctor-consultation reminders) before you build it, not after a rejection or complaint.
-- **Medical liability:** any factual error in pregnancy content carries real human stakes. Budget for OB-GYN review as a hard cost of doing business, not an optional nice-to-have (see Section 6.2).
+- **Medical liability:** any factual error in pregnancy content carries real human stakes. Since there's no paid OB-GYN review pass anymore (see Section 6.2), accuracy now depends entirely on how carefully content is grounded in and cited to trusted authorities (WHO, Saudi MOH/SFDA, ACOG, Mayo Clinic) — treat sourcing discipline as the replacement safeguard, not an afterthought.
 - **Competitive response:** as argued in Section 1.3, your core differentiators are copyable by a well-resourced competitor (including Mammy.app itself, which already has 100,000+ users and could add better tracking features and OB-GYN-reviewed content faster than you can build a user base). Speed to a credible MVP, and building genuine content/community depth quickly, matters more than any single feature.
 - **Content production bottleneck:** week-by-week content for a full pregnancy plus postpartum is 40+ weeks of material, all requiring medical review. This is very likely your actual critical path to launch, not the engineering.
 - **Payment and subscription-fatigue backlash:** the one-time-pass recommendation in Section 2 directly addresses a documented pattern of user complaints about pregnancy-app subscriptions; don't undermine it by defaulting users into auto-renewing plans via dark patterns, which is both a trust risk and an App Store review risk.
@@ -129,7 +139,7 @@ Combine options 2 and 3: draft week-by-week content yourself with an AI assistan
 - Exact pricing for the one-time pregnancy pass, and whether to offer any lower-priced monthly alternative alongside it.
 - Whether to launch iOS-only, Android-only, or both simultaneously (Apple Pay's high share of Saudi payment preference is one point in favor of prioritizing iOS if you must sequence).
 - How much Gulf-wide vs. Saudi-only scope to build into content from day one (country-specific ministry-of-health guidance and postpartum customs can differ meaningfully between Saudi Arabia, UAE, Kuwait, etc.).
-- Whether your OB-GYN reviewer needs to be Saudi-licensed specifically, or whether a reviewer credentialed elsewhere in the region is acceptable for your purposes — clarify this before you engage anyone, since it affects both cost and how much you can credibly claim in your marketing.
+- Which trusted authorities to prioritize and cite for which topics (e.g. WHO/Saudi MOH for general prenatal guidance, ACOG or Mayo Clinic for specifics not covered locally) — decide this before content production scales past the seed set, since it affects both consistency and how much you can credibly claim in your marketing.
 - How the AI chat feature (Phase 3) will be scoped and guarded before you build it, given the regulatory sensitivity flagged above.
 
 ---
