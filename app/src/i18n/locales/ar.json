@@ -55,6 +55,23 @@
   },
   "settings": {
     "title": "الإعدادات",
+    "accountSectionTitle": "الحساب",
+    "nameLabel": "الاسم",
+    "namePlaceholder": "لم يتم إدخال اسم",
+    "emailLabel": "البريد الإلكتروني",
+    "dueDateSectionTitle": "الموعد المتوقع للولادة",
+    "editDueDateButton": "تعديل",
+    "premiumSectionTitle": "الوضع المميز (تجريبي)",
+    "premiumToggleLabel": "تفعيل الوضع المميز",
+    "notificationsSectionTitle": "الإشعارات",
+    "notificationsToggleLabel": "تفعيل الإشعارات",
+    "aboutSectionTitle": "حول التطبيق",
+    "versionLabel": "الإصدار {{version}}",
+    "disclaimerText": "هذا التطبيق لأغراض المتابعة والتثقيف العام فقط، وليس بديلاً عن استشارة طبيبك المختص",
+    "resetDataButton": "إعادة تعيين البيانات المحفوظة على الجهاز",
+    "resetConfirmTitle": "إعادة تعيين البيانات؟",
+    "resetConfirmMessage": "سيتم حذف بيانات الحمل والأعراض والمواعيد المحفوظة على هذا الجهاز نهائيًا، ولن تتمكني من التراجع عن هذا الإجراء",
+    "resetConfirmButton": "حذف البيانات",
     "signOutButton": "تسجيل الخروج"
   },
   "auth": {

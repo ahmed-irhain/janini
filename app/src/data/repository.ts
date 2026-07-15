@@ -25,4 +25,5 @@ export interface PregnancyRepository {
   savePregnancy(userId: string, input: NewPregnancyInput): Promise<Pregnancy>;
   addSymptomLog(userId: string, input: NewSymptomLogInput): Promise<SymptomLog>;
   addAppointment(userId: string, input: NewAppointmentInput): Promise<Appointment>;
+  resetLocalData(userId: string): Promise<void>;
 }

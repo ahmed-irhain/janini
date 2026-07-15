@@ -17,6 +17,7 @@ interface PregnancyDataContextValue {
   savePregnancy: (input: NewPregnancyInput) => Promise<void>;
   addSymptomLog: (input: NewSymptomLogInput) => Promise<void>;
   addAppointment: (input: NewAppointmentInput) => Promise<void>;
+  resetLocalData: () => Promise<void>;
 }
 
 const PregnancyDataContext = createContext<PregnancyDataContextValue | null>(null);
@@ -77,6 +78,14 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
     [userId]
   );
 
+  const resetLocalData = useCallback(async () => {
+    if (!userId) throw new Error("Cannot reset local data while signed out");
+    await localPregnancyRepository.resetLocalData(userId);
+    setPregnancy(null);
+    setSymptomLogs([]);
+    setAppointments([]);
+  }, [userId]);
+
   const value = useMemo(
     () => ({
       isHydrated,
@@ -86,8 +95,18 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
       savePregnancy,
       addSymptomLog,
       addAppointment,
+      resetLocalData,
     }),
-    [isHydrated, pregnancy, symptomLogs, appointments, savePregnancy, addSymptomLog, addAppointment]
+    [
+      isHydrated,
+      pregnancy,
+      symptomLogs,
+      appointments,
+      savePregnancy,
+      addSymptomLog,
+      addAppointment,
+      resetLocalData,
+    ]
   );
 
   return <PregnancyDataContext.Provider value={value}>{children}</PregnancyDataContext.Provider>;

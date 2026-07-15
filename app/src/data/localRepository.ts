@@ -74,4 +74,8 @@ export const localPregnancyRepository: PregnancyRepository = {
     await writeData(userId, { ...data, appointments });
     return appointment;
   },
+
+  async resetLocalData(userId) {
+    await AsyncStorage.removeItem(storageKey(userId));
+  },
 };
