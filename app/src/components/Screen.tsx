@@ -9,6 +9,7 @@ import {
   type ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { COLORS } from "../theme/colors";
 
 interface ScreenProps {
   children: ReactNode;
@@ -69,6 +70,7 @@ export function Screen({
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+    backgroundColor: COLORS.background,
   },
   center: {
     flexGrow: 1,

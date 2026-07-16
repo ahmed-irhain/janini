@@ -3,15 +3,19 @@ import { useTranslation } from "react-i18next";
 import { ARTICLES_SEED } from "../data/articlesSeed";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Card } from "../components/Card";
+import { Badge } from "../components/Badge";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 export function DiscoverScreen() {
   const { t } = useTranslation();
 
   return (
     <Screen scroll={false} keyboardAvoiding={false}>
-      <ScreenTitle style={styles.title} >{t("discover.title")}</ScreenTitle>
+      <ScreenTitle style={styles.title}>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
       <FlatList
@@ -19,15 +23,17 @@ export function DiscoverScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <Card>
             <Text style={styles.cardTitle}>{item.titleAr}</Text>
             <Text style={styles.cardSummary}>{item.summaryAr}</Text>
             {item.sourceName ? (
-              <Text style={styles.cardSource}>
-                {t("discover.sourceLabel", { source: item.sourceName })}
-              </Text>
+              <Badge
+                icon="shield-checkmark"
+                tone="neutral"
+                label={t("discover.sourceLabel", { source: item.sourceName })}
+              />
             ) : null}
-          </View>
+          </Card>
         )}
       />
     </Screen>
@@ -40,44 +46,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     textAlign: "right",
-    color: COLORS.bannerText,
-    backgroundColor: COLORS.bannerBackground,
-    marginBottom: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    color: COLORS.warningText,
+    backgroundColor: COLORS.warningBg,
+    marginBottom: SPACING.sm,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
     borderRadius: 8,
   },
-  title:{
+  title: {
     padding: 15,
   },
   listContent: {
-    gap: 12,
-    paddingBottom: 8,
-  },
-  card: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    padding: 16,
-    gap: 6,
+    gap: SPACING.md,
+    paddingBottom: SPACING.sm,
   },
   cardTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 16,
-    lineHeight: 22,
+    ...TYPE.heading,
+    color: COLORS.ink,
     textAlign: "right",
   },
   cardSummary: {
-    fontFamily: FONTS.regular,
+    ...TYPE.body,
     fontSize: 14,
-    lineHeight: 22,
+    color: COLORS.ink,
     textAlign: "right",
-  },
-  cardSource: {
-    fontFamily: FONTS.medium,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.accent,
-    textAlign: "right",
-    paddingTop: 2,
   },
 });

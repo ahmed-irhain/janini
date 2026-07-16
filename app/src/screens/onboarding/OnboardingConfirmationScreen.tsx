@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { usePregnancyData } from "../../context/PregnancyDataContext";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
+import { Button } from "../../components/Button";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
 
@@ -54,7 +55,7 @@ export function OnboardingConfirmationScreen() {
           accessibilityRole="button"
           accessibilityLabel={t("common.back")}
         >
-          <Ionicons name="chevron-back" size={24} color="#1C2620" />
+          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
         </Pressable>
         <OnboardingStepIndicator currentStep={3} totalSteps={3} />
         <View style={styles.skipSpacer} />
@@ -74,13 +75,12 @@ export function OnboardingConfirmationScreen() {
 
       {saveError ? <Text style={styles.error}>{saveError}</Text> : null}
 
-      <Pressable style={styles.button} onPress={onConfirm} disabled={isSubmitting}>
-        {isSubmitting ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>{t("onboarding.confirmationCta")}</Text>
-        )}
-      </Pressable>
+      <Button
+        label={t("onboarding.confirmationCta")}
+        onPress={onConfirm}
+        loading={isSubmitting}
+        style={styles.button}
+      />
     </Screen>
   );
 }
@@ -136,21 +136,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 14,
     lineHeight: 20,
-    color: "#B3261E",
+    color: COLORS.errorText,
     textAlign: "center",
     paddingVertical: 4,
   },
   button: {
-    backgroundColor: COLORS.accent,
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-    width: "100%",
     marginTop: 8,
-  },
-  buttonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
   },
 });

@@ -7,7 +7,11 @@ import { usePregnancyData } from "../context/PregnancyDataContext";
 import { symptomLogSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Button } from "../components/Button";
 import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
+import { RADIUS } from "../theme/radius";
+import { SPACING } from "../theme/spacing";
 
 const SEVERITIES: SymptomSeverity[] = ["mild", "moderate", "severe"];
 
@@ -119,14 +123,15 @@ export function AddSymptomLogScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Pressable style={styles.saveButton} onPress={onSave} disabled={isSubmitting}>
-        <Text style={styles.saveButtonText}>{t("symptomLog.saveButton")}</Text>
-      </Pressable>
+      <Button label={t("symptomLog.saveButton")} onPress={onSave} loading={isSubmitting} />
 
       {existing ? (
-        <Pressable style={styles.deleteButton} onPress={onDelete} disabled={isSubmitting}>
-          <Text style={styles.deleteButtonText}>{t("common.delete")}</Text>
-        </Pressable>
+        <Button
+          label={t("common.delete")}
+          variant="destructive"
+          onPress={onDelete}
+          disabled={isSubmitting}
+        />
       ) : null}
     </Screen>
   );
@@ -138,36 +143,38 @@ function capitalize(value: string): string {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
+    gap: SPACING.lg,
   },
   field: {
-    gap: 6,
+    gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
     paddingVertical: 2,
+    color: COLORS.ink,
     textAlign: "right",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#D7DEDA",
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.lg - 2,
+    paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
     fontSize: 16,
+    color: COLORS.ink,
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: "#B3261E",
+    borderColor: COLORS.errorText,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#B3261E",
+    color: COLORS.errorText,
     paddingVertical: 2,
     textAlign: "right",
   },
@@ -177,60 +184,35 @@ const styles = StyleSheet.create({
   },
   severityRow: {
     flexDirection: "row",
-    gap: 8,
+    gap: SPACING.sm,
   },
   severityButton: {
     flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
+    paddingVertical: SPACING.md - 2,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: "#2E7D5B",
+    borderColor: COLORS.primary700,
     alignItems: "center",
   },
   severityButtonActive: {
-    backgroundColor: "#2E7D5B",
+    backgroundColor: COLORS.primary700,
   },
   severityLabel: {
     fontFamily: FONTS.medium,
-    color: "#2E7D5B",
+    color: COLORS.primary700,
     fontSize: 13,
     lineHeight: 18,
     textAlign: "right",
   },
   severityLabelActive: {
-    color: "#fff",
+    color: COLORS.surface,
   },
   consultNote: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#6B7570",
+    color: COLORS.mutedText,
     textAlign: "right",
     paddingVertical: 4,
-  },
-  saveButton: {
-    backgroundColor: "#2E7D5B",
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-    textAlign: "right",
-  },
-  deleteButton: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#B3261E",
-  },
-  deleteButtonText: {
-    color: "#B3261E",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-    textAlign: "right",
   },
 });

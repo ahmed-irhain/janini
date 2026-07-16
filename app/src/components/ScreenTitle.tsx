@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { StyleSheet, Text, type StyleProp, type TextStyle } from "react-native";
-import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 interface ScreenTitleProps {
   children: ReactNode;
@@ -15,10 +17,9 @@ export function ScreenTitle({ children, align = "right", style }: ScreenTitlePro
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    marginBottom: 16,
+    ...TYPE.title,
+    color: COLORS.ink,
+    marginBottom: SPACING.lg,
     textAlign: "right",
   },
   center: {

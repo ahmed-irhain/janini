@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, Switch, Text, View } from "react-native";
+import { Alert, StyleSheet, Switch, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 import { estimateLmpFromDueDate, formatHijriDateAr, gregorianToHijri } from "@janini/shared";
@@ -8,8 +8,13 @@ import { usePreferences } from "../context/PreferencesContext";
 import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Card } from "../components/Card";
+import { SectionHeader } from "../components/SectionHeader";
+import { Button } from "../components/Button";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 export function SettingsScreen() {
   const { t } = useTranslation();
@@ -44,13 +49,12 @@ export function SettingsScreen() {
       <ScreenTitle align="right">{t("settings.title")}</ScreenTitle>
 
       {dueDate ? (
-        <View style={styles.card}>
-          <View style={styles.sectionHeader}>
-            <Pressable onPress={() => setIsEditingDueDate((prev) => !prev)}>
-              <Text style={styles.editLink}>{t("settings.editDueDateButton")}</Text>
-            </Pressable>
-            <Text style={styles.sectionTitle}>{t("settings.dueDateSectionTitle")}</Text>
-          </View>
+        <Card>
+          <SectionHeader
+            title={t("settings.dueDateSectionTitle")}
+            actionLabel={t("settings.editDueDateButton")}
+            onActionPress={() => setIsEditingDueDate((prev) => !prev)}
+          />
           {isEditingDueDate ? (
             <DateField
               label={t("settings.dueDateSectionTitle")}
@@ -72,83 +76,60 @@ export function SettingsScreen() {
               <Text style={styles.mutedText}>{formatHijriDateAr(gregorianToHijri(dueDate))}</Text>
             </>
           )}
-        </View>
+        </Card>
       ) : null}
 
-      <View style={styles.card}>
+      <Card>
         <View style={styles.switchRow}>
           <Switch
             value={isPremium}
             onValueChange={setIsPremium}
-            trackColor={{ true: COLORS.accent }}
+            trackColor={{ true: COLORS.primary700 }}
           />
           <Text style={styles.switchLabel}>{t("settings.premiumToggleLabel")}</Text>
         </View>
-      </View>
+      </Card>
 
-      <View style={styles.card}>
+      <Card>
         <View style={styles.switchRow}>
           <Switch
             value={notificationsEnabled}
             onValueChange={setNotificationsEnabled}
-            trackColor={{ true: COLORS.accent }}
+            trackColor={{ true: COLORS.primary700 }}
           />
           <Text style={styles.switchLabel}>{t("settings.notificationsToggleLabel")}</Text>
         </View>
-      </View>
+      </Card>
 
-      <View style={styles.card}>
+      <Card>
         <Text style={styles.sectionTitle}>{t("settings.aboutSectionTitle")}</Text>
         <Text style={styles.mutedText}>
           {t("settings.versionLabel", { version: Constants.expoConfig?.version ?? "—" })}
         </Text>
         <Text style={styles.bodyText}>{t("settings.disclaimerText")}</Text>
-      </View>
+      </Card>
 
-      <Pressable style={styles.resetButton} onPress={onResetLocalData}>
-        <Text style={styles.resetButtonText}>{t("settings.resetDataButton")}</Text>
-      </Pressable>
+      <Button label={t("settings.resetDataButton")} variant="outline" onPress={onResetLocalData} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
-  },
-  card: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    padding: 16,
-    gap: 8,
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    gap: SPACING.lg,
   },
   sectionTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 16,
-    lineHeight: 22,
+    ...TYPE.heading,
+    color: COLORS.ink,
     textAlign: "right",
   },
-  editLink: {
-    fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: COLORS.accent,
-  },
   bodyText: {
-    fontFamily: FONTS.regular,
-    fontSize: 15,
-    lineHeight: 22,
+    ...TYPE.body,
+    color: COLORS.ink,
     textAlign: "right",
   },
   mutedText: {
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-    lineHeight: 20,
+    ...TYPE.bodySmall,
     color: COLORS.mutedText,
     textAlign: "right",
   },
@@ -161,19 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
+    color: COLORS.ink,
     textAlign: "right",
-  },
-  resetButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    alignItems: "center",
-  },
-  resetButtonText: {
-    color: COLORS.mutedText,
-    fontFamily: FONTS.medium,
-    fontSize: 16,
   },
 });
