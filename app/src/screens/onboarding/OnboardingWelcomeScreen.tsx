@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Screen } from "../../components/Screen";
+import { ScreenTitle } from "../../components/ScreenTitle";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
 
@@ -11,7 +12,7 @@ export function OnboardingWelcomeScreen() {
 
   return (
     <Screen center style={styles.content}>
-      <Text style={styles.title}>{t("common.appName")}</Text>
+      <ScreenTitle align="center">{t("common.appName")}</ScreenTitle>
       <Text style={styles.subtitle}>{t("onboarding.introSubtitle")}</Text>
 
       <Pressable style={styles.button} onPress={() => router.push("/features")}>
@@ -25,12 +26,6 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
     gap: 12,
-  },
-  title: {
-    fontSize: 28,
-    fontFamily: FONTS.bold,
-    lineHeight: 38,
-    paddingVertical: 6,
   },
   subtitle: {
     fontSize: 16,

@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { estimateDueDate, estimateLmpFromDueDate } from "@janini/shared";
 import { DateField } from "../../components/DateField";
 import { Screen } from "../../components/Screen";
+import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
@@ -56,7 +57,7 @@ export function LmpEntryScreen() {
         <View style={styles.skipSpacer} />
       </View>
 
-      <Text style={styles.title}>{t("onboarding.title")}</Text>
+      <ScreenTitle align="center">{t("onboarding.title")}</ScreenTitle>
 
       <View style={styles.toggleRow}>
         <Pressable
@@ -107,14 +108,6 @@ const styles = StyleSheet.create({
   },
   skipSpacer: {
     width: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "center",
-    paddingVertical: 6,
-    marginBottom: 8,
   },
   toggleRow: {
     flexDirection: "row",

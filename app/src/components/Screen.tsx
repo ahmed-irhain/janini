@@ -20,6 +20,8 @@ interface ScreenProps {
   keyboardAvoiding?: boolean;
   /** Set to 0 for screens that manage their own horizontal insets (e.g. full-bleed list rows). */
   horizontalPadding?: number;
+  /** Set when the route already renders a native Stack header, which reserves the top safe-area itself. */
+  hasNativeHeader?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -29,12 +31,13 @@ export function Screen({
   center = false,
   keyboardAvoiding = true,
   horizontalPadding = 20,
+  hasNativeHeader = false,
   style,
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
 
   const paddingStyle: ViewStyle = {
-    paddingTop: insets.top + 16,
+    paddingTop: hasNativeHeader ? 16 : insets.top + 16,
     paddingBottom: insets.bottom + 16,
     paddingHorizontal: horizontalPadding,
   };

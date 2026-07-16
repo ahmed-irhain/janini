@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { useRouter } from "expo-router";
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { SymptomSeverity } from "@janini/shared";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { symptomLogSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { Screen } from "../components/Screen";
+import { ScreenTitle } from "../components/ScreenTitle";
 import { FONTS } from "../theme/fonts";
 
 const SEVERITIES: SymptomSeverity[] = ["mild", "moderate", "severe"];
@@ -13,10 +14,12 @@ const SEVERITIES: SymptomSeverity[] = ["mild", "moderate", "severe"];
 export function AddSymptomLogScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { addSymptomLog } = usePregnancyData();
-  const [symptom, setSymptom] = useState("");
-  const [severity, setSeverity] = useState<SymptomSeverity>("mild");
-  const [note, setNote] = useState("");
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const { symptomLogs, addSymptomLog, updateSymptomLog, deleteSymptomLog } = usePregnancyData();
+  const existing = id ? symptomLogs.find((item) => item.id === id) : undefined;
+  const [symptom, setSymptom] = useState(existing?.symptom ?? "");
+  const [severity, setSeverity] = useState<SymptomSeverity>(existing?.severity ?? "mild");
+  const [note, setNote] = useState(existing?.note ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof symptomLogSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -31,7 +34,12 @@ export function AddSymptomLogScreen() {
     setSaveError(null);
     setIsSubmitting(true);
     try {
-      await addSymptomLog({ symptom: symptom.trim(), severity, note: note.trim() || null });
+      const input = { symptom: symptom.trim(), severity, note: note.trim() || null };
+      if (existing) {
+        await updateSymptomLog(existing.id, input);
+      } else {
+        await addSymptomLog(input);
+      }
       router.back();
     } catch {
       setSaveError(t("validation.saveFailed"));
@@ -40,9 +48,26 @@ export function AddSymptomLogScreen() {
     }
   };
 
+  const onDelete = () => {
+    if (!existing) return;
+    Alert.alert(t("track.deleteSymptomConfirmTitle"), t("track.deleteSymptomConfirmMessage"), [
+      { text: t("common.cancel"), style: "cancel" },
+      {
+        text: t("common.delete"),
+        style: "destructive",
+        onPress: () => {
+          deleteSymptomLog(existing.id);
+          router.back();
+        },
+      },
+    ]);
+  };
+
   return (
-    <Screen style={styles.content}>
-      <Text style={styles.title}>{t("track.logSymptomButton")}</Text>
+    <Screen style={styles.content} hasNativeHeader>
+      <ScreenTitle>
+        {existing ? t("track.editSymptomTitle") : t("track.logSymptomButton")}
+      </ScreenTitle>
 
       <View style={styles.field}>
         <Text style={styles.label}>{t("symptomLog.symptomLabel")}</Text>
@@ -97,6 +122,12 @@ export function AddSymptomLogScreen() {
       <Pressable style={styles.saveButton} onPress={onSave} disabled={isSubmitting}>
         <Text style={styles.saveButtonText}>{t("symptomLog.saveButton")}</Text>
       </Pressable>
+
+      {existing ? (
+        <Pressable style={styles.deleteButton} onPress={onDelete} disabled={isSubmitting}>
+          <Text style={styles.deleteButtonText}>{t("common.delete")}</Text>
+        </Pressable>
+      ) : null}
     </Screen>
   );
 }
@@ -108,13 +139,6 @@ function capitalize(value: string): string {
 const styles = StyleSheet.create({
   content: {
     gap: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: FONTS.bold,
-    lineHeight: 28,
-    textAlign: "right",
-    paddingVertical: 6,
   },
   field: {
     gap: 6,
@@ -192,6 +216,19 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: "#fff",
+    fontFamily: FONTS.medium,
+    fontSize: 16,
+    textAlign: "right",
+  },
+  deleteButton: {
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#B3261E",
+  },
+  deleteButtonText: {
+    color: "#B3261E",
     fontFamily: FONTS.medium,
     fontSize: 16,
     textAlign: "right",

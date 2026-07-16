@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { AuthApiError } from "../../data/authApi";
 import { signUpSchema, getFieldErrors, type FieldErrors } from "../../validation/schemas";
 import { Screen } from "../../components/Screen";
+import { ScreenTitle } from "../../components/ScreenTitle";
 import { FONTS } from "../../theme/fonts";
 import { AuthTextField } from "./AuthTextField";
 
@@ -43,7 +44,7 @@ export function SignUpScreen() {
 
   return (
     <Screen center style={styles.content}>
-      <Text style={styles.title}>{t("auth.signUpCta")}</Text>
+      <ScreenTitle align="center">{t("auth.signUpCta")}</ScreenTitle>
 
       <AuthTextField
         label={t("auth.emailLabel")}
@@ -85,14 +86,6 @@ export function SignUpScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "center",
-    paddingVertical: 6,
-    marginBottom: 8,
   },
   button: {
     backgroundColor: "#2E7D5B",

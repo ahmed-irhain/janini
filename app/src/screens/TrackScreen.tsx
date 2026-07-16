@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { Screen } from "../components/Screen";
+import { ScreenTitle } from "../components/ScreenTitle";
 import { FONTS } from "../theme/fonts";
 
 const RECENT_SYMPTOM_COUNT = 5;
@@ -10,16 +12,34 @@ const RECENT_SYMPTOM_COUNT = 5;
 export function TrackScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { symptomLogs, appointments } = usePregnancyData();
+  const { symptomLogs, appointments, deleteSymptomLog, deleteAppointment } = usePregnancyData();
 
   const recentSymptoms = symptomLogs.slice(0, RECENT_SYMPTOM_COUNT);
   const upcomingAppointments = [...appointments].sort(
     (a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime()
   );
 
+  const onDeleteSymptom = (id: string) => {
+    Alert.alert(t("track.deleteSymptomConfirmTitle"), t("track.deleteSymptomConfirmMessage"), [
+      { text: t("common.cancel"), style: "cancel" },
+      { text: t("common.delete"), style: "destructive", onPress: () => deleteSymptomLog(id) },
+    ]);
+  };
+
+  const onDeleteAppointment = (id: string) => {
+    Alert.alert(
+      t("track.deleteAppointmentConfirmTitle"),
+      t("track.deleteAppointmentConfirmMessage"),
+      [
+        { text: t("common.cancel"), style: "cancel" },
+        { text: t("common.delete"), style: "destructive", onPress: () => deleteAppointment(id) },
+      ]
+    );
+  };
+
   return (
     <Screen style={styles.content}>
-      <Text style={styles.title}>{t("track.tabTitle")}</Text>
+      <ScreenTitle>{t("track.tabTitle")}</ScreenTitle>
 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
@@ -33,7 +53,25 @@ export function TrackScreen() {
         ) : (
           recentSymptoms.map((log) => (
             <View key={log.id} style={styles.card}>
-              <Text style={styles.cardTitle}>{log.symptom}</Text>
+              <View style={styles.cardHeader}>
+                <View style={styles.cardActions}>
+                  <Pressable
+                    onPress={() => router.push(`/symptom-log/${log.id}`)}
+                    hitSlop={8}
+                    accessibilityLabel={t("common.edit")}
+                  >
+                    <Ionicons name="create-outline" size={18} color="#2E7D5B" />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => onDeleteSymptom(log.id)}
+                    hitSlop={8}
+                    accessibilityLabel={t("common.delete")}
+                  >
+                    <Ionicons name="trash-outline" size={18} color="#B3261E" />
+                  </Pressable>
+                </View>
+                <Text style={styles.cardTitle}>{log.symptom}</Text>
+              </View>
               <Text style={styles.cardSubtitle}>
                 {t(`symptomLog.severity${capitalize(log.severity)}`)} ·{" "}
                 {new Date(log.loggedAt).toLocaleDateString("ar")}
@@ -56,7 +94,25 @@ export function TrackScreen() {
         ) : (
           upcomingAppointments.map((appointment) => (
             <View key={appointment.id} style={styles.card}>
-              <Text style={styles.cardTitle}>{appointment.title}</Text>
+              <View style={styles.cardHeader}>
+                <View style={styles.cardActions}>
+                  <Pressable
+                    onPress={() => router.push(`/appointments/${appointment.id}`)}
+                    hitSlop={8}
+                    accessibilityLabel={t("common.edit")}
+                  >
+                    <Ionicons name="create-outline" size={18} color="#2E7D5B" />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => onDeleteAppointment(appointment.id)}
+                    hitSlop={8}
+                    accessibilityLabel={t("common.delete")}
+                  >
+                    <Ionicons name="trash-outline" size={18} color="#B3261E" />
+                  </Pressable>
+                </View>
+                <Text style={styles.cardTitle}>{appointment.title}</Text>
+              </View>
               <Text style={styles.cardSubtitle}>
                 {new Date(appointment.scheduledAt).toLocaleString("ar")}
                 {appointment.location ? ` · ${appointment.location}` : ""}
@@ -77,13 +133,6 @@ function capitalize(value: string): string {
 const styles = StyleSheet.create({
   content: {
     gap: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "right",
-    paddingVertical: 6,
   },
   section: {
     gap: 8,
@@ -123,7 +172,18 @@ const styles = StyleSheet.create({
     padding: 12,
     gap: 2,
   },
+  cardHeader: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  cardActions: {
+    flexDirection: "row",
+    gap: 14,
+  },
   cardTitle: {
+    flex: 1,
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,

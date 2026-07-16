@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { ARTICLES_SEED } from "../data/articlesSeed";
 import { Screen } from "../components/Screen";
+import { ScreenTitle } from "../components/ScreenTitle";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 
@@ -9,8 +10,8 @@ export function DiscoverScreen() {
   const { t } = useTranslation();
 
   return (
-    <Screen scroll={false} horizontalPadding={0} keyboardAvoiding={false}>
-      <Text style={styles.title}>{t("discover.title")}</Text>
+    <Screen scroll={false} keyboardAvoiding={false}>
+      <ScreenTitle style={styles.title} >{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
       <FlatList
@@ -34,15 +35,6 @@ export function DiscoverScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "right",
-    paddingVertical: 6,
-    marginBottom: 8,
-    marginHorizontal: 16,
-  },
   disclaimer: {
     fontFamily: FONTS.regular,
     fontSize: 12,
@@ -50,15 +42,16 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color: COLORS.bannerText,
     backgroundColor: COLORS.bannerBackground,
-    marginHorizontal: 16,
     marginBottom: 8,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
+  title:{
+    padding: 15,
+  },
   listContent: {
     gap: 12,
-    paddingHorizontal: 16,
     paddingBottom: 8,
   },
   card: {

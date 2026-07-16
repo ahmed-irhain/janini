@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
 import { signInSchema, getFieldErrors, type FieldErrors } from "../../validation/schemas";
 import { Screen } from "../../components/Screen";
+import { ScreenTitle } from "../../components/ScreenTitle";
 import { FONTS } from "../../theme/fonts";
 import { AuthTextField } from "./AuthTextField";
 
@@ -38,7 +39,7 @@ export function SignInScreen() {
 
   return (
     <Screen center style={styles.content}>
-      <Text style={styles.title}>{t("auth.signInCta")}</Text>
+      <ScreenTitle align="center">{t("auth.signInCta")}</ScreenTitle>
 
       <AuthTextField
         label={t("auth.emailLabel")}
@@ -80,14 +81,6 @@ export function SignInScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "center",
-    paddingVertical: 6,
-    marginBottom: 8,
   },
   button: {
     backgroundColor: "#2E7D5B",

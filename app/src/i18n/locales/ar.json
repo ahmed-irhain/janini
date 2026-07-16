@@ -4,7 +4,9 @@
     "loading": "جارٍ التحميل...",
     "save": "حفظ",
     "cancel": "إلغاء",
-    "back": "رجوع"
+    "back": "رجوع",
+    "edit": "تعديل",
+    "delete": "حذف"
   },
   "home": {
     "welcome": "أهلاً مامي!",
@@ -34,7 +36,13 @@
     "upcomingAppointmentsTitle": "المواعيد القادمة",
     "addAppointmentButton": "إضافة موعد",
     "emptySymptoms": "لا توجد أعراض مسجَّلة بعد",
-    "emptyAppointments": "لا توجد مواعيد قادمة بعد"
+    "emptyAppointments": "لا توجد مواعيد قادمة بعد",
+    "editSymptomTitle": "تعديل العرض",
+    "deleteSymptomConfirmTitle": "حذف هذا العرض؟",
+    "deleteSymptomConfirmMessage": "سيتم حذف هذا العرض نهائيًا من سجل المتابعة",
+    "editAppointmentTitle": "تعديل الموعد",
+    "deleteAppointmentConfirmTitle": "حذف هذا الموعد؟",
+    "deleteAppointmentConfirmMessage": "سيتم حذف هذا الموعد نهائيًا من سجل المتابعة"
   },
   "symptomLog": {
     "symptomLabel": "العرض",

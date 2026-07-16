@@ -8,6 +8,7 @@ import { usePregnancyData } from "../context/PregnancyDataContext";
 import { usePreferences } from "../context/PreferencesContext";
 import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
+import { ScreenTitle } from "../components/ScreenTitle";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 
@@ -42,7 +43,7 @@ export function SettingsScreen() {
 
   return (
     <Screen style={styles.content}>
-      <Text style={styles.title}>{t("settings.title")}</Text>
+      <ScreenTitle align="right">{t("settings.title")}</ScreenTitle>
 
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>{t("settings.accountSectionTitle")}</Text>
@@ -132,13 +133,6 @@ export function SettingsScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontFamily: FONTS.bold,
-    lineHeight: 32,
-    textAlign: "right",
-    paddingVertical: 6,
   },
   card: {
     backgroundColor: COLORS.cardBackground,

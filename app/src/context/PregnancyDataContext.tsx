@@ -16,7 +16,11 @@ interface PregnancyDataContextValue {
   appointments: Appointment[];
   savePregnancy: (input: NewPregnancyInput) => Promise<void>;
   addSymptomLog: (input: NewSymptomLogInput) => Promise<void>;
+  updateSymptomLog: (id: string, input: NewSymptomLogInput) => Promise<void>;
+  deleteSymptomLog: (id: string) => Promise<void>;
   addAppointment: (input: NewAppointmentInput) => Promise<void>;
+  updateAppointment: (id: string, input: NewAppointmentInput) => Promise<void>;
+  deleteAppointment: (id: string) => Promise<void>;
   resetLocalData: () => Promise<void>;
 }
 
@@ -69,11 +73,47 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
     [userId]
   );
 
+  const updateSymptomLog = useCallback(
+    async (id: string, input: NewSymptomLogInput) => {
+      if (!userId) throw new Error("Cannot update a symptom log while signed out");
+      const log = await localPregnancyRepository.updateSymptomLog(userId, id, input);
+      setSymptomLogs((prev) => prev.map((item) => (item.id === id ? log : item)));
+    },
+    [userId]
+  );
+
+  const deleteSymptomLog = useCallback(
+    async (id: string) => {
+      if (!userId) throw new Error("Cannot delete a symptom log while signed out");
+      await localPregnancyRepository.deleteSymptomLog(userId, id);
+      setSymptomLogs((prev) => prev.filter((item) => item.id !== id));
+    },
+    [userId]
+  );
+
   const addAppointment = useCallback(
     async (input: NewAppointmentInput) => {
       if (!userId) throw new Error("Cannot add an appointment while signed out");
       const appointment = await localPregnancyRepository.addAppointment(userId, input);
       setAppointments((prev) => [...prev, appointment]);
+    },
+    [userId]
+  );
+
+  const updateAppointment = useCallback(
+    async (id: string, input: NewAppointmentInput) => {
+      if (!userId) throw new Error("Cannot update an appointment while signed out");
+      const appointment = await localPregnancyRepository.updateAppointment(userId, id, input);
+      setAppointments((prev) => prev.map((item) => (item.id === id ? appointment : item)));
+    },
+    [userId]
+  );
+
+  const deleteAppointment = useCallback(
+    async (id: string) => {
+      if (!userId) throw new Error("Cannot delete an appointment while signed out");
+      await localPregnancyRepository.deleteAppointment(userId, id);
+      setAppointments((prev) => prev.filter((item) => item.id !== id));
     },
     [userId]
   );
@@ -94,7 +134,11 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
       appointments,
       savePregnancy,
       addSymptomLog,
+      updateSymptomLog,
+      deleteSymptomLog,
       addAppointment,
+      updateAppointment,
+      deleteAppointment,
       resetLocalData,
     }),
     [
@@ -104,7 +148,11 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
       appointments,
       savePregnancy,
       addSymptomLog,
+      updateSymptomLog,
+      deleteSymptomLog,
       addAppointment,
+      updateAppointment,
+      deleteAppointment,
       resetLocalData,
     ]
   );

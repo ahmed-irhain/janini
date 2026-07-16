@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { formatHijriDateAr, gestationalAge, gregorianToHijri } from "@janini/shared";
 import { usePregnancyData } from "../../context/PregnancyDataContext";
 import { Screen } from "../../components/Screen";
+import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
@@ -61,9 +62,9 @@ export function OnboardingConfirmationScreen() {
 
       <Ionicons name="sparkles-outline" size={48} color={COLORS.accent} style={styles.icon} />
 
-      <Text style={styles.title}>
+      <ScreenTitle align="center">
         {t("onboarding.confirmationLeadIn")} {t("home.weekLabel", { week: weeks })}
-      </Text>
+      </ScreenTitle>
 
       <View style={styles.card}>
         <Text style={styles.cardLabel}>{t("home.dueDateLabel")}</Text>
@@ -101,13 +102,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginTop: 8,
-  },
-  title: {
-    fontSize: 22,
-    fontFamily: FONTS.bold,
-    lineHeight: 30,
-    textAlign: "center",
-    paddingVertical: 4,
   },
   card: {
     width: "100%",

@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     paddingVertical: 2,
+    textAlign: "right",
   },
   field: {
     flexDirection: "row",
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: "#B3261E",
     paddingVertical: 2,
+    textAlign: "right",
   },
   backdrop: {
     flex: 1,

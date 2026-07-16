@@ -15,7 +15,7 @@ export function WeeklyContentDetailScreen() {
   if (!content) return null;
 
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} hasNativeHeader>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
       <Text style={styles.weekLabel}>{t("discover.weekRowLabel", { week: content.weekNumber })}</Text>
       <Text style={styles.title}>{content.titleAr}</Text>

@@ -14,6 +14,7 @@ import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { RECOMMENDATIONS_SEED } from "../data/recommendationsSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
+import { ScreenTitle } from "../components/ScreenTitle";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 
@@ -40,11 +41,11 @@ export function HomeScreen() {
 
   return (
     <Screen style={styles.content}>
-      <Text style={styles.welcomeText}>
+      <ScreenTitle style={styles.title}>
         {user?.displayName
           ? t("home.welcomeWithName", { name: user.displayName })
           : t("home.welcome")}
-      </Text>
+      </ScreenTitle>
 
       <View style={styles.card}>
         <Text style={styles.weekMonthLabel}>
@@ -68,17 +69,23 @@ export function HomeScreen() {
         <>
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>{t("home.babySizeSectionTitle")}</Text>
-            {content.babySizeComparisonAr ? (
-              <Text style={styles.babySize}>
-                {getBabySizeEmoji(currentWeek) ? `${getBabySizeEmoji(currentWeek)} ` : ""}
-                {content.babySizeComparisonAr}
-              </Text>
-            ) : null}
-            {content.babyWeightApproxGrams ? (
-              <Text style={styles.bodyText}>
-                {t("home.weightLabel", { grams: content.babyWeightApproxGrams })}
-              </Text>
-            ) : null}
+            <View style={styles.babySizeRow}>
+              {getBabySizeEmoji(currentWeek) ? (
+                <View style={styles.babySizeEmojiWrap}>
+                  <Text style={styles.babySizeEmoji}>{getBabySizeEmoji(currentWeek)}</Text>
+                </View>
+              ) : null}
+              <View style={styles.babySizeTextContainer}>
+                {content.babySizeComparisonAr ? (
+                  <Text style={styles.babySize}>{content.babySizeComparisonAr}</Text>
+                ) : null}
+                {content.babyWeightApproxGrams ? (
+                  <Text style={styles.bodyText}>
+                    {t("home.weightLabel", { grams: content.babyWeightApproxGrams })}
+                  </Text>
+                ) : null}
+              </View>
+            </View>
           </View>
 
           <View style={styles.card}>
@@ -114,15 +121,11 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    padding: 15,
+  },
   content: {
     gap: 16,
-  },
-  welcomeText: {
-    fontSize: 30,
-    fontFamily: FONTS.bold,
-    lineHeight: 40,
-    textAlign: "right",
-    paddingVertical: 6,
   },
   card: {
     backgroundColor: COLORS.cardBackground,
@@ -170,6 +173,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
     textAlign: "right",
+  },
+  babySizeRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    gap: 12,
+  },
+  babySizeEmojiWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: COLORS.accentSoft,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  babySizeEmoji: {
+    fontSize: 36,
+  },
+  babySizeTextContainer: {
+    flex: 1,
+    gap: 4,
   },
   babySize: {
     fontFamily: FONTS.medium,
