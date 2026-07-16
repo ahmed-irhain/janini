@@ -10,7 +10,6 @@
   },
   "home": {
     "welcome": "أهلاً مامي!",
-    "welcomeWithName": "أهلاً مامي {{name}}!",
     "weekLabel": "الأسبوع {{week}}",
     "monthLabel": "الشهر {{month}}",
     "dueDateLabel": "الموعد المتوقع للولادة",
@@ -63,10 +62,6 @@
   },
   "settings": {
     "title": "الإعدادات",
-    "accountSectionTitle": "الحساب",
-    "nameLabel": "الاسم",
-    "namePlaceholder": "لم يتم إدخال اسم",
-    "emailLabel": "البريد الإلكتروني",
     "dueDateSectionTitle": "الموعد المتوقع للولادة",
     "editDueDateButton": "تعديل",
     "premiumSectionTitle": "الوضع المميز (تجريبي)",
@@ -79,19 +74,7 @@
     "resetDataButton": "إعادة تعيين البيانات المحفوظة على الجهاز",
     "resetConfirmTitle": "إعادة تعيين البيانات؟",
     "resetConfirmMessage": "سيتم حذف بيانات الحمل والأعراض والمواعيد المحفوظة على هذا الجهاز نهائيًا، ولن تتمكني من التراجع عن هذا الإجراء",
-    "resetConfirmButton": "حذف البيانات",
-    "signOutButton": "تسجيل الخروج"
-  },
-  "auth": {
-    "welcomeSubtitle": "تابعي رحلة حملك بثقة",
-    "signUpCta": "إنشاء حساب",
-    "signInCta": "تسجيل الدخول",
-    "emailLabel": "البريد الإلكتروني",
-    "passwordLabel": "كلمة المرور",
-    "signUpButton": "إنشاء الحساب",
-    "signInButton": "دخول",
-    "genericError": "تعذر إتمام العملية، تحقق من البيانات المدخلة وحاولي مرة أخرى",
-    "emailTakenError": "هذا البريد الإلكتروني مسجَّل بالفعل، جرّبي تسجيل الدخول بدلاً من ذلك"
+    "resetConfirmButton": "حذف البيانات"
   },
   "onboarding": {
     "introSubtitle": "خلال دقيقة وحدة، بنجهز لك تجربة مخصصة لرحلة حملك",
@@ -121,8 +104,6 @@
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
-    "invalidEmail": "الرجاء إدخال بريد إلكتروني صحيح",
-    "passwordTooShort": "كلمة المرور يجب ألا تقل عن 8 أحرف",
     "saveFailed": "تعذر الحفظ، حاولي مرة ثانية"
   }
 }

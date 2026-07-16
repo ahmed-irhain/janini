@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
-import { useAuth } from "./AuthContext";
+import { useDeviceIdentity } from "./DeviceIdentityContext";
 import type { Appointment, Pregnancy, SymptomLog } from "@janini/shared";
 import { localPregnancyRepository } from "../data/localRepository";
 import type {
@@ -27,7 +27,7 @@ interface PregnancyDataContextValue {
 const PregnancyDataContext = createContext<PregnancyDataContextValue | null>(null);
 
 export function PregnancyDataProvider({ children }: PropsWithChildren) {
-  const { userId } = useAuth();
+  const { userId } = useDeviceIdentity();
   const [isHydrated, setIsHydrated] = useState(false);
   const [pregnancy, setPregnancy] = useState<Pregnancy | null>(null);
   const [symptomLogs, setSymptomLogs] = useState<SymptomLog[]>([]);
@@ -57,7 +57,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const savePregnancy = useCallback(
     async (input: NewPregnancyInput) => {
-      if (!userId) throw new Error("Cannot save a pregnancy while signed out");
+      if (!userId) throw new Error("Cannot save a pregnancy before the device id has loaded");
       const saved = await localPregnancyRepository.savePregnancy(userId, input);
       setPregnancy(saved);
     },
@@ -66,7 +66,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const addSymptomLog = useCallback(
     async (input: NewSymptomLogInput) => {
-      if (!userId) throw new Error("Cannot log a symptom while signed out");
+      if (!userId) throw new Error("Cannot log a symptom before the device id has loaded");
       const log = await localPregnancyRepository.addSymptomLog(userId, input);
       setSymptomLogs((prev) => [log, ...prev]);
     },
@@ -75,7 +75,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const updateSymptomLog = useCallback(
     async (id: string, input: NewSymptomLogInput) => {
-      if (!userId) throw new Error("Cannot update a symptom log while signed out");
+      if (!userId) throw new Error("Cannot update a symptom log before the device id has loaded");
       const log = await localPregnancyRepository.updateSymptomLog(userId, id, input);
       setSymptomLogs((prev) => prev.map((item) => (item.id === id ? log : item)));
     },
@@ -84,7 +84,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const deleteSymptomLog = useCallback(
     async (id: string) => {
-      if (!userId) throw new Error("Cannot delete a symptom log while signed out");
+      if (!userId) throw new Error("Cannot delete a symptom log before the device id has loaded");
       await localPregnancyRepository.deleteSymptomLog(userId, id);
       setSymptomLogs((prev) => prev.filter((item) => item.id !== id));
     },
@@ -93,7 +93,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const addAppointment = useCallback(
     async (input: NewAppointmentInput) => {
-      if (!userId) throw new Error("Cannot add an appointment while signed out");
+      if (!userId) throw new Error("Cannot add an appointment before the device id has loaded");
       const appointment = await localPregnancyRepository.addAppointment(userId, input);
       setAppointments((prev) => [...prev, appointment]);
     },
@@ -102,7 +102,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const updateAppointment = useCallback(
     async (id: string, input: NewAppointmentInput) => {
-      if (!userId) throw new Error("Cannot update an appointment while signed out");
+      if (!userId) throw new Error("Cannot update an appointment before the device id has loaded");
       const appointment = await localPregnancyRepository.updateAppointment(userId, id, input);
       setAppointments((prev) => prev.map((item) => (item.id === id ? appointment : item)));
     },
@@ -111,7 +111,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
 
   const deleteAppointment = useCallback(
     async (id: string) => {
-      if (!userId) throw new Error("Cannot delete an appointment while signed out");
+      if (!userId) throw new Error("Cannot delete an appointment before the device id has loaded");
       await localPregnancyRepository.deleteAppointment(userId, id);
       setAppointments((prev) => prev.filter((item) => item.id !== id));
     },
@@ -119,7 +119,7 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
   );
 
   const resetLocalData = useCallback(async () => {
-    if (!userId) throw new Error("Cannot reset local data while signed out");
+    if (!userId) throw new Error("Cannot reset local data before the device id has loaded");
     await localPregnancyRepository.resetLocalData(userId);
     setPregnancy(null);
     setSymptomLogs([]);

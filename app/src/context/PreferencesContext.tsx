@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
-import { useAuth } from "./AuthContext";
+import { useDeviceIdentity } from "./DeviceIdentityContext";
 import { localPreferencesRepository, type Preferences } from "../data/preferencesRepository";
 
 interface PreferencesContextValue extends Preferences {
@@ -12,7 +12,7 @@ interface PreferencesContextValue extends Preferences {
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 
 export function PreferencesProvider({ children }: PropsWithChildren) {
-  const { userId } = useAuth();
+  const { userId } = useDeviceIdentity();
   const [isHydrated, setIsHydrated] = useState(false);
   const [isPremium, setIsPremiumState] = useState(false);
   const [notificationsEnabled, setNotificationsEnabledState] = useState(true);

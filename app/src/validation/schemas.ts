@@ -14,18 +14,6 @@ export const symptomLogSchema = z.object({
 });
 export type SymptomLogFormValues = z.infer<typeof symptomLogSchema>;
 
-export const signInSchema = z.object({
-  email: z.string().trim().min(1, "required").email("invalidEmail"),
-  password: z.string().min(1, "required"),
-});
-export type SignInFormValues = z.infer<typeof signInSchema>;
-
-export const signUpSchema = z.object({
-  email: z.string().trim().min(1, "required").email("invalidEmail"),
-  password: z.string().min(8, "passwordTooShort"),
-});
-export type SignUpFormValues = z.infer<typeof signUpSchema>;
-
 export type FieldErrors<T extends z.ZodTypeAny> = Partial<Record<keyof z.infer<T>, string>>;
 
 /** Validates `values` against `schema`, returning a map of field -> translation-key, or null if valid. */

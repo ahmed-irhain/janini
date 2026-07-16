@@ -8,7 +8,6 @@ import {
   gregorianToHijri,
   pregnancyProgress,
 } from "@janini/shared";
-import { useAuth } from "../context/AuthContext";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { RECOMMENDATIONS_SEED } from "../data/recommendationsSeed";
@@ -21,7 +20,6 @@ import { COLORS } from "../theme/colors";
 export function HomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { user } = useAuth();
   const { pregnancy } = usePregnancyData();
 
   // Guaranteed non-null: Home only renders inside the (app) route group,
@@ -41,11 +39,7 @@ export function HomeScreen() {
 
   return (
     <Screen style={styles.content}>
-      <ScreenTitle style={styles.title}>
-        {user?.displayName
-          ? t("home.welcomeWithName", { name: user.displayName })
-          : t("home.welcome")}
-      </ScreenTitle>
+      <ScreenTitle style={styles.title}>{t("home.welcome")}</ScreenTitle>
 
       <View style={styles.card}>
         <Text style={styles.weekMonthLabel}>

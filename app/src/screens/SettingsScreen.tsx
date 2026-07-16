@@ -3,7 +3,6 @@ import { Alert, Pressable, StyleSheet, Switch, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 import { estimateLmpFromDueDate, formatHijriDateAr, gregorianToHijri } from "@janini/shared";
-import { useAuth } from "../context/AuthContext";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { usePreferences } from "../context/PreferencesContext";
 import { DateField } from "../components/DateField";
@@ -14,7 +13,6 @@ import { COLORS } from "../theme/colors";
 
 export function SettingsScreen() {
   const { t } = useTranslation();
-  const { user, signOut } = useAuth();
   const { pregnancy, savePregnancy, resetLocalData } = usePregnancyData();
   const { isPremium, notificationsEnabled, setIsPremium, setNotificationsEnabled } =
     usePreferences();
@@ -44,18 +42,6 @@ export function SettingsScreen() {
   return (
     <Screen style={styles.content}>
       <ScreenTitle align="right">{t("settings.title")}</ScreenTitle>
-
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>{t("settings.accountSectionTitle")}</Text>
-        <View style={styles.row}>
-          <Text style={styles.rowValue}>{user?.displayName ?? t("settings.namePlaceholder")}</Text>
-          <Text style={styles.rowLabel}>{t("settings.nameLabel")}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.rowValue}>{user?.email}</Text>
-          <Text style={styles.rowLabel}>{t("settings.emailLabel")}</Text>
-        </View>
-      </View>
 
       {dueDate ? (
         <View style={styles.card}>
@@ -122,10 +108,6 @@ export function SettingsScreen() {
       <Pressable style={styles.resetButton} onPress={onResetLocalData}>
         <Text style={styles.resetButtonText}>{t("settings.resetDataButton")}</Text>
       </Pressable>
-
-      <Pressable style={styles.signOutButton} onPress={() => signOut()}>
-        <Text style={styles.signOutButtonText}>{t("settings.signOutButton")}</Text>
-      </Pressable>
     </Screen>
   );
 }
@@ -156,23 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: COLORS.accent,
-  },
-  row: {
-    gap: 2,
-  },
-  rowLabel: {
-    fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.mutedText,
-    textAlign: "right",
-  },
-  rowValue: {
-    fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
-    textAlign: "right",
-    writingDirection: "rtl",
   },
   bodyText: {
     fontFamily: FONTS.regular,
@@ -208,19 +173,6 @@ const styles = StyleSheet.create({
   },
   resetButtonText: {
     color: COLORS.mutedText,
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-  },
-  signOutButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: "#B3261E",
-    alignItems: "center",
-  },
-  signOutButtonText: {
-    color: "#B3261E",
     fontFamily: FONTS.medium,
     fontSize: 16,
   },
