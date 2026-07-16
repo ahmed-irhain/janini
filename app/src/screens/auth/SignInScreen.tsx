@@ -2,10 +2,13 @@ import { useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
+import { NetworkUnavailableError } from "../../data/authApi";
 import { signInSchema, getFieldErrors, type FieldErrors } from "../../validation/schemas";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
+import { OfflineBanner } from "../../components/OfflineBanner";
 import { FONTS } from "../../theme/fonts";
+import { COLORS } from "../../theme/colors";
 import { AuthTextField } from "./AuthTextField";
 
 export function SignInScreen() {
@@ -30,8 +33,12 @@ export function SignInScreen() {
       await signIn(emailAddress, password);
       // RootNavigator's Stack.Protected switches away from (auth)
       // automatically once isSignedIn flips true — nothing to do here.
-    } catch {
-      setErrorMessage(t("auth.genericError"));
+    } catch (error) {
+      if (error instanceof NetworkUnavailableError) {
+        setErrorMessage(t("auth.networkError"));
+      } else {
+        setErrorMessage(t("auth.genericError"));
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -39,6 +46,7 @@ export function SignInScreen() {
 
   return (
     <Screen center style={styles.content}>
+      <OfflineBanner />
       <ScreenTitle align="center">{t("auth.signInCta")}</ScreenTitle>
 
       <AuthTextField
@@ -97,7 +105,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 14,
     lineHeight: 20,
-    color: "#B3261E",
+    color: COLORS.error,
     textAlign: "center",
     paddingVertical: 4,
   },

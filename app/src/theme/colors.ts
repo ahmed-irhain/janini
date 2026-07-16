@@ -7,4 +7,6 @@ export const COLORS = {
   bannerBackground: "#FFF3CD",
   progressTrack: "#E4E9E6",
   cardBackground: "#F7FAF8",
+  error: "#B3261E",
+  errorSoft: "#FBEAEA",
 } as const;

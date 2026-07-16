@@ -8,6 +8,7 @@ import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { appointmentSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
 
 export function AddAppointmentScreen() {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ export function AddAppointmentScreen() {
   );
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof appointmentSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -65,9 +67,17 @@ export function AddAppointmentScreen() {
         {
           text: t("common.delete"),
           style: "destructive",
-          onPress: () => {
-            deleteAppointment(existing.id);
-            router.back();
+          onPress: async () => {
+            setSaveError(null);
+            setIsDeleting(true);
+            try {
+              await deleteAppointment(existing.id);
+              router.back();
+            } catch {
+              setSaveError(t("common.deleteFailed"));
+            } finally {
+              setIsDeleting(false);
+            }
           },
         },
       ]
@@ -127,12 +137,20 @@ export function AddAppointmentScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Pressable style={styles.saveButton} onPress={onSave} disabled={isSubmitting}>
+      <Pressable
+        style={styles.saveButton}
+        onPress={onSave}
+        disabled={isSubmitting || isDeleting}
+      >
         <Text style={styles.saveButtonText}>{t("appointment.saveButton")}</Text>
       </Pressable>
 
       {existing ? (
-        <Pressable style={styles.deleteButton} onPress={onDelete} disabled={isSubmitting}>
+        <Pressable
+          style={styles.deleteButton}
+          onPress={onDelete}
+          disabled={isSubmitting || isDeleting}
+        >
           <Text style={styles.deleteButtonText}>{t("common.delete")}</Text>
         </Pressable>
       ) : null}
@@ -165,13 +183,13 @@ const styles = StyleSheet.create({
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: "#B3261E",
+    borderColor: COLORS.error,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#B3261E",
+    color: COLORS.error,
     paddingVertical: 2,
     textAlign: "right",
   },
@@ -196,10 +214,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#B3261E",
+    borderColor: COLORS.error,
   },
   deleteButtonText: {
-    color: "#B3261E",
+    color: COLORS.error,
     fontFamily: FONTS.medium,
     fontSize: 16,
     textAlign: "right",

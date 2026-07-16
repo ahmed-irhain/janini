@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context";
 import { AuthProvider } from "../context/AuthContext";
+import { NetworkProvider } from "../context/NetworkContext";
 import { PregnancyDataProvider } from "../context/PregnancyDataContext";
 import { PreferencesProvider } from "../context/PreferencesContext";
 import { RootNavigator } from "../components/RootNavigator";
@@ -37,15 +38,17 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <AuthProvider>
-        <ThemeProvider value={DefaultTheme}>
-          <PregnancyDataProvider>
-            <PreferencesProvider>
-              <RootNavigator />
-            </PreferencesProvider>
-          </PregnancyDataProvider>
-        </ThemeProvider>
-      </AuthProvider>
+      <NetworkProvider>
+        <AuthProvider>
+          <ThemeProvider value={DefaultTheme}>
+            <PregnancyDataProvider>
+              <PreferencesProvider>
+                <RootNavigator />
+              </PreferencesProvider>
+            </PregnancyDataProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </NetworkProvider>
     </SafeAreaProvider>
   );
 }

@@ -13,6 +13,8 @@ export class AuthApiError extends Error {
   }
 }
 
+export class NetworkUnavailableError extends Error {}
+
 interface AuthResponse {
   token: string;
   user: User;
@@ -31,28 +33,39 @@ async function parseOrThrow<T>(response: Response): Promise<T> {
   return data as T;
 }
 
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(`${requireApiUrl()}${path}`, init);
+  } catch {
+    // fetch() rejects with a plain TypeError ("Network request failed") when
+    // there's no connectivity or the host is unreachable — distinguish that
+    // from an HTTP-level failure (AuthApiError) so the UI can show a
+    // "check your connection" message instead of a generic one.
+    throw new NetworkUnavailableError();
+  }
+  return parseOrThrow<T>(response);
+}
+
 export async function signUp(email: string, password: string): Promise<AuthResponse> {
-  const response = await fetch(`${requireApiUrl()}/auth/signup`, {
+  return request<AuthResponse>("/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  return parseOrThrow<AuthResponse>(response);
 }
 
 export async function signIn(email: string, password: string): Promise<AuthResponse> {
-  const response = await fetch(`${requireApiUrl()}/auth/login`, {
+  return request<AuthResponse>("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  return parseOrThrow<AuthResponse>(response);
 }
 
 export async function fetchMe(token: string): Promise<User> {
-  const response = await fetch(`${requireApiUrl()}/auth/me`, {
+  const { user } = await request<{ user: User }>("/auth/me", {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const { user } = await parseOrThrow<{ user: User }>(response);
   return user;
 }

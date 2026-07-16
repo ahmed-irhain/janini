@@ -2,11 +2,13 @@ import { useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
-import { AuthApiError } from "../../data/authApi";
+import { AuthApiError, NetworkUnavailableError } from "../../data/authApi";
 import { signUpSchema, getFieldErrors, type FieldErrors } from "../../validation/schemas";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
+import { OfflineBanner } from "../../components/OfflineBanner";
 import { FONTS } from "../../theme/fonts";
+import { COLORS } from "../../theme/colors";
 import { AuthTextField } from "./AuthTextField";
 
 export function SignUpScreen() {
@@ -32,7 +34,9 @@ export function SignUpScreen() {
       // RootNavigator's Stack.Protected switches away from (auth)
       // automatically once isSignedIn flips true — nothing to do here.
     } catch (error) {
-      if (error instanceof AuthApiError && error.code === "email_taken") {
+      if (error instanceof NetworkUnavailableError) {
+        setErrorMessage(t("auth.networkError"));
+      } else if (error instanceof AuthApiError && error.code === "email_taken") {
         setErrorMessage(t("auth.emailTakenError"));
       } else {
         setErrorMessage(t("auth.genericError"));
@@ -44,6 +48,7 @@ export function SignUpScreen() {
 
   return (
     <Screen center style={styles.content}>
+      <OfflineBanner />
       <ScreenTitle align="center">{t("auth.signUpCta")}</ScreenTitle>
 
       <AuthTextField
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 14,
     lineHeight: 20,
-    color: "#B3261E",
+    color: COLORS.error,
     textAlign: "center",
     paddingVertical: 4,
   },

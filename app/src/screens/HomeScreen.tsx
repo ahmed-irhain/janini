@@ -15,6 +15,7 @@ import { RECOMMENDATIONS_SEED } from "../data/recommendationsSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { LoadingState } from "../components/LoadingState";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 
@@ -24,9 +25,10 @@ export function HomeScreen() {
   const { user } = useAuth();
   const { pregnancy } = usePregnancyData();
 
-  // Guaranteed non-null: Home only renders inside the (app) route group,
-  // which RootNavigator only allows once a pregnancy exists.
-  if (!pregnancy) return null;
+  // Home only renders inside the (app) route group, which RootNavigator only
+  // allows once a pregnancy exists — this is a defensive fallback for the
+  // brief window between that guard flipping and this screen's re-render.
+  if (!pregnancy) return <LoadingState />;
 
   const { weeks: currentWeek } = gestationalAge(new Date(pregnancy.lastMenstrualPeriod));
   const currentMonth = gestationalMonth(Math.max(1, currentWeek));

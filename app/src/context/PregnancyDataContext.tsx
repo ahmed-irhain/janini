@@ -11,6 +11,8 @@ import type {
 
 interface PregnancyDataContextValue {
   isHydrated: boolean;
+  loadError: string | null;
+  retryLoad: () => void;
   pregnancy: Pregnancy | null;
   symptomLogs: SymptomLog[];
   appointments: Appointment[];
@@ -29,13 +31,18 @@ const PregnancyDataContext = createContext<PregnancyDataContextValue | null>(nul
 export function PregnancyDataProvider({ children }: PropsWithChildren) {
   const { userId } = useAuth();
   const [isHydrated, setIsHydrated] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [reloadToken, setReloadToken] = useState(0);
   const [pregnancy, setPregnancy] = useState<Pregnancy | null>(null);
   const [symptomLogs, setSymptomLogs] = useState<SymptomLog[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
+  const retryLoad = useCallback(() => setReloadToken((n) => n + 1), []);
+
   useEffect(() => {
     if (!userId) {
       setIsHydrated(false);
+      setLoadError(null);
       setPregnancy(null);
       setSymptomLogs([]);
       setAppointments([]);
@@ -43,17 +50,25 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
     }
     let cancelled = false;
     setIsHydrated(false);
-    localPregnancyRepository.load(userId).then((data) => {
-      if (cancelled) return;
-      setPregnancy(data.pregnancy);
-      setSymptomLogs(data.symptomLogs);
-      setAppointments(data.appointments);
-      setIsHydrated(true);
-    });
+    setLoadError(null);
+    localPregnancyRepository
+      .load(userId)
+      .then((data) => {
+        if (cancelled) return;
+        setPregnancy(data.pregnancy);
+        setSymptomLogs(data.symptomLogs);
+        setAppointments(data.appointments);
+        setIsHydrated(true);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("Failed to load pregnancy data", error);
+        setLoadError("loadFailed");
+      });
     return () => {
       cancelled = true;
     };
-  }, [userId]);
+  }, [userId, reloadToken]);
 
   const savePregnancy = useCallback(
     async (input: NewPregnancyInput) => {
@@ -129,6 +144,8 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
   const value = useMemo(
     () => ({
       isHydrated,
+      loadError,
+      retryLoad,
       pregnancy,
       symptomLogs,
       appointments,
@@ -143,6 +160,8 @@ export function PregnancyDataProvider({ children }: PropsWithChildren) {
     }),
     [
       isHydrated,
+      loadError,
+      retryLoad,
       pregnancy,
       symptomLogs,
       appointments,

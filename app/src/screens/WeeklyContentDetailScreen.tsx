@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
+import { ErrorState } from "../components/ErrorState";
 import { FONTS } from "../theme/fonts";
 
 export function WeeklyContentDetailScreen() {
@@ -12,7 +13,7 @@ export function WeeklyContentDetailScreen() {
   const weekNumber = Number(week);
   const content = WEEKLY_CONTENT_SEED.find((item) => item.weekNumber === weekNumber);
 
-  if (!content) return null;
+  if (!content) return <ErrorState message={t("discover.contentNotFound")} />;
 
   return (
     <Screen style={styles.content} hasNativeHeader>
