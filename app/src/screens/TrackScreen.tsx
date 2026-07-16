@@ -1,11 +1,17 @@
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, Alert, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { SectionHeader } from "../components/SectionHeader";
+import { EmptyState } from "../components/EmptyState";
+import { Card } from "../components/Card";
+import { COLORS } from "../theme/colors";
 import { FONTS } from "../theme/fonts";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 const RECENT_SYMPTOM_COUNT = 5;
 
@@ -42,17 +48,16 @@ export function TrackScreen() {
       <ScreenTitle>{t("track.tabTitle")}</ScreenTitle>
 
       <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t("track.recentSymptomsTitle")}</Text>
-          <Pressable onPress={() => router.push("/symptom-log/add")}>
-            <Text style={styles.addLink}>{t("track.logSymptomButton")}</Text>
-          </Pressable>
-        </View>
+        <SectionHeader
+          title={t("track.recentSymptomsTitle")}
+          actionLabel={t("track.logSymptomButton")}
+          onActionPress={() => router.push("/symptom-log/add")}
+        />
         {recentSymptoms.length === 0 ? (
-          <Text style={styles.emptyText}>{t("track.emptySymptoms")}</Text>
+          <EmptyState message={t("track.emptySymptoms")} icon="pulse-outline" />
         ) : (
           recentSymptoms.map((log) => (
-            <View key={log.id} style={styles.card}>
+            <Card key={log.id} elevation="sm">
               <View style={styles.cardHeader}>
                 <View style={styles.cardActions}>
                   <Pressable
@@ -60,14 +65,14 @@ export function TrackScreen() {
                     hitSlop={8}
                     accessibilityLabel={t("common.edit")}
                   >
-                    <Ionicons name="create-outline" size={18} color="#2E7D5B" />
+                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
                   </Pressable>
                   <Pressable
                     onPress={() => onDeleteSymptom(log.id)}
                     hitSlop={8}
                     accessibilityLabel={t("common.delete")}
                   >
-                    <Ionicons name="trash-outline" size={18} color="#B3261E" />
+                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
                   </Pressable>
                 </View>
                 <Text style={styles.cardTitle}>{log.symptom}</Text>
@@ -77,23 +82,22 @@ export function TrackScreen() {
                 {new Date(log.loggedAt).toLocaleDateString("ar")}
               </Text>
               {log.note ? <Text style={styles.cardNote}>{log.note}</Text> : null}
-            </View>
+            </Card>
           ))
         )}
       </View>
 
       <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t("track.upcomingAppointmentsTitle")}</Text>
-          <Pressable onPress={() => router.push("/appointments/add")}>
-            <Text style={styles.addLink}>{t("track.addAppointmentButton")}</Text>
-          </Pressable>
-        </View>
+        <SectionHeader
+          title={t("track.upcomingAppointmentsTitle")}
+          actionLabel={t("track.addAppointmentButton")}
+          onActionPress={() => router.push("/appointments/add")}
+        />
         {upcomingAppointments.length === 0 ? (
-          <Text style={styles.emptyText}>{t("track.emptyAppointments")}</Text>
+          <EmptyState message={t("track.emptyAppointments")} icon="calendar-outline" />
         ) : (
           upcomingAppointments.map((appointment) => (
-            <View key={appointment.id} style={styles.card}>
+            <Card key={appointment.id} elevation="sm">
               <View style={styles.cardHeader}>
                 <View style={styles.cardActions}>
                   <Pressable
@@ -101,14 +105,14 @@ export function TrackScreen() {
                     hitSlop={8}
                     accessibilityLabel={t("common.edit")}
                   >
-                    <Ionicons name="create-outline" size={18} color="#2E7D5B" />
+                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
                   </Pressable>
                   <Pressable
                     onPress={() => onDeleteAppointment(appointment.id)}
                     hitSlop={8}
                     accessibilityLabel={t("common.delete")}
                   >
-                    <Ionicons name="trash-outline" size={18} color="#B3261E" />
+                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
                   </Pressable>
                 </View>
                 <Text style={styles.cardTitle}>{appointment.title}</Text>
@@ -118,7 +122,7 @@ export function TrackScreen() {
                 {appointment.location ? ` · ${appointment.location}` : ""}
               </Text>
               {appointment.notes ? <Text style={styles.cardNote}>{appointment.notes}</Text> : null}
-            </View>
+            </Card>
           ))
         )}
       </View>
@@ -132,75 +136,37 @@ function capitalize(value: string): string {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 20,
+    gap: SPACING.xl,
   },
   section: {
-    gap: 8,
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  sectionTitle: {
-    fontFamily: FONTS.medium,
-    fontSize: 17,
-    lineHeight: 24,
-    paddingVertical: 4,
-    textAlign: "right",
-  },
-  addLink: {
-    fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#2E7D5B",
-    paddingVertical: 4,
-    paddingHorizontal: 4,
-    textAlign: "right",
-  },
-  emptyText: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#6B7570",
-    paddingVertical: 4,
-    textAlign: "right",
-  },
-  card: {
-    backgroundColor: "#F3F6F4",
-    borderRadius: 10,
-    padding: 12,
-    gap: 2,
+    gap: SPACING.sm,
   },
   cardHeader: {
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 8,
+    gap: SPACING.sm,
   },
   cardActions: {
     flexDirection: "row",
-    gap: 14,
+    gap: SPACING.md + 2,
   },
   cardTitle: {
+    ...TYPE.body,
     flex: 1,
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
+    color: COLORS.ink,
     textAlign: "right",
   },
   cardSubtitle: {
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-    lineHeight: 20,
-    color: "#6B7570",
+    ...TYPE.bodySmall,
+    color: COLORS.mutedText,
     textAlign: "right",
   },
   cardNote: {
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-    lineHeight: 20,
-    marginTop: 4,
+    ...TYPE.bodySmall,
+    marginTop: SPACING.xs,
+    color: COLORS.ink,
     textAlign: "right",
   },
 });

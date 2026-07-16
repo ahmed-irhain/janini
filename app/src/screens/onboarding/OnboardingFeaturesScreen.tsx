@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { Screen } from "../../components/Screen";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
+import { Button } from "../../components/Button";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
 
@@ -59,7 +60,7 @@ export function OnboardingFeaturesScreen() {
           accessibilityRole="button"
           accessibilityLabel={t("common.back")}
         >
-          <Ionicons name="chevron-back" size={24} color="#1C2620" />
+          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
         </Pressable>
         <OnboardingStepIndicator currentStep={1} totalSteps={3} />
         <Pressable onPress={() => router.push("/due-date")} hitSlop={12} accessibilityRole="button">
@@ -92,11 +93,10 @@ export function OnboardingFeaturesScreen() {
             </Pressable>
           ))}
         </View>
-        <Pressable style={styles.button} onPress={onPrimaryPress}>
-          <Text style={styles.buttonText}>
-            {isLastSlide ? t("onboarding.continueButton") : t("onboarding.nextButton")}
-          </Text>
-        </Pressable>
+        <Button
+          label={isLastSlide ? t("onboarding.continueButton") : t("onboarding.nextButton")}
+          onPress={onPrimaryPress}
+        />
       </View>
     </Screen>
   );
@@ -158,16 +158,5 @@ const styles = StyleSheet.create({
   dotActive: {
     width: 20,
     backgroundColor: COLORS.accent,
-  },
-  button: {
-    backgroundColor: COLORS.accent,
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
   },
 });

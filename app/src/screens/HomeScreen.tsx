@@ -15,8 +15,12 @@ import { RECOMMENDATIONS_SEED } from "../data/recommendationsSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Card } from "../components/Card";
+import { ProgressBar } from "../components/ProgressBar";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 export function HomeScreen() {
   const { t } = useTranslation();
@@ -47,14 +51,12 @@ export function HomeScreen() {
           : t("home.welcome")}
       </ScreenTitle>
 
-      <View style={styles.card}>
+      <Card elevation="lg">
         <Text style={styles.weekMonthLabel}>
           {t("home.weekLabel", { week: currentWeek })} · {t("home.monthLabel", { month: currentMonth })}
         </Text>
 
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { width: `${percent}%` }]} />
-        </View>
+        <ProgressBar percent={percent} />
         <Text style={styles.progressCaption}>
           {t("home.dueInDaysLabel", { days: daysRemaining })}
         </Text>
@@ -63,11 +65,11 @@ export function HomeScreen() {
         <Text style={styles.bodyText}>
           {dueDate.toLocaleDateString("ar")} · {formatHijriDateAr(hijriDueDate)}
         </Text>
-      </View>
+      </Card>
 
       {content ? (
         <>
-          <View style={styles.card}>
+          <Card>
             <Text style={styles.sectionTitle}>{t("home.babySizeSectionTitle")}</Text>
             <View style={styles.babySizeRow}>
               {getBabySizeEmoji(currentWeek) ? (
@@ -86,22 +88,22 @@ export function HomeScreen() {
                 ) : null}
               </View>
             </View>
-          </View>
+          </Card>
 
-          <View style={styles.card}>
+          <Card>
             <Text style={styles.sectionTitle}>{t("home.babyChangesTitle")}</Text>
             <Text style={styles.bodyText}>{content.babyChangesAr}</Text>
-          </View>
+          </Card>
 
           {content.momChangesAr ? (
-            <View style={styles.card}>
+            <Card>
               <Text style={styles.sectionTitle}>{t("home.momChangesTitle")}</Text>
               <Text style={styles.bodyText}>{content.momChangesAr}</Text>
-            </View>
+            </Card>
           ) : null}
 
           {recommendations.length > 0 ? (
-            <View style={styles.card}>
+            <Card>
               <Text style={styles.sectionTitle}>{t("home.recommendationsTitle")}</Text>
               {recommendations.map((tip) => (
                 <Text key={tip.id} style={styles.tip}>
@@ -109,10 +111,10 @@ export function HomeScreen() {
                   {tip.textAr}
                 </Text>
               ))}
-              <Pressable onPress={() => router.push(`/weekly-content/${currentWeek}`)}>
+              <Pressable onPress={() => router.push(`/weekly-content/${currentWeek}`)} hitSlop={4}>
                 <Text style={styles.linkButton}>{t("home.viewFullWeekButton")}</Text>
               </Pressable>
-            </View>
+            </Card>
           ) : null}
         </>
       ) : null}
@@ -125,65 +127,46 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   content: {
-    gap: 16,
-  },
-  card: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    padding: 16,
-    gap: 8,
+    gap: SPACING.lg,
   },
   weekMonthLabel: {
-    fontFamily: FONTS.bold,
+    ...TYPE.heading,
     fontSize: 18,
     lineHeight: 26,
+    color: COLORS.ink,
     textAlign: "right",
   },
-  progressTrack: {
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: COLORS.progressTrack,
-    overflow: "hidden",
-  },
-  progressFill: {
-    height: "100%",
-    borderRadius: 5,
-    backgroundColor: COLORS.accent,
-  },
   progressCaption: {
-    fontFamily: FONTS.regular,
-    fontSize: 13,
-    lineHeight: 18,
+    ...TYPE.bodySmall,
     color: COLORS.mutedText,
     textAlign: "right",
   },
   dueDateLabel: {
     fontFamily: FONTS.medium,
-    paddingTop: 8,
+    paddingTop: SPACING.sm,
+    color: COLORS.ink,
     textAlign: "right",
   },
   bodyText: {
-    fontFamily: FONTS.regular,
-    fontSize: 15,
-    lineHeight: 22,
+    ...TYPE.body,
+    color: COLORS.ink,
     textAlign: "right",
   },
   sectionTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 16,
-    lineHeight: 22,
+    ...TYPE.heading,
+    color: COLORS.ink,
     textAlign: "right",
   },
   babySizeRow: {
     flexDirection: "row-reverse",
     alignItems: "center",
-    gap: 12,
+    gap: SPACING.md,
   },
   babySizeEmojiWrap: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: COLORS.accentSoft,
+    backgroundColor: COLORS.primary100,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -192,27 +175,28 @@ const styles = StyleSheet.create({
   },
   babySizeTextContainer: {
     flex: 1,
-    gap: 4,
+    gap: SPACING.xs,
   },
   babySize: {
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: COLORS.accent,
+    color: COLORS.primary700,
     textAlign: "right",
   },
   tip: {
-    fontFamily: FONTS.regular,
+    ...TYPE.bodySmall,
     fontSize: 14,
     lineHeight: 22,
+    color: COLORS.ink,
     textAlign: "right",
   },
   linkButton: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
-    color: COLORS.accent,
-    paddingTop: 4,
+    color: COLORS.primary700,
+    paddingTop: SPACING.xs,
     textAlign: "right",
   },
 });

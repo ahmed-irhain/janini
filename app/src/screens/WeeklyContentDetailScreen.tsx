@@ -5,6 +5,9 @@ import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPE } from "../theme/typography";
 
 export function WeeklyContentDetailScreen() {
   const { t } = useTranslation();
@@ -34,31 +37,31 @@ export function WeeklyContentDetailScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 12,
+    gap: SPACING.md,
   },
   disclaimer: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
     textAlign: "right",
-    color: "#8A6D3B",
-    backgroundColor: "#FFF3CD",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    color: COLORS.warningText,
+    backgroundColor: COLORS.warningBg,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
     borderRadius: 8,
   },
   weekLabel: {
+    ...TYPE.bodySmall,
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#6B7570",
+    color: COLORS.mutedText,
     paddingVertical: 4,
     textAlign: "right",
   },
   title: {
-    fontFamily: FONTS.bold,
+    ...TYPE.title,
     fontSize: 22,
     lineHeight: 30,
+    color: COLORS.ink,
     paddingVertical: 6,
     textAlign: "right",
   },
@@ -66,14 +69,15 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: "#2E7D5B",
+    color: COLORS.primary700,
     paddingVertical: 4,
     textAlign: "right",
   },
   body: {
-    fontFamily: FONTS.regular,
+    ...TYPE.body,
     fontSize: 16,
     lineHeight: 26,
+    color: COLORS.ink,
     paddingVertical: 4,
     textAlign: "right",
   },

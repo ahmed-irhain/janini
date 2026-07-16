@@ -8,8 +8,10 @@ import { DateField } from "../../components/DateField";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
+import { Button } from "../../components/Button";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
+import { SPACING } from "../../theme/spacing";
 
 type EntryMode = "lmp" | "dueDate";
 
@@ -51,7 +53,7 @@ export function LmpEntryScreen() {
           accessibilityRole="button"
           accessibilityLabel={t("common.back")}
         >
-          <Ionicons name="chevron-back" size={24} color="#1C2620" />
+          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
         </Pressable>
         <OnboardingStepIndicator currentStep={2} totalSteps={3} />
         <View style={styles.skipSpacer} />
@@ -89,9 +91,7 @@ export function LmpEntryScreen() {
 
       <Text style={styles.privacyNote}>{t("onboarding.dataPrivacyNote")}</Text>
 
-      <Pressable style={styles.button} onPress={onSubmit}>
-        <Text style={styles.buttonText}>{t("onboarding.continueButton")}</Text>
-      </Pressable>
+      <Button label={t("onboarding.continueButton")} onPress={onSubmit} style={styles.button} />
     </Screen>
   );
 }
@@ -141,15 +141,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   button: {
-    backgroundColor: COLORS.accent,
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-    marginTop: 16,
-  },
-  buttonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
+    marginTop: SPACING.lg,
   },
 });

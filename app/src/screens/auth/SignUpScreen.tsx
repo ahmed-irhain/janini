@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
 import { AuthApiError } from "../../data/authApi";
 import { signUpSchema, getFieldErrors, type FieldErrors } from "../../validation/schemas";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
-import { FONTS } from "../../theme/fonts";
+import { Button } from "../../components/Button";
+import { COLORS } from "../../theme/colors";
+import { SPACING } from "../../theme/spacing";
+import { TYPE } from "../../theme/typography";
 import { AuthTextField } from "./AuthTextField";
 
 export function SignUpScreen() {
@@ -72,38 +75,20 @@ export function SignUpScreen() {
 
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      <Pressable style={styles.button} onPress={onSubmit} disabled={isSubmitting}>
-        {isSubmitting ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>{t("auth.signUpButton")}</Text>
-        )}
-      </Pressable>
+      <Button label={t("auth.signUpButton")} onPress={onSubmit} loading={isSubmitting} />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
-  },
-  button: {
-    backgroundColor: "#2E7D5B",
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
+    gap: SPACING.lg,
   },
   error: {
-    fontFamily: FONTS.regular,
+    ...TYPE.bodySmall,
     fontSize: 14,
-    lineHeight: 20,
-    color: "#B3261E",
+    color: COLORS.errorText,
     textAlign: "center",
-    paddingVertical: 4,
+    paddingVertical: SPACING.xs,
   },
 });

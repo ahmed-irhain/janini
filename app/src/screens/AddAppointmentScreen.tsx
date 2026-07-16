@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
+import { Button } from "../components/Button";
 import { appointmentSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
+import { RADIUS } from "../theme/radius";
+import { SPACING } from "../theme/spacing";
 
 export function AddAppointmentScreen() {
   const { t } = useTranslation();
@@ -127,14 +131,15 @@ export function AddAppointmentScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Pressable style={styles.saveButton} onPress={onSave} disabled={isSubmitting}>
-        <Text style={styles.saveButtonText}>{t("appointment.saveButton")}</Text>
-      </Pressable>
+      <Button label={t("appointment.saveButton")} onPress={onSave} loading={isSubmitting} />
 
       {existing ? (
-        <Pressable style={styles.deleteButton} onPress={onDelete} disabled={isSubmitting}>
-          <Text style={styles.deleteButtonText}>{t("common.delete")}</Text>
-        </Pressable>
+        <Button
+          label={t("common.delete")}
+          variant="destructive"
+          onPress={onDelete}
+          disabled={isSubmitting}
+        />
       ) : null}
     </Screen>
   );
@@ -142,66 +147,43 @@ export function AddAppointmentScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
+    gap: SPACING.lg,
   },
   field: {
-    gap: 6,
+    gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
     paddingVertical: 2,
+    color: COLORS.ink,
     textAlign: "right",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#D7DEDA",
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.lg - 2,
+    paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
     fontSize: 16,
+    color: COLORS.ink,
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: "#B3261E",
+    borderColor: COLORS.errorText,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#B3261E",
+    color: COLORS.errorText,
     paddingVertical: 2,
     textAlign: "right",
   },
   notesInput: {
     minHeight: 80,
     textAlignVertical: "top",
-  },
-  saveButton: {
-    backgroundColor: "#2E7D5B",
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: "#fff",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-    textAlign: "right",
-  },
-  deleteButton: {
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#B3261E",
-  },
-  deleteButtonText: {
-    color: "#B3261E",
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-    textAlign: "right",
   },
 });

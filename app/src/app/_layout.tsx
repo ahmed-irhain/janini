@@ -9,6 +9,7 @@ import { PregnancyDataProvider } from "../context/PregnancyDataContext";
 import { PreferencesProvider } from "../context/PreferencesContext";
 import { RootNavigator } from "../components/RootNavigator";
 import { FONTS } from "../theme/fonts";
+import { LATIN_FONTS } from "../theme/typography";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,6 +28,9 @@ export default function RootLayout() {
     [FONTS.medium]: require("../../assets/fonts/ThmanyahSans-Medium.otf"),
     [FONTS.bold]: require("../../assets/fonts/ThmanyahSans-Bold.otf"),
     [FONTS.black]: require("../../assets/fonts/ThmanyahSans-Black.otf"),
+    [LATIN_FONTS.regular]: require("../../assets/fonts/Manrope-Regular.ttf"),
+    [LATIN_FONTS.medium]: require("../../assets/fonts/Manrope-Medium.ttf"),
+    [LATIN_FONTS.bold]: require("../../assets/fonts/Manrope-Bold.ttf"),
   });
 
   useEffect(() => {

@@ -1,5 +1,8 @@
 import { StyleSheet, Text, TextInput, View, type TextInputProps } from "react-native";
 import { FONTS } from "../../theme/fonts";
+import { COLORS } from "../../theme/colors";
+import { RADIUS } from "../../theme/radius";
+import { SPACING } from "../../theme/spacing";
 
 interface AuthTextFieldProps extends TextInputProps {
   label: string;
@@ -12,7 +15,7 @@ export function AuthTextField({ label, style, error, ...inputProps }: AuthTextFi
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={[styles.input, error && styles.inputError, style]}
-        placeholderTextColor="#9AA5A0"
+        placeholderTextColor={COLORS.mutedText}
         textAlign="right"
         {...inputProps}
       />
@@ -24,32 +27,34 @@ export function AuthTextField({ label, style, error, ...inputProps }: AuthTextFi
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    gap: 6,
+    gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
     paddingVertical: 2,
+    color: COLORS.ink,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#D7DEDA",
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.lg - 2,
+    paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
     fontSize: 16,
+    color: COLORS.ink,
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: "#B3261E",
+    borderColor: COLORS.errorText,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#B3261E",
+    color: COLORS.errorText,
     paddingVertical: 2,
   },
 });

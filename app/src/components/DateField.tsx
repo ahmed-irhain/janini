@@ -6,6 +6,9 @@ import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { formatHijriDateAr, gregorianToHijri } from "@janini/shared";
 import { FONTS } from "../theme/fonts";
+import { COLORS } from "../theme/colors";
+import { RADIUS } from "../theme/radius";
+import { SPACING } from "../theme/spacing";
 
 interface DateFieldProps {
   label: string;
@@ -51,7 +54,7 @@ export function DateField({
         onPress={openPicker}
         accessibilityRole="button"
       >
-        <Ionicons name="calendar-outline" size={20} color="#2E7D5B" />
+        <Ionicons name="calendar-outline" size={20} color={COLORS.primary700} />
         <View style={styles.textColumn}>
           <Text style={styles.primaryText}>{formatPrimary(value, mode)}</Text>
           {mode === "date" ? (
@@ -85,7 +88,7 @@ export function DateField({
             mode={mode}
             display="spinner"
             themeVariant="light"
-            textColor="#1C2620"
+            textColor={COLORS.ink}
             minimumDate={minimumDate}
             maximumDate={maximumDate}
             onChange={(_event, selectedDate) => {
@@ -113,27 +116,28 @@ function formatPrimary(date: Date, mode: "date" | "datetime"): string {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 6,
+    gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
     paddingVertical: 2,
+    color: COLORS.ink,
     textAlign: "right",
   },
   field: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: SPACING.sm + 2,
     borderWidth: 1,
-    borderColor: "#D7DEDA",
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.lg - 2,
+    paddingVertical: SPACING.md,
   },
   fieldError: {
-    borderColor: "#B3261E",
+    borderColor: COLORS.errorText,
   },
   textColumn: {
     gap: 2,
@@ -142,56 +146,58 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 16,
     lineHeight: 22,
+    color: COLORS.ink,
     writingDirection: "rtl",
   },
   secondaryText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#6B7570",
+    color: COLORS.mutedText,
     writingDirection: "rtl",
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: "#B3261E",
+    color: COLORS.errorText,
     paddingVertical: 2,
     textAlign: "right",
   },
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(11,61,51,0.35)",
   },
   sheet: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingHorizontal: 16,
-    paddingTop: 12,
+    backgroundColor: COLORS.surface,
+    borderTopLeftRadius: RADIUS.lg,
+    borderTopRightRadius: RADIUS.lg,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.md,
   },
   sheetHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: "#EDF1EE",
+    borderBottomColor: COLORS.border,
     marginBottom: 4,
   },
   sheetTitle: {
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
+    color: COLORS.ink,
   },
   sheetActionText: {
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: "#6B7570",
+    color: COLORS.mutedText,
   },
   sheetConfirmText: {
-    color: "#2E7D5B",
+    color: COLORS.primary700,
   },
   picker: {
     alignSelf: "center",
