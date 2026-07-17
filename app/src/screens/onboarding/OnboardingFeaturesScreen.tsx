@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import {
+  Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
@@ -11,19 +12,31 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Ionicons } from "@expo/vector-icons";
 import { Screen } from "../../components/Screen";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { Button } from "../../components/Button";
 import { IconButton } from "../../components/IconButton";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
+import { RADIUS } from "../../theme/radius";
 import { SPACING } from "../../theme/spacing";
 
 const SLIDES = [
-  { icon: "calendar-outline", titleKey: "onboarding.feature1Title", descKey: "onboarding.feature1Desc" },
-  { icon: "clipboard-outline", titleKey: "onboarding.feature2Title", descKey: "onboarding.feature2Desc" },
-  { icon: "moon-outline", titleKey: "onboarding.feature3Title", descKey: "onboarding.feature3Desc" },
+  {
+    image: require("../../../assets/illustrations/illu-fetal.png"),
+    titleKey: "onboarding.feature1Title",
+    descKey: "onboarding.feature1Desc",
+  },
+  {
+    image: require("../../../assets/illustrations/illu-tracking.png"),
+    titleKey: "onboarding.feature2Title",
+    descKey: "onboarding.feature2Desc",
+  },
+  {
+    image: require("../../../assets/illustrations/illu-newborn.png"),
+    titleKey: "onboarding.feature3Title",
+    descKey: "onboarding.feature3Desc",
+  },
 ] as const;
 
 export function OnboardingFeaturesScreen() {
@@ -73,7 +86,7 @@ export function OnboardingFeaturesScreen() {
       >
         {SLIDES.map((slide) => (
           <View key={slide.titleKey} style={[styles.slide, { width }]}>
-            <Ionicons name={slide.icon} size={64} color={COLORS.accent} />
+            <Image source={slide.image} style={styles.slideImage} resizeMode="cover" />
             <Text style={styles.slideTitle}>{t(slide.titleKey)}</Text>
             <Text style={styles.slideDesc}>{t(slide.descKey)}</Text>
           </View>
@@ -121,6 +134,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: SPACING.lg,
     paddingHorizontal: SPACING.xxl,
+  },
+  slideImage: {
+    width: "100%",
+    height: 220,
+    borderRadius: RADIUS.lg,
   },
   slideTitle: {
     fontSize: 18,
