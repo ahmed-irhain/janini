@@ -1,13 +1,16 @@
 import "../i18n";
 import { useEffect } from "react";
+import { View } from "react-native";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context";
+import { SafeAreaProvider, initialWindowMetrics, useSafeAreaInsets } from "react-native-safe-area-context";
 import { DeviceIdentityProvider } from "../context/DeviceIdentityContext";
+import { NetworkProvider } from "../context/NetworkContext";
 import { PregnancyDataProvider } from "../context/PregnancyDataContext";
 import { PreferencesProvider } from "../context/PreferencesContext";
 import { RootNavigator } from "../components/RootNavigator";
+import { OfflineBanner } from "../components/OfflineBanner";
 import { FONTS } from "../theme/fonts";
 import { LATIN_FONTS } from "../theme/typography";
 
@@ -41,15 +44,29 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <DeviceIdentityProvider>
-        <ThemeProvider value={DefaultTheme}>
-          <PregnancyDataProvider>
-            <PreferencesProvider>
-              <RootNavigator />
-            </PreferencesProvider>
-          </PregnancyDataProvider>
-        </ThemeProvider>
-      </DeviceIdentityProvider>
+      <NetworkProvider>
+        <DeviceIdentityProvider>
+          <ThemeProvider value={DefaultTheme}>
+            <PregnancyDataProvider>
+              <PreferencesProvider>
+                <RootNavigator />
+                <OfflineBannerOverlay />
+              </PreferencesProvider>
+            </PregnancyDataProvider>
+          </ThemeProvider>
+        </DeviceIdentityProvider>
+      </NetworkProvider>
     </SafeAreaProvider>
+  );
+}
+
+/** Floats above whatever RootNavigator is currently showing so connectivity loss is
+ * visible regardless of route — OfflineBanner itself renders nothing while online. */
+function OfflineBannerOverlay() {
+  const insets = useSafeAreaInsets();
+  return (
+    <View pointerEvents="box-none" style={{ position: "absolute", top: insets.top, left: 16, right: 16 }}>
+      <OfflineBanner />
+    </View>
   );
 }

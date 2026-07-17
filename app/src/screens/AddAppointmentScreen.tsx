@@ -27,6 +27,7 @@ export function AddAppointmentScreen() {
   );
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof appointmentSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -69,9 +70,17 @@ export function AddAppointmentScreen() {
         {
           text: t("common.delete"),
           style: "destructive",
-          onPress: () => {
-            deleteAppointment(existing.id);
-            router.back();
+          onPress: async () => {
+            setSaveError(null);
+            setIsDeleting(true);
+            try {
+              await deleteAppointment(existing.id);
+              router.back();
+            } catch {
+              setSaveError(t("common.deleteFailed"));
+            } finally {
+              setIsDeleting(false);
+            }
           },
         },
       ]
@@ -131,13 +140,19 @@ export function AddAppointmentScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("appointment.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <Button
+        label={t("appointment.saveButton")}
+        onPress={onSave}
+        loading={isSubmitting}
+        disabled={isDeleting}
+      />
 
       {existing ? (
         <Button
           label={t("common.delete")}
           variant="destructive"
           onPress={onDelete}
+          loading={isDeleting}
           disabled={isSubmitting}
         />
       ) : null}

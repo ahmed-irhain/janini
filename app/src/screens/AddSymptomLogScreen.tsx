@@ -26,6 +26,7 @@ export function AddSymptomLogScreen() {
   const [severity, setSeverity] = useState<SymptomSeverity>(existing?.severity ?? "mild");
   const [note, setNote] = useState(existing?.note ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof symptomLogSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -60,9 +61,17 @@ export function AddSymptomLogScreen() {
       {
         text: t("common.delete"),
         style: "destructive",
-        onPress: () => {
-          deleteSymptomLog(existing.id);
-          router.back();
+        onPress: async () => {
+          setSaveError(null);
+          setIsDeleting(true);
+          try {
+            await deleteSymptomLog(existing.id);
+            router.back();
+          } catch {
+            setSaveError(t("common.deleteFailed"));
+          } finally {
+            setIsDeleting(false);
+          }
         },
       },
     ]);
@@ -119,13 +128,19 @@ export function AddSymptomLogScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("symptomLog.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <Button
+        label={t("symptomLog.saveButton")}
+        onPress={onSave}
+        loading={isSubmitting}
+        disabled={isDeleting}
+      />
 
       {existing ? (
         <Button
           label={t("common.delete")}
           variant="destructive"
           onPress={onDelete}
+          loading={isDeleting}
           disabled={isSubmitting}
         />
       ) : null}

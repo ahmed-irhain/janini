@@ -17,6 +17,7 @@ import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { HeroPanel } from "../components/HeroPanel";
 import { ProgressBar } from "../components/ProgressBar";
+import { LoadingState } from "../components/LoadingState";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 import { SPACING } from "../theme/spacing";
@@ -27,9 +28,10 @@ export function HomeScreen() {
   const router = useRouter();
   const { pregnancy } = usePregnancyData();
 
-  // Guaranteed non-null: Home only renders inside the (app) route group,
-  // which RootNavigator only allows once a pregnancy exists.
-  if (!pregnancy) return null;
+  // Home only renders inside the (app) route group, which RootNavigator only
+  // allows once a pregnancy exists — this is a defensive fallback for the
+  // brief window between that guard flipping and this screen's re-render.
+  if (!pregnancy) return <LoadingState />;
 
   const { weeks: currentWeek } = gestationalAge(new Date(pregnancy.lastMenstrualPeriod));
   const currentMonth = gestationalMonth(Math.max(1, currentWeek));
