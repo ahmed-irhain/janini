@@ -44,7 +44,7 @@ export function TrackScreen() {
   };
 
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} insetsBottomTabBar>
       <ScreenTitle>{t("track.tabTitle")}</ScreenTitle>
 
       <View style={styles.section}>

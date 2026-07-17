@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...TYPE.body,
-    fontSize: 16,
-    lineHeight: 24,
     color: COLORS.inkMuted,
     textAlign: "center",
     paddingVertical: SPACING.xs,

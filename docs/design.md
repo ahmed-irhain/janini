@@ -26,35 +26,35 @@ gradients:
 typography:
   display:
     fontFamily: ThmanyahSans-Black
-    fontSize: 34px
+    fontSize: 30px
     fontWeight: 900
-    lineHeight: 1.15
+    lineHeight: 1.17
     letterSpacing: -0.01em
   h1:
     fontFamily: ThmanyahSans-Bold
-    fontSize: 26px
+    fontSize: 23px
     fontWeight: 700
-    lineHeight: 1.2
+    lineHeight: 1.22
   h2:
     fontFamily: ThmanyahSans-Bold
-    fontSize: 20px
+    fontSize: 18px
     fontWeight: 700
-    lineHeight: 1.25
+    lineHeight: 1.28
   body:
     fontFamily: ThmanyahSans-Regular
-    fontSize: 16px
+    fontSize: 15px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.47
   bodySmall:
     fontFamily: ThmanyahSans-Medium
-    fontSize: 14px
-    fontWeight: 500
-    lineHeight: 1.45
-  caption:
-    fontFamily: ThmanyahSans-Medium
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 500
     lineHeight: 1.4
+  caption:
+    fontFamily: ThmanyahSans-Medium
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.36
     letterSpacing: 0.01em
 
 rounded:

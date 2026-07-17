@@ -13,6 +13,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS } from "../theme/colors";
 import { GRADIENTS } from "../theme/gradients";
 
+/** Standard iOS tab bar content height (excludes the home-indicator inset,
+ * which `insets.bottom` already covers on its own). See `insetsBottomTabBar`. */
+const TAB_BAR_CLEARANCE = 49;
+
 interface ScreenProps {
   children: ReactNode;
   /** Wraps children in a ScrollView so overflowing content can be reached instead of clipped. */
@@ -25,6 +29,13 @@ interface ScreenProps {
   horizontalPadding?: number;
   /** Set when the route already renders a native Stack header, which reserves the top safe-area itself. */
   hasNativeHeader?: boolean;
+  /** Set on screens rendered inside the bottom Native Tabs navigator. Expo Router's
+   * `unstable-native-tabs` pre-renders every tab before the tab bar is measured, so
+   * `useSafeAreaInsets().bottom` under it reports only the device home-indicator inset
+   * (~34) rather than one that also clears the tab bar (~83) — without this, the last
+   * bit of content ends up hidden behind the bar. `TAB_BAR_CLEARANCE` makes up the
+   * difference with a fixed buffer sized to the standard iOS tab bar content height. */
+  insetsBottomTabBar?: boolean;
   /** Renders `gradients.auroraWash` as the screen backdrop instead of a flat
    * `background` fill. design.md reserves this for onboarding/welcome card
    * stacks — ration to a single screen. */
@@ -39,6 +50,7 @@ export function Screen({
   keyboardAvoiding = true,
   horizontalPadding = 16,
   hasNativeHeader = false,
+  insetsBottomTabBar = false,
   backgroundGradient = false,
   style,
 }: ScreenProps) {
@@ -46,7 +58,7 @@ export function Screen({
 
   const paddingStyle: ViewStyle = {
     paddingTop: hasNativeHeader ? 16 : insets.top + 16,
-    paddingBottom: insets.bottom + 16,
+    paddingBottom: insets.bottom + 16 + (insetsBottomTabBar ? TAB_BAR_CLEARANCE : 0),
     paddingHorizontal: horizontalPadding,
   };
 

@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     color: COLORS.inkMuted,
   },
   carousel: {
@@ -123,15 +123,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xxl,
   },
   slideTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: FONTS.bold,
-    lineHeight: 28,
+    lineHeight: 25,
     textAlign: "center",
   },
   slideDesc: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: FONTS.regular,
-    lineHeight: 22,
+    lineHeight: 20,
     textAlign: "center",
     color: COLORS.inkMuted,
   },

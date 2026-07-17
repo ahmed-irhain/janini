@@ -15,7 +15,7 @@ export function DiscoverScreen() {
   const { t } = useTranslation();
 
   return (
-    <Screen scroll={false} keyboardAvoiding={false}>
+    <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
       <ScreenTitle>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
@@ -44,8 +44,8 @@ export function DiscoverScreen() {
 const styles = StyleSheet.create({
   disclaimer: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: 11,
+    lineHeight: 16,
     textAlign: "right",
     color: COLORS.warning,
     backgroundColor: withAlpha(COLORS.warning, 0.15),
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
   },
   cardSummary: {
     ...TYPE.body,
-    fontSize: 14,
+    fontSize: 13,
+    lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
   },

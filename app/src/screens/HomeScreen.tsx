@@ -43,7 +43,7 @@ export function HomeScreen() {
   ).slice(0, 3);
 
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} insetsBottomTabBar>
       <ScreenTitle>{t("home.welcome")}</ScreenTitle>
 
       {/* One hero-panel per screen (design.md) — the single standout feature
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
   },
   weekMonthLabel: {
     ...TYPE.h2,
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: 16,
+    lineHeight: 23,
     color: COLORS.onPrimary,
     textAlign: "right",
   },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   babySizeEmoji: {
-    fontSize: 36,
+    fontSize: 32,
   },
   babySizeTextContainer: {
     flex: 1,
@@ -179,22 +179,22 @@ const styles = StyleSheet.create({
   },
   babySize: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS.primary,
     textAlign: "right",
   },
   tip: {
     ...TYPE.bodySmall,
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 13,
+    lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
   },
   linkButton: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     color: COLORS.primary,
     paddingTop: SPACING.xs,
     textAlign: "right",

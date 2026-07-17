@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.lg,
     alignItems: "center",
+    justifyContent: "center",
   },
   chipDefault: {
     backgroundColor: COLORS.surface,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: COLORS.inkMuted,
-    textAlign: "right",
+    textAlign: "center",
   },
   labelSelected: {
     color: COLORS.onPrimary,

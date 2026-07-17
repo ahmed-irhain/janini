@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
   },
   privacyNote: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: 11,
+    lineHeight: 16,
     color: COLORS.inkMuted,
     textAlign: "center",
     paddingVertical: 4,

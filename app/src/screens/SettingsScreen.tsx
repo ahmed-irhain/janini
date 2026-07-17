@@ -45,7 +45,7 @@ export function SettingsScreen() {
   };
 
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} insetsBottomTabBar>
       <ScreenTitle align="right">{t("settings.title")}</ScreenTitle>
 
       {dueDate ? (
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
   },
   switchLabel: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
   },
