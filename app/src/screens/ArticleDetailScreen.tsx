@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { Article } from "@janini/shared";
 import { apiArticleRepository } from "../data/articleRepository";
+import { getArticleHeroImage } from "../data/articleHeroImages";
 import { Screen } from "../components/Screen";
 import { IconButton } from "../components/IconButton";
 import { Badge } from "../components/Badge";
@@ -59,9 +60,12 @@ export function ArticleDetailScreen() {
     );
   }
 
+  const heroPosition = article.id.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+
   return (
     <Screen style={styles.content}>
       {backButton}
+      <Image source={getArticleHeroImage(heroPosition)} style={styles.heroImage} resizeMode="cover" />
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
       {article.weekNumber ? <Badge label={t("discover.weekRowLabel", { week: article.weekNumber })} /> : null}
       <Text style={styles.title}>{article.titleAr}</Text>
@@ -83,6 +87,11 @@ export function ArticleDetailScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: SPACING.md,
+  },
+  heroImage: {
+    width: "100%",
+    aspectRatio: 612 / 454,
+    borderRadius: RADIUS.lg - 4,
   },
   disclaimer: {
     fontFamily: FONTS.regular,

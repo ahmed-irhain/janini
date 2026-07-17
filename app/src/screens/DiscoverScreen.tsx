@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text } from "react-native";
+import { FlatList, Image, Pressable, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import type { Article } from "@janini/shared";
@@ -43,6 +43,11 @@ export function DiscoverScreen() {
 
   return (
     <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
+      <Image
+        source={require("../assets/illustrations/illu-mother-child.png")}
+        style={styles.heroBanner}
+        resizeMode="cover"
+      />
       <ScreenTitle>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
@@ -79,6 +84,12 @@ export function DiscoverScreen() {
 }
 
 const styles = StyleSheet.create({
+  heroBanner: {
+    width: "100%",
+    aspectRatio: 864 / 315,
+    borderRadius: RADIUS.lg + 2,
+    marginBottom: SPACING.md,
+  },
   disclaimer: {
     fontFamily: FONTS.regular,
     fontSize: 11,

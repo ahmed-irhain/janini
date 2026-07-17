@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
+import { getArticleHeroImage } from "../data/articleHeroImages";
 import { Screen } from "../components/Screen";
 import { IconButton } from "../components/IconButton";
 import { Badge } from "../components/Badge";
@@ -24,6 +25,8 @@ export function WeeklyContentDetailScreen() {
   return (
     <Screen style={styles.content}>
       <IconButton icon="chevron-back" onPress={() => router.back()} accessibilityLabel={t("common.back")} />
+
+      <Image source={getArticleHeroImage(content.weekNumber)} style={styles.heroImage} resizeMode="cover" />
 
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
       <Badge label={t("discover.weekRowLabel", { week: content.weekNumber })} />
@@ -55,6 +58,11 @@ export function WeeklyContentDetailScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: SPACING.md,
+  },
+  heroImage: {
+    width: "100%",
+    aspectRatio: 612 / 454,
+    borderRadius: RADIUS.lg - 4,
   },
   disclaimer: {
     fontFamily: FONTS.regular,
