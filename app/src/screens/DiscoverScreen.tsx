@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   statusText: {
     ...TYPE.body,
     fontSize: 14,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
     paddingHorizontal: SPACING.md,
   },

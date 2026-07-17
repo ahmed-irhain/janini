@@ -32,6 +32,8 @@
   },
   "track": {
     "tabTitle": "المتابعة",
+    "symptomsTabLabel": "الأعراض",
+    "appointmentsTabLabel": "المواعيد",
     "recentSymptomsTitle": "الأعراض الأخيرة",
     "logSymptomButton": "تسجيل عرض",
     "upcomingAppointmentsTitle": "المواعيد القادمة",

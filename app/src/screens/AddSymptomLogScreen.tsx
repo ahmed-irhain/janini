@@ -9,6 +9,7 @@ import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Button } from "../components/Button";
 import { Chip } from "../components/Chip";
+import { IconButton } from "../components/IconButton";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -69,10 +70,18 @@ export function AddSymptomLogScreen() {
   };
 
   return (
-    <Screen style={styles.content} hasNativeHeader>
-      <ScreenTitle>
-        {existing ? t("track.editSymptomTitle") : t("track.logSymptomButton")}
-      </ScreenTitle>
+    <Screen style={styles.content}>
+      <View style={styles.header}>
+        <IconButton
+          icon="close"
+          onPress={() => router.back()}
+          accessibilityLabel={t("common.cancel")}
+          size={36}
+        />
+        <ScreenTitle style={styles.headerTitle}>
+          {existing ? t("track.editSymptomTitle") : t("track.logSymptomButton")}
+        </ScreenTitle>
+      </View>
 
       <View style={styles.field}>
         <Text style={styles.label}>{t("symptomLog.symptomLabel")}</Text>
@@ -119,7 +128,22 @@ export function AddSymptomLogScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("symptomLog.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <View style={styles.actionsRow}>
+        <Button
+          label={t("common.cancel")}
+          variant="tonal"
+          fullWidth={false}
+          style={styles.actionButton}
+          onPress={() => router.back()}
+        />
+        <Button
+          label={t("symptomLog.saveButton")}
+          onPress={onSave}
+          loading={isSubmitting}
+          fullWidth={false}
+          style={styles.actionButton}
+        />
+      </View>
 
       {existing ? (
         <Button
@@ -140,6 +164,23 @@ function capitalize(value: string): string {
 const styles = StyleSheet.create({
   content: {
     gap: SPACING.lg,
+  },
+  header: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: SPACING.md,
+  },
+  headerTitle: {
+    flex: 1,
+    marginBottom: 0,
+  },
+  actionsRow: {
+    flexDirection: "row-reverse",
+    gap: SPACING.sm,
+  },
+  actionButton: {
+    flex: 1,
   },
   field: {
     gap: SPACING.sm - 2,

@@ -7,6 +7,7 @@ import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Button } from "../components/Button";
+import { IconButton } from "../components/IconButton";
 import { appointmentSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
@@ -79,10 +80,18 @@ export function AddAppointmentScreen() {
   };
 
   return (
-    <Screen style={styles.content} hasNativeHeader>
-      <ScreenTitle>
-        {existing ? t("track.editAppointmentTitle") : t("track.addAppointmentButton")}
-      </ScreenTitle>
+    <Screen style={styles.content}>
+      <View style={styles.header}>
+        <IconButton
+          icon="close"
+          onPress={() => router.back()}
+          accessibilityLabel={t("common.cancel")}
+          size={36}
+        />
+        <ScreenTitle style={styles.headerTitle}>
+          {existing ? t("track.editAppointmentTitle") : t("track.addAppointmentButton")}
+        </ScreenTitle>
+      </View>
 
       <View style={styles.field}>
         <Text style={styles.label}>{t("appointment.titleLabel")}</Text>
@@ -131,7 +140,22 @@ export function AddAppointmentScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("appointment.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <View style={styles.actionsRow}>
+        <Button
+          label={t("common.cancel")}
+          variant="tonal"
+          fullWidth={false}
+          style={styles.actionButton}
+          onPress={() => router.back()}
+        />
+        <Button
+          label={t("appointment.saveButton")}
+          onPress={onSave}
+          loading={isSubmitting}
+          fullWidth={false}
+          style={styles.actionButton}
+        />
+      </View>
 
       {existing ? (
         <Button
@@ -148,6 +172,23 @@ export function AddAppointmentScreen() {
 const styles = StyleSheet.create({
   content: {
     gap: SPACING.lg,
+  },
+  header: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: SPACING.md,
+  },
+  headerTitle: {
+    flex: 1,
+    marginBottom: 0,
+  },
+  actionsRow: {
+    flexDirection: "row-reverse",
+    gap: SPACING.sm,
+  },
+  actionButton: {
+    flex: 1,
   },
   field: {
     gap: SPACING.sm - 2,
