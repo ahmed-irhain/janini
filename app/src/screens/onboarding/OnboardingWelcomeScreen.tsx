@@ -14,7 +14,7 @@ export function OnboardingWelcomeScreen() {
 
   return (
     <Screen center backgroundGradient style={styles.content}>
-      <LogoMark size={72} />
+      <LogoMark size={175} />
       <Text style={styles.subtitle}>{t("onboarding.introSubtitle")}</Text>
 
       <Button label={t("onboarding.startButton")} onPress={() => router.push("/features")} />
