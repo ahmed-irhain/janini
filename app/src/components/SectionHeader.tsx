@@ -19,7 +19,7 @@ export function SectionHeader({ title, actionLabel, onActionPress }: SectionHead
           <Text style={[TYPE.bodySmall, styles.action]}>{actionLabel}</Text>
         </Pressable>
       ) : null}
-      <Text style={[TYPE.heading, styles.title]}>{title}</Text>
+      <Text style={[TYPE.h2, styles.title]}>{title}</Text>
     </View>
   );
 }
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   action: {
-    color: COLORS.primary700,
+    color: COLORS.primary,
     fontFamily: FONTS.medium,
   },
 });

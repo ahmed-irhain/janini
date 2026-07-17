@@ -15,8 +15,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Screen } from "../../components/Screen";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { Button } from "../../components/Button";
+import { IconButton } from "../../components/IconButton";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
+import { SPACING } from "../../theme/spacing";
 
 const SLIDES = [
   { icon: "calendar-outline", titleKey: "onboarding.feature1Title", descKey: "onboarding.feature1Desc" },
@@ -54,14 +56,7 @@ export function OnboardingFeaturesScreen() {
   return (
     <Screen scroll={false} horizontalPadding={0} style={styles.screen}>
       <View style={styles.topRow}>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={12}
-          accessibilityRole="button"
-          accessibilityLabel={t("common.back")}
-        >
-          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
-        </Pressable>
+        <IconButton icon="chevron-back" onPress={() => router.back()} accessibilityLabel={t("common.back")} />
         <OnboardingStepIndicator currentStep={1} totalSteps={3} />
         <Pressable onPress={() => router.push("/due-date")} hitSlop={12} accessibilityRole="button">
           <Text style={styles.skipText}>{t("onboarding.skipButton")}</Text>
@@ -109,14 +104,14 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
-    paddingHorizontal: 20,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
   },
   skipText: {
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
   },
   carousel: {
     flex: 1,
@@ -124,8 +119,8 @@ const styles = StyleSheet.create({
   slide: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 16,
-    paddingHorizontal: 32,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.xxl,
   },
   slideTitle: {
     fontSize: 20,
@@ -138,16 +133,16 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     lineHeight: 22,
     textAlign: "center",
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
   },
   bottom: {
-    gap: 16,
-    paddingHorizontal: 20,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
   },
   dotsRow: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 8,
+    gap: SPACING.sm,
   },
   dot: {
     width: 8,
@@ -157,6 +152,6 @@ const styles = StyleSheet.create({
   },
   dotActive: {
     width: 20,
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.primary,
   },
 });

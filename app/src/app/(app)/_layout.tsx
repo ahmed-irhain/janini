@@ -1,32 +1,12 @@
-import { Pressable, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import { COLORS } from "../../theme/colors";
+import { IconButton } from "../../components/IconButton";
 
 function ModalCloseButton() {
   const router = useRouter();
   return (
-    <Pressable
-      onPress={() => router.back()}
-      hitSlop={8}
-      accessibilityRole="button"
-      style={styles.closeButton}
-    >
-      <Ionicons name="close" size={20} color={COLORS.accent} />
-    </Pressable>
+    <IconButton icon="close" onPress={() => router.back()} accessibilityLabel="إغلاق" size={36} />
   );
 }
-
-const styles = StyleSheet.create({
-  closeButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: COLORS.accentSoft,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default function AppLayout() {
   return (

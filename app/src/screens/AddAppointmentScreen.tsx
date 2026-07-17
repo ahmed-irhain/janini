@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
@@ -172,13 +172,13 @@ const styles = StyleSheet.create({
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: COLORS.errorText,
+    color: COLORS.error,
     paddingVertical: 2,
     textAlign: "right",
   },

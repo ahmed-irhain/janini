@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { ARTICLES_SEED } from "../data/articlesSeed";
 import { Screen } from "../components/Screen";
@@ -6,7 +6,8 @@ import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { Badge } from "../components/Badge";
 import { FONTS } from "../theme/fonts";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
+import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
@@ -15,7 +16,7 @@ export function DiscoverScreen() {
 
   return (
     <Screen scroll={false} keyboardAvoiding={false}>
-      <ScreenTitle style={styles.title}>{t("discover.title")}</ScreenTitle>
+      <ScreenTitle>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
       <FlatList
@@ -46,22 +47,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     textAlign: "right",
-    color: COLORS.warningText,
-    backgroundColor: COLORS.warningBg,
+    color: COLORS.warning,
+    backgroundColor: withAlpha(COLORS.warning, 0.15),
     marginBottom: SPACING.sm,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
-    borderRadius: 8,
-  },
-  title: {
-    padding: 15,
+    borderRadius: RADIUS.sm,
   },
   listContent: {
     gap: SPACING.md,
     paddingBottom: SPACING.sm,
   },
   cardTitle: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
   },

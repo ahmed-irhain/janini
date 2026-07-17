@@ -5,7 +5,8 @@ import { WEEKLY_CONTENT_SEED } from "../data/weeklyContentSeed";
 import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { FONTS } from "../theme/fonts";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
+import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
@@ -44,21 +45,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     textAlign: "right",
-    color: COLORS.warningText,
-    backgroundColor: COLORS.warningBg,
+    color: COLORS.warning,
+    backgroundColor: withAlpha(COLORS.warning, 0.15),
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
   },
   weekLabel: {
     ...TYPE.bodySmall,
     fontFamily: FONTS.medium,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     paddingVertical: 4,
     textAlign: "right",
   },
   title: {
-    ...TYPE.title,
+    ...TYPE.h1,
     fontSize: 22,
     lineHeight: 30,
     color: COLORS.ink,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: COLORS.primary700,
+    color: COLORS.primary,
     paddingVertical: 4,
     textAlign: "right",
   },

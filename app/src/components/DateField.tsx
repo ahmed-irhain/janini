@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { formatHijriDateAr, gregorianToHijri } from "@janini/shared";
 import { FONTS } from "../theme/fonts";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 
@@ -54,7 +54,7 @@ export function DateField({
         onPress={openPicker}
         accessibilityRole="button"
       >
-        <Ionicons name="calendar-outline" size={20} color={COLORS.primary700} />
+        <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
         <View style={styles.textColumn}>
           <Text style={styles.primaryText}>{formatPrimary(value, mode)}</Text>
           {mode === "date" ? (
@@ -132,12 +132,12 @@ const styles = StyleSheet.create({
     gap: SPACING.sm + 2,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
   },
   fieldError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   textColumn: {
     gap: 2,
@@ -153,20 +153,20 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     writingDirection: "rtl",
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: COLORS.errorText,
+    color: COLORS.error,
     paddingVertical: 2,
     textAlign: "right",
   },
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(11,61,51,0.35)",
+    backgroundColor: withAlpha(COLORS.ink, 0.35),
   },
   sheet: {
     backgroundColor: COLORS.surface,
@@ -194,10 +194,10 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
   },
   sheetConfirmText: {
-    color: COLORS.primary700,
+    color: COLORS.primary,
   },
   picker: {
     alignSelf: "center",

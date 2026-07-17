@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
@@ -14,7 +14,7 @@ interface EmptyStateProps {
 export function EmptyState({ message, icon = "leaf-outline" }: EmptyStateProps) {
   return (
     <View style={styles.container}>
-      <Ionicons name={icon} size={22} color={COLORS.primary300} />
+      <Ionicons name={icon} size={22} color={withAlpha(COLORS.primary, 0.45)} />
       <Text style={[TYPE.bodySmall, styles.message]}>{message}</Text>
     </View>
   );
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.xl,
   },
   message: {
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "center",
   },
 });

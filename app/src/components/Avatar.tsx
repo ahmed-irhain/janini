@@ -20,12 +20,12 @@ export function Avatar({ name, size = 48 }: AvatarProps) {
 
 const styles = StyleSheet.create({
   circle: {
-    backgroundColor: COLORS.primary100,
+    backgroundColor: COLORS.surfaceAlt,
     alignItems: "center",
     justifyContent: "center",
   },
   initial: {
     fontFamily: FONTS.bold,
-    color: COLORS.primary700,
+    color: COLORS.primary,
   },
 });

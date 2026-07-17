@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   label: {
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
   },
   value: {
