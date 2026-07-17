@@ -5,6 +5,7 @@ import { weeklyContentRouter } from "./routes/weeklyContent.js";
 import { recommendationsRouter } from "./routes/recommendations.js";
 import { articlesRouter } from "./routes/articles.js";
 import { authRouter } from "./routes/auth.js";
+import { subscriptionsRouter } from "./routes/subscriptions.js";
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,7 @@ app.use("/weekly-content", weeklyContentRouter);
 app.use("/recommendations", recommendationsRouter);
 app.use("/articles", articlesRouter);
 app.use("/auth", authRouter);
+app.use("/subscriptions", subscriptionsRouter);
 
 const port = Number(process.env.PORT ?? 3000);
 app.listen(port, () => {

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Alert, StyleSheet, Switch, Text, View } from "react-native";
+import { Alert, Linking, StyleSheet, Switch, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 import { estimateLmpFromDueDate, formatHijriDateAr, gregorianToHijri } from "@janini/shared";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { usePreferences } from "../context/PreferencesContext";
+import { useEntitlement } from "../context/EntitlementContext";
 import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
@@ -19,9 +20,23 @@ import { TYPE } from "../theme/typography";
 export function SettingsScreen() {
   const { t } = useTranslation();
   const { pregnancy, savePregnancy, resetLocalData } = usePregnancyData();
-  const { isPremium, notificationsEnabled, setIsPremium, setNotificationsEnabled } =
-    usePreferences();
+  const { notificationsEnabled, setNotificationsEnabled } = usePreferences();
+  const { isEntitled, restore } = useEntitlement();
   const [isEditingDueDate, setIsEditingDueDate] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
+
+  const onRestorePurchases = async () => {
+    setIsRestoring(true);
+    try {
+      await restore();
+    } finally {
+      setIsRestoring(false);
+    }
+  };
+
+  const onManageSubscription = () => {
+    Linking.openURL("itms-apps://apps.apple.com/account/subscriptions");
+  };
 
   const dueDate = pregnancy ? new Date(pregnancy.dueDateGregorian) : null;
 
@@ -80,14 +95,21 @@ export function SettingsScreen() {
       ) : null}
 
       <Card>
-        <View style={styles.switchRow}>
-          <Switch
-            value={isPremium}
-            onValueChange={setIsPremium}
-            trackColor={{ true: COLORS.primary700 }}
-          />
-          <Text style={styles.switchLabel}>{t("settings.premiumToggleLabel")}</Text>
-        </View>
+        <SectionHeader title={t("settings.subscriptionSectionTitle")} />
+        <Text style={styles.bodyText}>
+          {isEntitled ? t("settings.subscriptionActiveLabel") : t("settings.subscriptionExpiredLabel")}
+        </Text>
+        <Button
+          label={t("settings.restorePurchasesButton")}
+          variant="outline"
+          loading={isRestoring}
+          onPress={onRestorePurchases}
+        />
+        <Button
+          label={t("settings.manageSubscriptionButton")}
+          variant="outline"
+          onPress={onManageSubscription}
+        />
       </Card>
 
       <Card>

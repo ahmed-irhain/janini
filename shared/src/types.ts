@@ -67,3 +67,13 @@ export interface Appointment {
   scheduledAt: string;
   notes: string | null;
 }
+
+export type SubscriptionStatus = "active" | "expired" | "billing_issue" | "none";
+
+export interface SubscriptionState {
+  deviceId: string;
+  status: SubscriptionStatus;
+  productId: string | null;
+  expiresAt: string | null; // ISO
+  environment: "sandbox" | "production" | null;
+}

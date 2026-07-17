@@ -64,8 +64,11 @@
     "title": "الإعدادات",
     "dueDateSectionTitle": "الموعد المتوقع للولادة",
     "editDueDateButton": "تعديل",
-    "premiumSectionTitle": "الوضع المميز (تجريبي)",
-    "premiumToggleLabel": "تفعيل الوضع المميز",
+    "subscriptionSectionTitle": "الاشتراك",
+    "subscriptionActiveLabel": "اشتراكك فعّال",
+    "subscriptionExpiredLabel": "اشتراكك غير فعّال",
+    "restorePurchasesButton": "استعادة المشتريات",
+    "manageSubscriptionButton": "إدارة الاشتراك",
     "notificationsSectionTitle": "الإشعارات",
     "notificationsToggleLabel": "تفعيل الإشعارات",
     "aboutSectionTitle": "حول التطبيق",
@@ -105,5 +108,19 @@
   "validation": {
     "required": "هذا الحقل مطلوب",
     "saveFailed": "تعذر الحفظ، حاولي مرة ثانية"
+  },
+  "paywall": {
+    "title": "اشتركي لمتابعة رحلتك",
+    "subtitle": "محتوى أسبوعي، متابعة الأعراض والمواعيد، وكل ما تحتاجينه خلال حملك",
+    "priceLine": "{{price}} شهريًا",
+    "autoRenewalTerms": "يتجدد الاشتراك تلقائيًا كل شهر ما لم يتم الإلغاء قبل 24 ساعة من نهاية الفترة الحالية. يمكنك إدارة أو إلغاء الاشتراك من إعدادات حسابك في آب ستور في أي وقت",
+    "subscribeButton": "اشتركي الآن",
+    "restoreButton": "استعادة المشتريات",
+    "purchaseErrorTitle": "تعذرت عملية الاشتراك",
+    "purchaseErrorMessage": "حدث خطأ أثناء إتمام الاشتراك، حاولي مرة أخرى",
+    "restoreErrorTitle": "تعذرت استعادة المشتريات",
+    "restoreErrorMessage": "لم نتمكن من العثور على مشتريات سابقة لاستعادتها",
+    "termsLink": "شروط الاستخدام",
+    "privacyLink": "سياسة الخصوصية"
   }
 }

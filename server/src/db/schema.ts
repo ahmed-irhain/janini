@@ -113,3 +113,44 @@ export const appointments = pgTable("appointments", {
   scheduledAt: timestamp("scheduled_at", { withTimezone: true }).notNull(),
   notes: text("notes"),
 });
+
+export const environmentEnum = pgEnum("rc_environment", ["sandbox", "production"]);
+export const subscriptionStatusEnum = pgEnum("subscription_status", [
+  "active",
+  "expired",
+  "billing_issue",
+  "none",
+]);
+
+/**
+ * Standalone install identity keyed by the client-generated device-id string
+ * (see app/src/context/DeviceIdentityContext.tsx). Deliberately not linked to
+ * the legacy `users` table, which is disconnected since auth was removed.
+ */
+export const devices = pgTable("devices", {
+  id: text("id").primaryKey(),
+  firstSeenAt: timestamp("first_seen_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  deviceId: text("device_id")
+    .notNull()
+    .unique()
+    .references(() => devices.id, { onDelete: "cascade" }),
+  revenueCatAppUserId: text("revenue_cat_app_user_id").notNull(),
+  productId: text("product_id"),
+  status: subscriptionStatusEnum("status").notNull().default("none"),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  environment: environmentEnum("rc_environment"),
+  lastEventType: text("last_event_type"),
+  lastEventAt: timestamp("last_event_at", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
