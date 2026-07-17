@@ -26,7 +26,9 @@
     "disclaimerBanner": "محتوى تعليمي عام مبني على مصادر موثوقة، وليس بديلاً عن استشارة طبيبك المختص",
     "weekRowLabel": "الأسبوع {{week}}",
     "babySizeLabel": "حجم الجنين",
-    "sourceLabel": "المصدر: {{source}}"
+    "sourceLabel": "المصدر: {{source}}",
+    "loadError": "تعذّر تحميل المقالات، تحقّقي من اتصالك بالإنترنت",
+    "emptyArticles": "لا توجد مقالات متاحة حاليًا"
   },
   "track": {
     "tabTitle": "المتابعة",

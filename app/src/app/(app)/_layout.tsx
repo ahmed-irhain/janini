@@ -33,6 +33,7 @@ export default function AppLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="weekly-content/[week]" options={{ headerShown: true, headerTitle: "" }} />
+      <Stack.Screen name="articles/[id]" options={{ headerShown: true, headerTitle: "" }} />
       <Stack.Screen
         name="symptom-log/add"
         options={{

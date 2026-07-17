@@ -5,6 +5,17 @@ import { articles } from "../db/schema.js";
 
 export const articlesRouter = Router();
 
+// Single article by id. Must be registered before "/:week" — otherwise a
+// request like "/id/<uuid>" gets intercepted by "/:week" (week="id") and
+// 400s before ever reaching this route.
+articlesRouter.get("/id/:id", async (req, res) => {
+  const [row] = await db.select().from(articles).where(eq(articles.id, req.params.id));
+  if (!row) {
+    return res.status(404).json({ error: "article not found" });
+  }
+  res.json(row);
+});
+
 // Articles tied to a specific week.
 articlesRouter.get("/:week", async (req, res) => {
   const week = Number(req.params.week);
