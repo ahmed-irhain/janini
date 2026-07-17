@@ -15,6 +15,7 @@ import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
+import { HeroPanel } from "../components/HeroPanel";
 import { ProgressBar } from "../components/ProgressBar";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
@@ -43,23 +44,25 @@ export function HomeScreen() {
 
   return (
     <Screen style={styles.content}>
-      <ScreenTitle style={styles.title}>{t("home.welcome")}</ScreenTitle>
+      <ScreenTitle>{t("home.welcome")}</ScreenTitle>
 
-      <Card elevation="lg">
+      {/* One hero-panel per screen (design.md) — the single standout feature
+          moment: this week/month + due-date progress. */}
+      <HeroPanel>
         <Text style={styles.weekMonthLabel}>
           {t("home.weekLabel", { week: currentWeek })} · {t("home.monthLabel", { month: currentMonth })}
         </Text>
 
-        <ProgressBar percent={percent} />
+        <ProgressBar percent={percent} tone="onPrimary" />
         <Text style={styles.progressCaption}>
           {t("home.dueInDaysLabel", { days: daysRemaining })}
         </Text>
 
         <Text style={styles.dueDateLabel}>{t("home.dueDateLabel")}</Text>
-        <Text style={styles.bodyText}>
+        <Text style={styles.heroBodyText}>
           {dueDate.toLocaleDateString("ar")} · {formatHijriDateAr(hijriDueDate)}
         </Text>
-      </Card>
+      </HeroPanel>
 
       {content ? (
         <>
@@ -117,28 +120,31 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    padding: 15,
-  },
   content: {
     gap: SPACING.lg,
   },
   weekMonthLabel: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     fontSize: 18,
     lineHeight: 26,
-    color: COLORS.ink,
+    color: COLORS.onPrimary,
     textAlign: "right",
   },
   progressCaption: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.onPrimary,
+    opacity: 0.85,
     textAlign: "right",
   },
   dueDateLabel: {
     fontFamily: FONTS.medium,
     paddingTop: SPACING.sm,
-    color: COLORS.ink,
+    color: COLORS.onPrimary,
+    textAlign: "right",
+  },
+  heroBodyText: {
+    ...TYPE.body,
+    color: COLORS.onPrimary,
     textAlign: "right",
   },
   bodyText: {
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   sectionTitle: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
   },
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: COLORS.primary100,
+    backgroundColor: COLORS.surfaceAlt,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 15,
     lineHeight: 22,
-    color: COLORS.primary700,
+    color: COLORS.primary,
     textAlign: "right",
   },
   tip: {
@@ -189,7 +195,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 14,
     lineHeight: 20,
-    color: COLORS.primary700,
+    color: COLORS.primary,
     paddingTop: SPACING.xs,
     textAlign: "right",
   },

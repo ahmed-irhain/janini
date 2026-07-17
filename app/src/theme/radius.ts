@@ -1,6 +1,8 @@
+/** design.md `rounded` scale. */
 export const RADIUS = {
-  sm: 10, // inputs, small chips
-  md: 16, // cards
-  lg: 24, // hero panels, sheets
-  pill: 999, // buttons, badges
+  sm: 8,
+  md: 16, // input fields, secondary surfaces
+  lg: 24, // secondary cards, bottom sheets
+  xl: 28, // primary content cards, hero panels
+  full: 999, // buttons, chips, tab-bar active states, avatars
 } as const;

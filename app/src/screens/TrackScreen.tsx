@@ -57,7 +57,7 @@ export function TrackScreen() {
           <EmptyState message={t("track.emptySymptoms")} icon="pulse-outline" />
         ) : (
           recentSymptoms.map((log) => (
-            <Card key={log.id} elevation="sm">
+            <Card key={log.id}>
               <View style={styles.cardHeader}>
                 <View style={styles.cardActions}>
                   <Pressable
@@ -65,14 +65,14 @@ export function TrackScreen() {
                     hitSlop={8}
                     accessibilityLabel={t("common.edit")}
                   >
-                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
+                    <Ionicons name="create-outline" size={18} color={COLORS.primary} />
                   </Pressable>
                   <Pressable
                     onPress={() => onDeleteSymptom(log.id)}
                     hitSlop={8}
                     accessibilityLabel={t("common.delete")}
                   >
-                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
+                    <Ionicons name="trash-outline" size={18} color={COLORS.error} />
                   </Pressable>
                 </View>
                 <Text style={styles.cardTitle}>{log.symptom}</Text>
@@ -97,7 +97,7 @@ export function TrackScreen() {
           <EmptyState message={t("track.emptyAppointments")} icon="calendar-outline" />
         ) : (
           upcomingAppointments.map((appointment) => (
-            <Card key={appointment.id} elevation="sm">
+            <Card key={appointment.id}>
               <View style={styles.cardHeader}>
                 <View style={styles.cardActions}>
                   <Pressable
@@ -105,14 +105,14 @@ export function TrackScreen() {
                     hitSlop={8}
                     accessibilityLabel={t("common.edit")}
                   >
-                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
+                    <Ionicons name="create-outline" size={18} color={COLORS.primary} />
                   </Pressable>
                   <Pressable
                     onPress={() => onDeleteAppointment(appointment.id)}
                     hitSlop={8}
                     accessibilityLabel={t("common.delete")}
                   >
-                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
+                    <Ionicons name="trash-outline" size={18} color={COLORS.error} />
                   </Pressable>
                 </View>
                 <Text style={styles.cardTitle}>{appointment.title}</Text>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   cardSubtitle: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
   },
   cardNote: {

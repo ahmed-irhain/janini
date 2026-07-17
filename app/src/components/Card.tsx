@@ -7,22 +7,24 @@ import { SPACING } from "../theme/spacing";
 
 interface CardProps {
   children: ReactNode;
-  /** "sm" for compact list-style cards (Track), "md" (default) for content cards. */
-  elevation?: "sm" | "md" | "lg";
+  /** "elevated" marks a card as interactive/topmost (e.g. the lead card in a
+   * stack, a modal) per design.md Elevation & Depth; "card" (default) is the
+   * baseline shadow for any card sitting on `background`. */
+  elevation?: "card" | "elevated";
   style?: StyleProp<ViewStyle>;
 }
 
-/** Shared surface for the card pattern repeated across Home/Discover/Settings/Track —
- * a white surface lifted off the cream screen background with soft, warm-tinted shadow. */
-export function Card({ children, elevation = "md", style }: CardProps) {
+/** `card-content` — the core content surface repeated across Home/Discover/Settings/Track:
+ * white surface, generous rounding, soft shadow lifted off the cream background. */
+export function Card({ children, elevation = "card", style }: CardProps) {
   return <View style={[styles.card, SHADOWS[elevation], style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    padding: SPACING.lg,
+    borderRadius: RADIUS.xl,
+    padding: SPACING.xl,
     gap: SPACING.sm,
   },
 });

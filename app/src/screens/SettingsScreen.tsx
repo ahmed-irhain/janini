@@ -84,7 +84,7 @@ export function SettingsScreen() {
           <Switch
             value={isPremium}
             onValueChange={setIsPremium}
-            trackColor={{ true: COLORS.primary700 }}
+            trackColor={{ true: COLORS.primary }}
           />
           <Text style={styles.switchLabel}>{t("settings.premiumToggleLabel")}</Text>
         </View>
@@ -95,7 +95,7 @@ export function SettingsScreen() {
           <Switch
             value={notificationsEnabled}
             onValueChange={setNotificationsEnabled}
-            trackColor={{ true: COLORS.primary700 }}
+            trackColor={{ true: COLORS.primary }}
           />
           <Text style={styles.switchLabel}>{t("settings.notificationsToggleLabel")}</Text>
         </View>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     gap: SPACING.lg,
   },
   sectionTitle: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
   },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   mutedText: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
   },
   switchRow: {

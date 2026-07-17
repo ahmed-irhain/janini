@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "../theme/colors";
-import { FONTS } from "../theme/fonts";
+import { TYPE } from "../theme/typography";
 
 interface LogoMarkProps {
   size?: number;
@@ -10,7 +10,8 @@ interface LogoMarkProps {
 }
 
 /** Brand mark (crescent/arc) + optional wordmark, for hero/branding screens
- * (Welcome, onboarding welcome) that previously showed plain text only. */
+ * (Welcome, onboarding welcome). Wordmark uses the `display` type token — the
+ * Black-weight, tight-tracking hero style design.md reserves for brand moments. */
 export function LogoMark({ size = 64, withWordmark = true }: LogoMarkProps) {
   const { t } = useTranslation();
   return (
@@ -31,10 +32,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   wordmark: {
-    fontFamily: FONTS.bold,
-    fontSize: 28,
-    lineHeight: 36,
-    color: COLORS.primary700,
+    ...TYPE.display,
+    color: COLORS.primary,
     textAlign: "center",
   },
 });

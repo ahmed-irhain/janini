@@ -17,7 +17,7 @@ export function ScreenTitle({ children, align = "right", style }: ScreenTitlePro
 
 const styles = StyleSheet.create({
   title: {
-    ...TYPE.title,
+    ...TYPE.h1,
     color: COLORS.ink,
     marginBottom: SPACING.lg,
     textAlign: "right",

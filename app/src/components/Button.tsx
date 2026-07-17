@@ -17,11 +17,15 @@ interface ButtonProps {
   accessibilityLabel?: string;
 }
 
+/** `button-primary` is ink-filled (not primary-filled) per design.md — a near-black
+ * CTA reads as more confident/editorial than a tinted one. `tonal`/`outline` are
+ * secondary variants not spec'd in design.md but kept for lower-emphasis actions
+ * (e.g. Settings' reset button) using the surfaceAlt/border tokens. */
 const VARIANT_STYLES: Record<ButtonVariant, { bg: string; text: string; border?: string }> = {
-  primary: { bg: COLORS.primary700, text: COLORS.surface },
-  tonal: { bg: COLORS.primary100, text: COLORS.primary700 },
-  outline: { bg: "transparent", text: COLORS.mutedText, border: COLORS.border },
-  destructive: { bg: "transparent", text: COLORS.errorText, border: COLORS.errorText },
+  primary: { bg: COLORS.ink, text: COLORS.onPrimary },
+  tonal: { bg: COLORS.surfaceAlt, text: COLORS.primary },
+  outline: { bg: "transparent", text: COLORS.inkMuted, border: COLORS.border },
+  destructive: { bg: "transparent", text: COLORS.error, border: COLORS.error },
 };
 
 /** Shared button primitive — replaces the ad hoc primaryButton/secondaryButton/
@@ -51,18 +55,26 @@ export function Button({
         styles.base,
         fullWidth && styles.fullWidth,
         {
-          backgroundColor: v.bg,
+          backgroundColor: isDisabled && variant === "primary" ? COLORS.border : v.bg,
           borderColor: v.border ?? "transparent",
           borderWidth: v.border ? 1 : 0,
-          opacity: isDisabled ? 0.4 : pressed ? 0.85 : 1,
+          opacity: isDisabled && variant !== "primary" ? 0.4 : pressed ? 0.85 : 1,
         },
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={v.text} />
+        <ActivityIndicator color={isDisabled && variant === "primary" ? COLORS.inkMuted : v.text} />
       ) : (
-        <Text style={[styles.label, TYPE.heading, { color: v.text }]}>{label}</Text>
+        <Text
+          style={[
+            styles.label,
+            TYPE.h2,
+            { color: isDisabled && variant === "primary" ? COLORS.inkMuted : v.text },
+          ]}
+        >
+          {label}
+        </Text>
       )}
     </Pressable>
   );
@@ -70,12 +82,12 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    paddingVertical: SPACING.md + 2,
-    paddingHorizontal: SPACING.xxxl,
-    borderRadius: RADIUS.pill,
+    paddingVertical: SPACING.lg,
+    paddingHorizontal: SPACING.xl,
+    borderRadius: RADIUS.full,
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 48,
+    minHeight: 56,
   },
   fullWidth: {
     width: "100%",

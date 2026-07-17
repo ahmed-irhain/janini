@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { SymptomSeverity } from "@janini/shared";
@@ -8,6 +8,7 @@ import { symptomLogSchema, getFieldErrors, type FieldErrors } from "../validatio
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Button } from "../components/Button";
+import { Chip } from "../components/Chip";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -93,17 +94,12 @@ export function AddSymptomLogScreen() {
         <Text style={styles.label}>{t("symptomLog.severityLabel")}</Text>
         <View style={styles.severityRow}>
           {SEVERITIES.map((option) => (
-            <Pressable
+            <Chip
               key={option}
-              style={[styles.severityButton, severity === option && styles.severityButtonActive]}
+              label={t(`symptomLog.severity${capitalize(option)}`)}
+              selected={severity === option}
               onPress={() => setSeverity(option)}
-            >
-              <Text
-                style={[styles.severityLabel, severity === option && styles.severityLabelActive]}
-              >
-                {t(`symptomLog.severity${capitalize(option)}`)}
-              </Text>
-            </Pressable>
+            />
           ))}
         </View>
       </View>
@@ -159,7 +155,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
@@ -168,13 +164,13 @@ const styles = StyleSheet.create({
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   errorText: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: COLORS.errorText,
+    color: COLORS.error,
     paddingVertical: 2,
     textAlign: "right",
   },
@@ -186,32 +182,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: SPACING.sm,
   },
-  severityButton: {
-    flex: 1,
-    paddingVertical: SPACING.md - 2,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.primary700,
-    alignItems: "center",
-  },
-  severityButtonActive: {
-    backgroundColor: COLORS.primary700,
-  },
-  severityLabel: {
-    fontFamily: FONTS.medium,
-    color: COLORS.primary700,
-    fontSize: 13,
-    lineHeight: 18,
-    textAlign: "right",
-  },
-  severityLabelActive: {
-    color: COLORS.surface,
-  },
   consultNote: {
     fontFamily: FONTS.regular,
     fontSize: 12,
     lineHeight: 18,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
     paddingVertical: 4,
   },

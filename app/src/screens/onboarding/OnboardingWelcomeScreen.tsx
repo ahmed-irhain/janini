@@ -13,7 +13,7 @@ export function OnboardingWelcomeScreen() {
   const router = useRouter();
 
   return (
-    <Screen center style={styles.content}>
+    <Screen center backgroundGradient style={styles.content}>
       <LogoMark size={72} />
       <Text style={styles.subtitle}>{t("onboarding.introSubtitle")}</Text>
 
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     ...TYPE.body,
     fontSize: 16,
     lineHeight: 24,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "center",
     paddingVertical: SPACING.xs,
     marginBottom: SPACING.xxl,

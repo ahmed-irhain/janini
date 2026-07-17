@@ -8,8 +8,10 @@ import {
   type StyleProp,
   type ViewStyle,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS } from "../theme/colors";
+import { GRADIENTS } from "../theme/gradients";
 
 interface ScreenProps {
   children: ReactNode;
@@ -23,6 +25,10 @@ interface ScreenProps {
   horizontalPadding?: number;
   /** Set when the route already renders a native Stack header, which reserves the top safe-area itself. */
   hasNativeHeader?: boolean;
+  /** Renders `gradients.auroraWash` as the screen backdrop instead of a flat
+   * `background` fill. design.md reserves this for onboarding/welcome card
+   * stacks — ration to a single screen. */
+  backgroundGradient?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -31,8 +37,9 @@ export function Screen({
   scroll = true,
   center = false,
   keyboardAvoiding = true,
-  horizontalPadding = 20,
+  horizontalPadding = 16,
   hasNativeHeader = false,
+  backgroundGradient = false,
   style,
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
@@ -45,32 +52,46 @@ export function Screen({
 
   const content = scroll ? (
     <ScrollView
-      style={styles.flex}
+      style={styles.transparent}
       contentContainerStyle={[paddingStyle, center && styles.center, style]}
       keyboardShouldPersistTaps="handled"
     >
       {children}
     </ScrollView>
   ) : (
-    <View style={[styles.flex, paddingStyle, center && styles.center, style]}>{children}</View>
+    <View style={[styles.transparent, paddingStyle, center && styles.center, style]}>{children}</View>
   );
 
-  if (!keyboardAvoiding) return content;
-
-  return (
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
+  const withKeyboardAvoiding = keyboardAvoiding ? (
+    <KeyboardAvoidingView style={styles.transparent} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       {content}
     </KeyboardAvoidingView>
+  ) : (
+    content
   );
+
+  if (backgroundGradient) {
+    const { colors, locations, start, end } = GRADIENTS.auroraWash;
+    return (
+      <LinearGradient colors={colors} locations={locations} start={start} end={end} style={styles.flex}>
+        {withKeyboardAvoiding}
+      </LinearGradient>
+    );
+  }
+
+  return <View style={styles.flexBackground}>{withKeyboardAvoiding}</View>;
 }
 
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+  },
+  flexBackground: {
+    flex: 1,
     backgroundColor: COLORS.background,
+  },
+  transparent: {
+    flex: 1,
   },
   center: {
     flexGrow: 1,
