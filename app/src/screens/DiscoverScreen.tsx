@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
   },
   heroBanner: {
     width: "100%",
-    aspectRatio: 864 / 315,
+   // aspectRatio: 864 / 315,
+   height: "7%",
     borderRadius: RADIUS.lg + 2,
     marginBottom: SPACING.md,
   },
