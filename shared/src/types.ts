@@ -36,9 +36,18 @@ export interface Recommendation {
   createdAt: string;
 }
 
+export interface Topic {
+  id: string;
+  slug: string;
+  labelAr: string;
+  sortOrder: number;
+  createdAt: string;
+}
+
 export interface Article {
   id: string;
   weekNumber: number | null;
+  topic: Topic | null;
   titleAr: string;
   summaryAr: string;
   bodyAr: string | null;

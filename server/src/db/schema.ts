@@ -74,11 +74,22 @@ export const recommendations = pgTable("recommendations", {
     .defaultNow(),
 });
 
+export const topics = pgTable("topics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  labelAr: text("label_ar").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 export const articles = pgTable("articles", {
   id: uuid("id").primaryKey().defaultRandom(),
   weekNumber: integer("week_number").references(() => weeklyContent.weekNumber, {
     onDelete: "set null",
   }),
+  topicId: uuid("topic_id").references(() => topics.id, { onDelete: "set null" }),
   titleAr: text("title_ar").notNull(),
   summaryAr: text("summary_ar").notNull(),
   bodyAr: text("body_ar"),

@@ -30,6 +30,7 @@
   "discover": {
     "title": "اكتشفي",
     "disclaimerBanner": "محتوى تعليمي عام مبني على مصادر موثوقة، وليس بديلاً عن استشارة طبيبك المختص",
+    "filterAll": "الكل",
     "weekRowLabel": "الأسبوع {{week}}",
     "babySizeLabel": "حجم الجنين",
     "sourceLabel": "المصدر: {{source}}",
