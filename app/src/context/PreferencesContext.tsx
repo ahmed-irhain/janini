@@ -1,12 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { PropsWithChildren } from "react";
 import { useDeviceIdentity } from "./DeviceIdentityContext";
-import { localPreferencesRepository, type Preferences } from "../data/preferencesRepository";
+import {
+  localPreferencesRepository,
+  type Preferences,
+  type SubscriptionPlan,
+} from "../data/preferencesRepository";
 
 interface PreferencesContextValue extends Preferences {
   isHydrated: boolean;
-  setIsPremium: (value: boolean) => void;
   setNotificationsEnabled: (value: boolean) => void;
+  subscribe: (plan: SubscriptionPlan) => void;
+  unsubscribe: () => void;
 }
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
@@ -16,12 +21,16 @@ export function PreferencesProvider({ children }: PropsWithChildren) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [isPremium, setIsPremiumState] = useState(false);
   const [notificationsEnabled, setNotificationsEnabledState] = useState(true);
+  const [subscriptionPlan, setSubscriptionPlanState] = useState<SubscriptionPlan | null>(null);
+  const [subscribedAt, setSubscribedAtState] = useState<string | null>(null);
 
   useEffect(() => {
     if (!userId) {
       setIsHydrated(false);
       setIsPremiumState(false);
       setNotificationsEnabledState(true);
+      setSubscriptionPlanState(null);
+      setSubscribedAtState(null);
       return;
     }
     let cancelled = false;
@@ -30,6 +39,8 @@ export function PreferencesProvider({ children }: PropsWithChildren) {
       if (cancelled) return;
       setIsPremiumState(preferences.isPremium);
       setNotificationsEnabledState(preferences.notificationsEnabled);
+      setSubscriptionPlanState(preferences.subscriptionPlan);
+      setSubscribedAtState(preferences.subscribedAt);
       setIsHydrated(true);
     });
     return () => {
@@ -37,33 +48,71 @@ export function PreferencesProvider({ children }: PropsWithChildren) {
     };
   }, [userId]);
 
-  const setIsPremium = useCallback(
-    (value: boolean) => {
-      if (!userId) return;
-      setIsPremiumState(value);
-      localPreferencesRepository.save(userId, { isPremium: value, notificationsEnabled });
-    },
-    [userId, notificationsEnabled]
-  );
-
   const setNotificationsEnabled = useCallback(
     (value: boolean) => {
       if (!userId) return;
       setNotificationsEnabledState(value);
-      localPreferencesRepository.save(userId, { isPremium, notificationsEnabled: value });
+      localPreferencesRepository.save(userId, {
+        isPremium,
+        notificationsEnabled: value,
+        subscriptionPlan,
+        subscribedAt,
+      });
     },
-    [userId, isPremium]
+    [userId, isPremium, subscriptionPlan, subscribedAt]
   );
+
+  const subscribe = useCallback(
+    (plan: SubscriptionPlan) => {
+      if (!userId) return;
+      const now = new Date().toISOString();
+      setIsPremiumState(true);
+      setSubscriptionPlanState(plan);
+      setSubscribedAtState(now);
+      localPreferencesRepository.save(userId, {
+        isPremium: true,
+        notificationsEnabled,
+        subscriptionPlan: plan,
+        subscribedAt: now,
+      });
+    },
+    [userId, notificationsEnabled]
+  );
+
+  const unsubscribe = useCallback(() => {
+    if (!userId) return;
+    setIsPremiumState(false);
+    setSubscriptionPlanState(null);
+    setSubscribedAtState(null);
+    localPreferencesRepository.save(userId, {
+      isPremium: false,
+      notificationsEnabled,
+      subscriptionPlan: null,
+      subscribedAt: null,
+    });
+  }, [userId, notificationsEnabled]);
 
   const value = useMemo(
     () => ({
       isHydrated,
       isPremium,
       notificationsEnabled,
-      setIsPremium,
+      subscriptionPlan,
+      subscribedAt,
       setNotificationsEnabled,
+      subscribe,
+      unsubscribe,
     }),
-    [isHydrated, isPremium, notificationsEnabled, setIsPremium, setNotificationsEnabled]
+    [
+      isHydrated,
+      isPremium,
+      notificationsEnabled,
+      subscriptionPlan,
+      subscribedAt,
+      setNotificationsEnabled,
+      subscribe,
+      unsubscribe,
+    ]
   );
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;
