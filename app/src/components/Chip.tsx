@@ -32,10 +32,7 @@ export function Chip({ label, selected = false, onPress, fill = true, style }: C
         style,
       ]}
     >
-      <Text
-        numberOfLines={1}
-        style={[TYPE.bodySmall, styles.label, selected && styles.labelSelected]}
-      >
+      <Text style={[TYPE.bodySmall, styles.label, selected && styles.labelSelected]}>
         {label}
       </Text>
     </Pressable>
