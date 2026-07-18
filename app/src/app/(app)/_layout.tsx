@@ -10,6 +10,7 @@ export default function AppLayout() {
       <Stack.Screen name="symptom-log/[id]" options={{ presentation: "modal" }} />
       <Stack.Screen name="appointments/add" options={{ presentation: "modal" }} />
       <Stack.Screen name="appointments/[id]" options={{ presentation: "modal" }} />
+      <Stack.Screen name="paywall" options={{ presentation: "modal" }} />
     </Stack>
   );
 }

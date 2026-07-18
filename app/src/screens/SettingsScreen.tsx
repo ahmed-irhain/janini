@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Alert, StyleSheet, Switch, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 import { estimateLmpFromDueDate, formatHijriDateAr, gregorianToHijri } from "@janini/shared";
@@ -10,6 +11,7 @@ import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { SectionHeader } from "../components/SectionHeader";
+import { Badge } from "../components/Badge";
 import { Button } from "../components/Button";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
@@ -18,9 +20,15 @@ import { TYPE } from "../theme/typography";
 
 export function SettingsScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { pregnancy, savePregnancy, resetLocalData } = usePregnancyData();
-  const { isPremium, notificationsEnabled, setIsPremium, setNotificationsEnabled } =
-    usePreferences();
+  const {
+    isPremium,
+    subscriptionPlan,
+    notificationsEnabled,
+    setNotificationsEnabled,
+    unsubscribe,
+  } = usePreferences();
   const [isEditingDueDate, setIsEditingDueDate] = useState(false);
 
   const dueDate = pregnancy ? new Date(pregnancy.dueDateGregorian) : null;
@@ -42,6 +50,21 @@ export function SettingsScreen() {
         onPress: () => resetLocalData(),
       },
     ]);
+  };
+
+  const onManageSubscription = () => {
+    Alert.alert(
+      t("settings.cancelSubscriptionConfirmTitle"),
+      t("settings.cancelSubscriptionConfirmMessage"),
+      [
+        { text: t("common.cancel"), style: "cancel" },
+        {
+          text: t("settings.cancelSubscriptionConfirmButton"),
+          style: "destructive",
+          onPress: () => unsubscribe(),
+        },
+      ]
+    );
   };
 
   return (
@@ -80,14 +103,30 @@ export function SettingsScreen() {
       ) : null}
 
       <Card>
-        <View style={styles.switchRow}>
-          <Switch
-            value={isPremium}
-            onValueChange={setIsPremium}
-            trackColor={{ true: COLORS.primary }}
-          />
-          <Text style={styles.switchLabel}>{t("settings.premiumToggleLabel")}</Text>
-        </View>
+        <SectionHeader title={t("settings.subscriptionSectionTitle")} />
+        {isPremium ? (
+          <>
+            <Badge
+              label={t(
+                subscriptionPlan === "monthly"
+                  ? "settings.subscriptionBadgeMonthly"
+                  : "settings.subscriptionBadgePass"
+              )}
+              icon="checkmark-circle"
+            />
+            <Text style={styles.mutedText}>{t("settings.subscriptionActiveDescription")}</Text>
+            <Button
+              label={t("settings.manageSubscriptionButton")}
+              variant="outline"
+              onPress={onManageSubscription}
+            />
+          </>
+        ) : (
+          <>
+            <Text style={styles.bodyText}>{t("settings.subscriptionUpsellDescription")}</Text>
+            <Button label={t("settings.upgradeButton")} onPress={() => router.push("/paywall")} />
+          </>
+        )}
       </Card>
 
       <Card>
