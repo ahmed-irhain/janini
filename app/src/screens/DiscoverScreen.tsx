@@ -70,6 +70,12 @@ export function DiscoverScreen() {
     return <ErrorState message={t("discover.loadError")} onRetry={loadArticles} />;
   }
 
+  // Only replace the list with skeleton placeholders on the very first load.
+  // Switching topics re-fetches in the background while the current results
+  // stay visible (dimmed) instead of flashing an empty skeleton every tap.
+  const showSkeleton = isLoading && articles.length === 0;
+  const showEmpty = !isLoading && articles.length === 0;
+
   return (
     <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
       <Image
@@ -87,30 +93,36 @@ export function DiscoverScreen() {
         allLabel={t("discover.filterAll")}
       />
 
-      {isLoading ? (
+      {showSkeleton ? (
         <View style={styles.listContent}>
           {SKELETON_ROWS.map((row) => (
             <ArticleCardSkeleton key={row} />
           ))}
         </View>
-      ) : articles.length === 0 ? (
+      ) : showEmpty ? (
         <Text style={styles.statusText}>{t("discover.emptyArticles")}</Text>
       ) : (
         <FlatList
           data={articles}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
+          style={isLoading ? styles.listRefreshing : undefined}
           renderItem={({ item }) => (
             <Pressable onPress={() => router.push(`/articles/${item.id}`)}>
               <Card>
                 <Text style={styles.cardTitle}>{item.titleAr}</Text>
                 <Text style={styles.cardSummary}>{item.summaryAr}</Text>
-                {item.sourceName ? (
-                  <Badge
-                    icon="shield-checkmark"
-                    tone="neutral"
-                    label={t("discover.sourceLabel", { source: item.sourceName })}
-                  />
+                {item.sourceName || item.topic ? (
+                  <View style={styles.badgeRow}>
+                    {item.sourceName ? (
+                      <Badge
+                        icon="shield-checkmark"
+                        tone="neutral"
+                        label={t("discover.sourceLabel", { source: item.sourceName })}
+                      />
+                    ) : null}
+                    {item.topic ? <Badge label={item.topic.labelAr} /> : null}
+                  </View>
                 ) : null}
               </Card>
             </Pressable>
@@ -150,6 +162,9 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.sm,
     paddingBottom: SPACING.sm,
   },
+  listRefreshing: {
+    opacity: 0.5,
+  },
   skeletonCard: {
     alignItems: "flex-end",
   },
@@ -166,6 +181,11 @@ const styles = StyleSheet.create({
     color: COLORS.ink,
     textAlign: "right",
     paddingVertical: SPACING.xs,
+  },
+  badgeRow: {
+    flexDirection: "row-reverse",
+    flexWrap: "wrap",
+    gap: SPACING.xs,
   },
   statusText: {
     ...TYPE.body,
