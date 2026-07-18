@@ -125,6 +125,8 @@ export function DiscoverScreen() {
           ))}
         </View>
       )}
+
+      <View style={styles.bottomSpacer} />
     </Screen>
   );
 }
@@ -159,6 +161,9 @@ const styles = StyleSheet.create({
   },
   listRefreshing: {
     opacity: 0.5,
+  },
+  bottomSpacer: {
+    height: SPACING.xxl,
   },
   skeletonCard: {
     alignItems: "flex-end",
