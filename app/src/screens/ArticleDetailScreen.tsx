@@ -7,6 +7,7 @@ import { apiArticleRepository } from "../data/articleRepository";
 import { Screen } from "../components/Screen";
 import { IconButton } from "../components/IconButton";
 import { Badge } from "../components/Badge";
+import { ArticleBody } from "../components/ArticleBody";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -66,7 +67,7 @@ export function ArticleDetailScreen() {
       {article.weekNumber ? <Badge label={t("discover.weekRowLabel", { week: article.weekNumber })} /> : null}
       {article.topic ? <Badge label={article.topic.labelAr} /> : null}
       <Text style={styles.title}>{article.titleAr}</Text>
-      <Text style={styles.body}>{article.bodyAr ?? article.summaryAr}</Text>
+      <ArticleBody markdown={article.bodyAr ?? article.summaryAr} />
       {article.sourceName ? (
         <View style={styles.sourceRow}>
           <View style={styles.sourceCheck}>
@@ -100,14 +101,6 @@ const styles = StyleSheet.create({
     ...TYPE.h1,
     fontSize: 22,
     lineHeight: 30,
-    color: COLORS.ink,
-    paddingVertical: SPACING.sm,
-    textAlign: "right",
-  },
-  body: {
-    ...TYPE.body,
-    fontSize: 16,
-    lineHeight: 26,
     color: COLORS.ink,
     paddingVertical: SPACING.sm,
     textAlign: "right",
