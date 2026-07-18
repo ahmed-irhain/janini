@@ -15,11 +15,6 @@ export function OnboardingWelcomeScreen() {
 
   return (
     <Screen center backgroundGradient style={styles.content}>
-      <Image
-        source={require("../../../assets/illustrations/illu-mother-hero.png")}
-        style={styles.heroImage}
-        resizeMode="cover"
-      />
       <LogoMark size={175} />
       <Text style={styles.subtitle}>{t("onboarding.introSubtitle")}</Text>
 
@@ -33,11 +28,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: SPACING.md,
   },
-  heroImage: {
-    width: "100%",
-    aspectRatio: 620 / 465,
-    borderRadius: RADIUS.xl,
-    marginBottom: SPACING.md,
+  title:{
+    padding: 10,
   },
   subtitle: {
     ...TYPE.body,

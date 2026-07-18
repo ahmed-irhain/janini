@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, Text } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import type { Article } from "@janini/shared";
@@ -8,11 +8,26 @@ import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { Badge } from "../components/Badge";
+import { ErrorState } from "../components/ErrorState";
+import { Skeleton } from "../components/Skeleton";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
+
+const SKELETON_ROWS = [0, 1, 2, 3];
+
+function ArticleCardSkeleton() {
+  return (
+    <Card style={styles.skeletonCard}>
+      <Skeleton width="70%" height={18} radius={RADIUS.sm} />
+      <Skeleton height={13} radius={RADIUS.sm} />
+      <Skeleton width="90%" height={13} radius={RADIUS.sm} />
+      <Skeleton width={96} height={24} radius={RADIUS.full} />
+    </Card>
+  );
+}
 
 export function DiscoverScreen() {
   const { t } = useTranslation();
@@ -21,7 +36,7 @@ export function DiscoverScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
 
-  useEffect(() => {
+  const loadArticles = useCallback(() => {
     let cancelled = false;
     setIsLoading(true);
     setLoadError(false);
@@ -41,20 +56,28 @@ export function DiscoverScreen() {
     };
   }, []);
 
+  useEffect(() => loadArticles(), [loadArticles]);
+
+  if (loadError) {
+    return <ErrorState message={t("discover.loadError")} onRetry={loadArticles} />;
+  }
+
   return (
     <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
       <Image
-        source={require("../assets/illustrations/illu-mother-child.png")}
+        source={require("../../assets/illustrations/illu-mother-child.png")}
         style={styles.heroBanner}
         resizeMode="cover"
       />
-      <ScreenTitle>{t("discover.title")}</ScreenTitle>
+      <ScreenTitle style={styles.title}>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
       {isLoading ? (
-        <Text style={styles.statusText}>{t("common.loading")}</Text>
-      ) : loadError ? (
-        <Text style={styles.statusText}>{t("discover.loadError")}</Text>
+        <View style={styles.listContent}>
+          {SKELETON_ROWS.map((row) => (
+            <ArticleCardSkeleton key={row} />
+          ))}
+        </View>
       ) : articles.length === 0 ? (
         <Text style={styles.statusText}>{t("discover.emptyArticles")}</Text>
       ) : (
@@ -84,10 +107,15 @@ export function DiscoverScreen() {
 }
 
 const styles = StyleSheet.create({
+  title:{
+    padding: 10,
+  },
   heroBanner: {
     width: "100%",
-    aspectRatio: 864 / 315,
+    //aspectRatio: 115/100,
     borderRadius: RADIUS.lg + 2,
+    alignSelf: "center",
+    height:"25%",
     marginBottom: SPACING.md,
   },
   disclaimer: {
@@ -105,6 +133,9 @@ const styles = StyleSheet.create({
   listContent: {
     gap: SPACING.md,
     paddingBottom: SPACING.sm,
+  },
+  skeletonCard: {
+    alignItems: "flex-end",
   },
   cardTitle: {
     ...TYPE.h2,

@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   heroImage: {
     width: "100%",
     aspectRatio: 612 / 454,
+    height: "20%",
     borderRadius: RADIUS.lg - 4,
   },
   disclaimer: {
