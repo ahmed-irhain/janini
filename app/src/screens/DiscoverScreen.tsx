@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import type { Article, Topic } from "@janini/shared";
@@ -77,7 +77,7 @@ export function DiscoverScreen() {
   const showEmpty = !isLoading && articles.length === 0;
 
   return (
-    <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
+    <Screen keyboardAvoiding={false} insetsBottomTabBar>
       <Image
         source={require("../../assets/illustrations/illu-mother-child.png")}
         style={styles.heroBanner}
@@ -102,13 +102,9 @@ export function DiscoverScreen() {
       ) : showEmpty ? (
         <Text style={styles.statusText}>{t("discover.emptyArticles")}</Text>
       ) : (
-        <FlatList
-          data={articles}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          style={isLoading ? styles.listRefreshing : undefined}
-          renderItem={({ item }) => (
-            <Pressable onPress={() => router.push(`/articles/${item.id}`)}>
+        <View style={[styles.listContent, isLoading && styles.listRefreshing]}>
+          {articles.map((item) => (
+            <Pressable key={item.id} onPress={() => router.push(`/articles/${item.id}`)}>
               <Card>
                 <Text style={styles.cardTitle}>{item.titleAr}</Text>
                 <Text style={styles.cardSummary}>{item.summaryAr}</Text>
@@ -126,8 +122,8 @@ export function DiscoverScreen() {
                 ) : null}
               </Card>
             </Pressable>
-          )}
-        />
+          ))}
+        </View>
       )}
     </Screen>
   );
@@ -139,10 +135,8 @@ const styles = StyleSheet.create({
   },
   heroBanner: {
     width: "100%",
-    //aspectRatio: 115/100,
+    aspectRatio: 864 / 315,
     borderRadius: RADIUS.lg + 2,
-    alignSelf: "center",
-    height:"25%",
     marginBottom: SPACING.md,
   },
   disclaimer: {
