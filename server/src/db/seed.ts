@@ -2,7 +2,7 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { eq } from "drizzle-orm";
-import { articles } from "./schema.js";
+import { articles, topics } from "./schema.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -23,6 +23,8 @@ const SEED_ARTICLES = [
       "نظام غذائي متوازن غني بالفواكه والخضروات والحبوب الكاملة ومصادر البروتين يدعم صحتك وصحة جنينك. احرصي على استشارة طبيبك المختص بخصوص أي مكملات غذائية.",
     sourceName: "منظمة الصحة العالمية (WHO)",
     sourceUrl: "https://www.who.int/health-topics/nutrition",
+    topicSlug: "nutrition",
+    topicLabelAr: "التغذية",
   },
   {
     titleAr: "أهمية فيتامينات ما قبل الولادة",
@@ -30,6 +32,8 @@ const SEED_ARTICLES = [
       "حمض الفوليك والحديد والكالسيوم من العناصر التي تحتاجينها بكميات أكبر أثناء الحمل. ناقشي مع طبيبك المختص الجرعات والمكملات المناسبة لحالتك.",
     sourceName: "الكلية الأمريكية لأطباء النساء والتوليد (ACOG)",
     sourceUrl: "https://www.acog.org/womens-health/faqs/nutrition-during-pregnancy",
+    topicSlug: "nutrition",
+    topicLabelAr: "التغذية",
   },
   {
     titleAr: "ممارسة الرياضة الآمنة أثناء الحمل",
@@ -37,6 +41,8 @@ const SEED_ARTICLES = [
       "النشاط الخفيف مثل المشي والسباحة ورياضة الحمل يساعد عادة على تحسين المزاج والنوم. استشيري طبيبك المختص قبل البدء بأي نشاط رياضي جديد.",
     sourceName: "الكلية الأمريكية لأطباء النساء والتوليد (ACOG)",
     sourceUrl: "https://www.acog.org/womens-health/faqs/exercise-during-pregnancy",
+    topicSlug: "exercise",
+    topicLabelAr: "الرياضة",
   },
   {
     titleAr: "نصائح للنوم المريح خلال الحمل",
@@ -45,6 +51,8 @@ const SEED_ARTICLES = [
     sourceName: "مايو كلينك (Mayo Clinic)",
     sourceUrl:
       "https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20046832",
+    topicSlug: "sleep",
+    topicLabelAr: "النوم",
   },
   {
     titleAr: "علامات تستدعي التواصل الفوري مع طبيبك",
@@ -52,6 +60,8 @@ const SEED_ARTICLES = [
       "نزيف مهاجم، ألم شديد، صداع مستمر، أو انخفاض واضح في حركة الجنين علامات يجب عدم تجاهلها. تواصلي مع طبيبك المختص أو توجهي للطوارئ فور ملاحظتها.",
     sourceName: "وزارة الصحة السعودية",
     sourceUrl: "https://www.moh.gov.sa",
+    topicSlug: "warning-signs",
+    topicLabelAr: "علامات تحذيرية",
   },
   {
     titleAr: "الصحة النفسية خلال الحمل",
@@ -59,6 +69,8 @@ const SEED_ARTICLES = [
       "من الطبيعي أن تمرّي بتقلبات مزاجية أثناء الحمل، لكن الشعور المستمر بالحزن أو القلق يستحق الحديث عنه. لا تترددي في مراجعة طبيبك المختص إن احتجتِ للدعم.",
     sourceName: "منظمة الصحة العالمية (WHO)",
     sourceUrl: "https://www.who.int/news-room/fact-sheets/detail/maternal-mental-health",
+    topicSlug: "mental-health",
+    topicLabelAr: "الصحة النفسية",
   },
   {
     titleAr: "السفر أثناء الحمل",
@@ -66,6 +78,8 @@ const SEED_ARTICLES = [
       "السفر عادة ما يكون آمنًا في معظم مراحل الحمل غير المعقد، مع بعض الاحتياطات مثل الحركة الدورية أثناء الرحلات الطويلة. استشيري طبيبك المختص قبل التخطيط لأي سفر.",
     sourceName: "الكلية الأمريكية لأطباء النساء والتوليد (ACOG)",
     sourceUrl: "https://www.acog.org/womens-health/faqs/travel-during-pregnancy",
+    topicSlug: "travel",
+    topicLabelAr: "السفر",
   },
   {
     titleAr: "شرب الماء بكميات كافية",
@@ -74,8 +88,33 @@ const SEED_ARTICLES = [
     sourceName: "مايو كلينك (Mayo Clinic)",
     sourceUrl:
       "https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy-nutrition/art-20045082",
+    topicSlug: "nutrition",
+    topicLabelAr: "التغذية",
   },
 ];
+
+// Upsert distinct topics by slug (first-occurrence label wins), building a
+// slug -> id map. A future seed article with a never-seen topicSlug creates
+// its topic row automatically here, with no schema/migration change needed.
+const seenTopics = new Map<string, string>();
+for (const article of SEED_ARTICLES) {
+  if (!seenTopics.has(article.topicSlug)) {
+    seenTopics.set(article.topicSlug, article.topicLabelAr);
+  }
+}
+
+const topicIdBySlug = new Map<string, string>();
+let sortOrder = 0;
+for (const [slug, labelAr] of seenTopics) {
+  const [existing] = await db.select().from(topics).where(eq(topics.slug, slug));
+  if (existing) {
+    topicIdBySlug.set(slug, existing.id);
+  } else {
+    const [created] = await db.insert(topics).values({ slug, labelAr, sortOrder }).returning();
+    topicIdBySlug.set(slug, created.id);
+  }
+  sortOrder++;
+}
 
 let inserted = 0;
 for (const article of SEED_ARTICLES) {
@@ -87,6 +126,7 @@ for (const article of SEED_ARTICLES) {
 
   await db.insert(articles).values({
     weekNumber: null,
+    topicId: topicIdBySlug.get(article.topicSlug) ?? null,
     titleAr: article.titleAr,
     summaryAr: article.summaryAr,
     sourceName: article.sourceName,

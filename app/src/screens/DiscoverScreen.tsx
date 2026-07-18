@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
-import type { Article } from "@janini/shared";
+import type { Article, Topic } from "@janini/shared";
 import { apiArticleRepository } from "../data/articleRepository";
+import { apiTopicRepository } from "../data/topicRepository";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { Badge } from "../components/Badge";
+import { FilterChips } from "../components/FilterChips";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -20,13 +22,19 @@ export function DiscoverScreen() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+
+  useEffect(() => {
+    apiTopicRepository.list().then(setTopics).catch(() => {});
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
     setIsLoading(true);
     setLoadError(false);
     apiArticleRepository
-      .listGeneral()
+      .listGeneral(selectedTopic)
       .then((rows) => {
         if (!cancelled) setArticles(rows);
       })
@@ -39,7 +47,7 @@ export function DiscoverScreen() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [selectedTopic]);
 
   return (
     <Screen scroll={false} keyboardAvoiding={false} insetsBottomTabBar>
@@ -50,6 +58,13 @@ export function DiscoverScreen() {
       />
       <ScreenTitle>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
+
+      <FilterChips
+        topics={topics}
+        selectedSlug={selectedTopic}
+        onSelect={setSelectedTopic}
+        allLabel={t("discover.filterAll")}
+      />
 
       {isLoading ? (
         <Text style={styles.statusText}>{t("common.loading")}</Text>
@@ -104,6 +119,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     gap: SPACING.md,
+    paddingTop: SPACING.sm,
     paddingBottom: SPACING.sm,
   },
   cardTitle: {

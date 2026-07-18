@@ -68,6 +68,7 @@ export function ArticleDetailScreen() {
       <Image source={getArticleHeroImage(heroPosition)} style={styles.heroImage} resizeMode="cover" />
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
       {article.weekNumber ? <Badge label={t("discover.weekRowLabel", { week: article.weekNumber })} /> : null}
+      {article.topic ? <Badge label={article.topic.labelAr} /> : null}
       <Text style={styles.title}>{article.titleAr}</Text>
       <Text style={styles.body}>{article.bodyAr ?? article.summaryAr}</Text>
       {article.sourceName ? (
