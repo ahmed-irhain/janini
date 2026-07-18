@@ -8,6 +8,7 @@ import { getArticleHeroImage } from "../data/articleHeroImages";
 import { Screen } from "../components/Screen";
 import { IconButton } from "../components/IconButton";
 import { Badge } from "../components/Badge";
+import { ArticleBody } from "../components/ArticleBody";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -69,7 +70,7 @@ export function ArticleDetailScreen() {
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
       {article.weekNumber ? <Badge label={t("discover.weekRowLabel", { week: article.weekNumber })} /> : null}
       <Text style={styles.title}>{article.titleAr}</Text>
-      <Text style={styles.body}>{article.bodyAr ?? article.summaryAr}</Text>
+      <ArticleBody markdown={article.bodyAr ?? article.summaryAr} />
       {article.sourceName ? (
         <View style={styles.sourceRow}>
           <View style={styles.sourceCheck}>
@@ -110,14 +111,6 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     color: COLORS.ink,
     paddingVertical: 6,
-    textAlign: "right",
-  },
-  body: {
-    ...TYPE.body,
-    fontSize: 16,
-    lineHeight: 26,
-    color: COLORS.ink,
-    paddingVertical: 4,
     textAlign: "right",
   },
   statusText: {
