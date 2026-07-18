@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
 interface LogoMarkProps {
@@ -35,5 +36,6 @@ const styles = StyleSheet.create({
     ...TYPE.display,
     color: COLORS.primary,
     textAlign: "center",
+    paddingVertical: SPACING.xs,
   },
 });

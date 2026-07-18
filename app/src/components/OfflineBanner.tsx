@@ -30,5 +30,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: COLORS.warning,
     textAlign: "right",
+    paddingVertical: 2,
   },
 });

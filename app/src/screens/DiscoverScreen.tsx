@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   cardSummary: {
     ...TYPE.body,
@@ -117,6 +118,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   statusText: {
     ...TYPE.body,
@@ -124,5 +126,6 @@ const styles = StyleSheet.create({
     color: COLORS.inkMuted,
     textAlign: "right",
     paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
   },
 });

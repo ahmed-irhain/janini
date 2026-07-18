@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Screen } from "./Screen";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
 
 interface LoadingStateProps {
   message?: string;
@@ -27,5 +28,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: COLORS.inkMuted,
     textAlign: "center",
+    paddingVertical: SPACING.sm,
   },
 });

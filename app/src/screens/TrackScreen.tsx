@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     gap: SPACING.sm,
+    paddingVertical: SPACING.xs,
   },
   cardActions: {
     flexDirection: "row",
@@ -208,16 +209,19 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   cardSubtitle: {
     ...TYPE.bodySmall,
     color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   cardNote: {
     ...TYPE.bodySmall,
     marginTop: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
 });

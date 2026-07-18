@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../theme/colors";
 import { FONTS } from "../theme/fonts";
+import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
 interface SectionHeaderProps {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingVertical: SPACING.xs,
   },
   title: {
     color: COLORS.ink,
@@ -37,5 +39,6 @@ const styles = StyleSheet.create({
   action: {
     color: COLORS.primary,
     fontFamily: FONTS.medium,
+    paddingVertical: SPACING.xs,
   },
 });

@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: COLORS.inkMuted,
     textAlign: "center",
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
   },
   button: {
     marginTop: SPACING.lg,

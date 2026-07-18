@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.lg,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md + 2,
-    gap: 4,
+    gap: SPACING.xs,
     alignItems: "center",
   },
   cardLabel: {
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   cardPrimary: {
     fontFamily: FONTS.bold,
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     color: COLORS.ink,
     writingDirection: "rtl",
+    paddingVertical: SPACING.xs,
   },
   cardSecondary: {
     fontFamily: FONTS.regular,
@@ -128,6 +130,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: COLORS.inkMuted,
     writingDirection: "rtl",
+    paddingVertical: SPACING.xs,
   },
   error: {
     fontFamily: FONTS.regular,
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: COLORS.error,
     textAlign: "center",
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
   },
   button: {
     marginTop: SPACING.sm,

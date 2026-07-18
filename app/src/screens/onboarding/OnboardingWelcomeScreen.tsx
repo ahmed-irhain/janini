@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     ...TYPE.body,
     color: COLORS.inkMuted,
     textAlign: "center",
-    paddingVertical: SPACING.xs,
+    paddingVertical: SPACING.sm,
     marginBottom: SPACING.xxl,
   },
 });

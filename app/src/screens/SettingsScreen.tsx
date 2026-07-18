@@ -122,21 +122,25 @@ const styles = StyleSheet.create({
     ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   bodyText: {
     ...TYPE.body,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   mutedText: {
     ...TYPE.bodySmall,
     color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   switchRow: {
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingVertical: SPACING.xs,
   },
   switchLabel: {
     fontFamily: FONTS.medium,
@@ -144,5 +148,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
 });

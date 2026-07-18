@@ -131,16 +131,19 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     color: COLORS.onPrimary,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   progressCaption: {
     ...TYPE.bodySmall,
     color: COLORS.onPrimary,
     opacity: 0.85,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   dueDateLabel: {
     fontFamily: FONTS.medium,
     paddingTop: SPACING.sm,
+    paddingBottom: SPACING.xs,
     color: COLORS.onPrimary,
     textAlign: "right",
   },
@@ -148,16 +151,19 @@ const styles = StyleSheet.create({
     ...TYPE.body,
     color: COLORS.onPrimary,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   bodyText: {
     ...TYPE.body,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   sectionTitle: {
     ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   babySizeRow: {
     flexDirection: "row-reverse",
@@ -185,6 +191,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: COLORS.primary,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   tip: {
     ...TYPE.bodySmall,
@@ -192,6 +199,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   linkButton: {
     fontFamily: FONTS.medium,
@@ -199,6 +207,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: COLORS.primary,
     paddingTop: SPACING.xs,
+    paddingBottom: SPACING.xs,
     textAlign: "right",
   },
 });

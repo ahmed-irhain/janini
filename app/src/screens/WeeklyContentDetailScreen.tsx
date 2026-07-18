@@ -7,6 +7,7 @@ import { getArticleHeroImage } from "../data/articleHeroImages";
 import { Screen } from "../components/Screen";
 import { IconButton } from "../components/IconButton";
 import { Badge } from "../components/Badge";
+import { ErrorState } from "../components/ErrorState";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 27,
     color: COLORS.ink,
-    paddingVertical: 6,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   babySize: {
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: COLORS.primary,
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   body: {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 23,
     color: COLORS.ink,
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   sourceRow: {

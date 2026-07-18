@@ -119,12 +119,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: SPACING.lg,
     paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.xs,
   },
   skipText: {
     fontFamily: FONTS.medium,
     fontSize: 13,
     lineHeight: 18,
     color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   carousel: {
     flex: 1,
@@ -134,6 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: SPACING.lg,
     paddingHorizontal: SPACING.xxl,
+    paddingVertical: SPACING.md,
   },
   slideImage: {
     width: "100%",
@@ -145,6 +148,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
     lineHeight: 25,
     textAlign: "center",
+    paddingVertical: SPACING.xs,
   },
   slideDesc: {
     fontSize: 14,
@@ -152,6 +156,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: "center",
     color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   bottom: {
     gap: SPACING.lg,

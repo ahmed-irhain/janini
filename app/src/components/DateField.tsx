@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: 13,
     lineHeight: 18,
-    paddingVertical: 2,
+    paddingVertical: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.error,
   },
   textColumn: {
-    gap: 2,
+    gap: SPACING.xs,
   },
   primaryText: {
     fontFamily: FONTS.regular,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 16,
     color: COLORS.error,
-    paddingVertical: 2,
+    paddingVertical: SPACING.xs,
     textAlign: "right",
   },
   backdrop: {

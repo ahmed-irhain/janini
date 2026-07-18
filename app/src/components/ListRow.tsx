@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
 interface ListRowProps {
@@ -21,15 +22,18 @@ export function ListRow({ label, value }: ListRowProps) {
 
 const styles = StyleSheet.create({
   row: {
-    gap: 2,
+    gap: SPACING.xs,
+    paddingVertical: SPACING.xs,
   },
   label: {
     color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   value: {
     color: COLORS.ink,
     textAlign: "right",
     writingDirection: "rtl",
+    paddingVertical: SPACING.xs,
   },
 });

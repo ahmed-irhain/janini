@@ -5,6 +5,7 @@ import { Screen } from "./Screen";
 import { Button } from "./Button";
 import { FONTS } from "../theme/fonts";
 import { COLORS, withAlpha } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
 
 interface ErrorStateProps {
   message: string;
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: COLORS.inkMuted,
     textAlign: "center",
+    paddingVertical: SPACING.sm,
   },
   retryButton: {
     marginTop: 20,

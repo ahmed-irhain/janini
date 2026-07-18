@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 30,
     color: COLORS.ink,
-    paddingVertical: 6,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   body: {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 26,
     color: COLORS.ink,
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   statusText: {
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   sourceRow: {
     flexDirection: "row-reverse",
