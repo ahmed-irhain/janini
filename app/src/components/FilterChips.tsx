@@ -23,6 +23,7 @@ export function FilterChips({ topics, selectedSlug, onSelect, allLabel }: Filter
         label={allLabel}
         selected={selectedSlug === null}
         onPress={() => onSelect(null)}
+        fill={false}
         style={styles.chip}
       />
       {topics.map((topic) => (
@@ -31,6 +32,7 @@ export function FilterChips({ topics, selectedSlug, onSelect, allLabel }: Filter
           label={topic.labelAr}
           selected={selectedSlug === topic.slug}
           onPress={() => onSelect(topic.slug)}
+          fill={false}
           style={styles.chip}
         />
       ))}
@@ -44,7 +46,6 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.sm,
   },
   chip: {
-    flex: 0,
     alignSelf: "flex-start",
   },
 });
