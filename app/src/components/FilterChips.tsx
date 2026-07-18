@@ -17,6 +17,7 @@ export function FilterChips({ topics, selectedSlug, onSelect, allLabel }: Filter
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
+      style={styles.scrollView}
       contentContainerStyle={styles.row}
     >
       <Chip
@@ -40,12 +41,25 @@ export function FilterChips({ topics, selectedSlug, onSelect, allLabel }: Filter
   );
 }
 
+// A horizontal ScrollView with no explicit height sizes itself purely from
+// content measurement, which can race with re-renders on selection changes
+// and transiently collapse to near-zero, squashing every chip inside it.
+// Pinning a fixed height (Chip's line-height 18 + paddingVertical sm*2 + a
+// hair of slack) removes that ambiguity entirely.
+const CHIP_ROW_HEIGHT = 44;
+
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 0,
+    flexShrink: 0,
+    height: CHIP_ROW_HEIGHT,
+    marginBottom: SPACING.sm,
+  },
   row: {
+    alignItems: "center",
     gap: SPACING.sm,
-    paddingBottom: SPACING.sm,
   },
   chip: {
-    alignSelf: "flex-start",
+    alignSelf: "center",
   },
 });
