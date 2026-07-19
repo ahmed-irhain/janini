@@ -29,7 +29,6 @@ typography:
     fontSize: 30px
     fontWeight: 900
     lineHeight: 1.17
-    letterSpacing: -0.01em
   h1:
     fontFamily: ThmanyahSans-Bold
     fontSize: 23px
@@ -55,7 +54,6 @@ typography:
     fontSize: 11px
     fontWeight: 500
     lineHeight: 1.36
-    letterSpacing: 0.01em
 
 rounded:
   sm: 8px
@@ -149,7 +147,7 @@ Two `gradients` tokens capture the reference's two distinct uses of color-in-mot
 
 ## Typography
 
-Arabic body and UI text uses ThmanyahSans (already loaded via `expo-font` in the app), a warm humanist Arabic sans; Latin numerals and any embedded English strings substitute Manrope at the matching weight, following the app's existing `LATIN_FONTS` pairing convention — this system doesn't introduce a second full type scale for Latin, just a per-weight substitution. The reference's serif-display-versus-sans-UI contrast doesn't translate directly to Arabic (there's no mature, broadly legible Arabic serif face loaded in the app, and introducing one for a religiously observant, precision-sensitive audience is a legibility risk not worth the visual gain). Instead, the same editorial weight is recreated through extremes within ThmanyahSans itself: `display` uses the Black weight at a large size with tight negative tracking for hero moments and question-style headlines (mirroring the reference's serif headline weight), while `h1`/`h2` step down through Bold, and `body`/`bodySmall`/`caption` sit in Regular/Medium — so the contrast is weight-driven rather than family-driven. `caption` and `bodySmall` share a family but differ in size/tracking to distinguish metadata (view counts, timestamps) from primary supporting copy.
+Arabic body and UI text uses ThmanyahSans (already loaded via `expo-font` in the app), a warm humanist Arabic sans; Latin numerals and any embedded English strings substitute Manrope at the matching weight, following the app's existing `LATIN_FONTS` pairing convention — this system doesn't introduce a second full type scale for Latin, just a per-weight substitution. The reference's serif-display-versus-sans-UI contrast doesn't translate directly to Arabic (there's no mature, broadly legible Arabic serif face loaded in the app, and introducing one for a religiously observant, precision-sensitive audience is a legibility risk not worth the visual gain). Instead, the same editorial weight is recreated through extremes within ThmanyahSans itself: `display` uses the Black weight at a large size for hero moments and question-style headlines (mirroring the reference's serif headline weight), while `h1`/`h2` step down through Bold, and `body`/`bodySmall`/`caption` sit in Regular/Medium — so the contrast is weight-driven rather than family-driven. `caption` and `bodySmall` share a family but differ in size to distinguish metadata (view counts, timestamps) from primary supporting copy. No token carries `letterSpacing`: on iOS, any non-zero kerning on `<Text>` disables Arabic contextual glyph shaping, so joined letters render broken/isolated — see the Don't below.
 
 ## Layout
 
@@ -182,3 +180,4 @@ Corner radius is uniformly generous — nothing in this system is sharp. Cards u
 - Don't mirror or re-flow layout logic that assumes LTR reading order (icon direction, swipe direction, card-stack offset direction) — everything must hold up in RTL.
 - Don't apply `rounded: full` pill styling to dense data tables or list rows — that softness is for cards and controls, not for information-dense layouts.
 - Don't add a dark-mode palette speculatively — there's no dark mode requirement yet; wait until it's actually scoped.
+- Don't set `letterSpacing` on any `TextStyle` carrying Arabic text — non-zero kerning breaks iOS's Arabic letter-joining shaping and renders text incorrectly (disconnected/wrong glyph forms), regardless of how good it looks in a web mockup.
