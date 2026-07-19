@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   title: {
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   action: {
     color: COLORS.primary,

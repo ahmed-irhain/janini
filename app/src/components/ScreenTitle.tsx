@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     ...TYPE.h1,
     color: COLORS.ink,
     marginBottom: SPACING.lg,
+    paddingVertical: SPACING.sm,
     textAlign: "right",
   },
   center: {

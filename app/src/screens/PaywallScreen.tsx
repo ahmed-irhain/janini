@@ -111,11 +111,13 @@ const styles = StyleSheet.create({
     ...TYPE.display,
     color: COLORS.onPrimary,
     textAlign: "center",
+    paddingVertical: SPACING.sm,
   },
   heroSubheading: {
     ...TYPE.body,
     color: withAlpha(COLORS.onPrimary, 0.85),
     textAlign: "center",
+    paddingVertical: SPACING.xs,
   },
   plans: {
     gap: SPACING.md,

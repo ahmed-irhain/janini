@@ -83,7 +83,7 @@ export function DiscoverScreen() {
         style={styles.heroBanner}
         resizeMode="cover"
       />
-      <ScreenTitle style={styles.title}>{t("discover.title")}</ScreenTitle>
+      <ScreenTitle>{t("discover.title")}</ScreenTitle>
       <Text style={styles.disclaimer}>{t("discover.disclaimerBanner")}</Text>
 
       <FilterChips
@@ -132,9 +132,6 @@ export function DiscoverScreen() {
 }
 
 const styles = StyleSheet.create({
-  title:{
-    padding: 10,
-  },
   heroBanner: {
     width: "100%",
    // aspectRatio: 864 / 315,

@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   description: {
     ...TYPE.bodySmall,

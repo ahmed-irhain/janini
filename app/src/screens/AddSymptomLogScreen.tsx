@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     marginBottom: 0,
-    paddingVertical: SPACING.xs,
   },
   actionsRow: {
     flexDirection: "row-reverse",

@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     ...TYPE.display,
     color: COLORS.primary,
     textAlign: "center",
-    paddingVertical: SPACING.xs,
+    paddingVertical: SPACING.sm,
   },
 });
