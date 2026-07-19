@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: SPACING.md,
   },
-  title:{
-    padding: 10,
-  },
   subtitle: {
     ...TYPE.body,
     color: COLORS.inkMuted,
