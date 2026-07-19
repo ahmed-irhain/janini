@@ -134,8 +134,7 @@ export function DiscoverScreen() {
 const styles = StyleSheet.create({
   heroBanner: {
     width: "100%",
-   // aspectRatio: 864 / 315,
-   height: "7%",
+    height: 64,
     borderRadius: RADIUS.lg + 2,
     marginBottom: SPACING.md,
   },
