@@ -11,5 +11,14 @@
       "distribution": "internal"
     },
     "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascApiKeyPath": "C:\\Users\\meads\\Downloads\\AuthKey_WBA946224W.p8",
+        "ascApiKeyId": "WBA946224W",
+        "ascApiKeyIssuerId": "37b14f96-72ed-4c5e-a6a9-742170c84671"
+      }
+    }
   }
 }
