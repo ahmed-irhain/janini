@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { SymptomSeverity } from "@janini/shared";
@@ -8,6 +8,8 @@ import { symptomLogSchema, getFieldErrors, type FieldErrors } from "../validatio
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Button } from "../components/Button";
+import { Chip } from "../components/Chip";
+import { IconButton } from "../components/IconButton";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
@@ -25,6 +27,7 @@ export function AddSymptomLogScreen() {
   const [severity, setSeverity] = useState<SymptomSeverity>(existing?.severity ?? "mild");
   const [note, setNote] = useState(existing?.note ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof symptomLogSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -59,19 +62,35 @@ export function AddSymptomLogScreen() {
       {
         text: t("common.delete"),
         style: "destructive",
-        onPress: () => {
-          deleteSymptomLog(existing.id);
-          router.back();
+        onPress: async () => {
+          setSaveError(null);
+          setIsDeleting(true);
+          try {
+            await deleteSymptomLog(existing.id);
+            router.back();
+          } catch {
+            setSaveError(t("common.deleteFailed"));
+          } finally {
+            setIsDeleting(false);
+          }
         },
       },
     ]);
   };
 
   return (
-    <Screen style={styles.content} hasNativeHeader>
-      <ScreenTitle>
-        {existing ? t("track.editSymptomTitle") : t("track.logSymptomButton")}
-      </ScreenTitle>
+    <Screen style={styles.content}>
+      <View style={styles.header}>
+        <IconButton
+          icon="close"
+          onPress={() => router.back()}
+          accessibilityLabel={t("common.cancel")}
+          size={36}
+        />
+        <ScreenTitle style={styles.headerTitle}>
+          {existing ? t("track.editSymptomTitle") : t("track.logSymptomButton")}
+        </ScreenTitle>
+      </View>
 
       <View style={styles.field}>
         <Text style={styles.label}>{t("symptomLog.symptomLabel")}</Text>
@@ -93,17 +112,12 @@ export function AddSymptomLogScreen() {
         <Text style={styles.label}>{t("symptomLog.severityLabel")}</Text>
         <View style={styles.severityRow}>
           {SEVERITIES.map((option) => (
-            <Pressable
+            <Chip
               key={option}
-              style={[styles.severityButton, severity === option && styles.severityButtonActive]}
+              label={t(`symptomLog.severity${capitalize(option)}`)}
+              selected={severity === option}
               onPress={() => setSeverity(option)}
-            >
-              <Text
-                style={[styles.severityLabel, severity === option && styles.severityLabelActive]}
-              >
-                {t(`symptomLog.severity${capitalize(option)}`)}
-              </Text>
-            </Pressable>
+            />
           ))}
         </View>
       </View>
@@ -123,13 +137,29 @@ export function AddSymptomLogScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("symptomLog.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <View style={styles.actionsRow}>
+        <Button
+          label={t("common.cancel")}
+          variant="tonal"
+          fullWidth={false}
+          style={styles.actionButton}
+          onPress={() => router.back()}
+        />
+        <Button
+          label={t("symptomLog.saveButton")}
+          onPress={onSave}
+          loading={isSubmitting}
+          fullWidth={false}
+          style={styles.actionButton}
+        />
+      </View>
 
       {existing ? (
         <Button
           label={t("common.delete")}
           variant="destructive"
           onPress={onDelete}
+          loading={isDeleting}
           disabled={isSubmitting}
         />
       ) : null}
@@ -145,37 +175,55 @@ const styles = StyleSheet.create({
   content: {
     gap: SPACING.lg,
   },
+  header: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: SPACING.md,
+    paddingVertical: SPACING.xs,
+  },
+  headerTitle: {
+    flex: 1,
+    marginBottom: 0,
+  },
+  actionsRow: {
+    flexDirection: "row-reverse",
+    gap: SPACING.sm,
+  },
+  actionButton: {
+    flex: 1,
+  },
   field: {
     gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    paddingVertical: 2,
+    fontSize: 13,
+    lineHeight: 18,
+    paddingVertical: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
   },
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
-    fontSize: 16,
+    fontSize: 15,
     color: COLORS.ink,
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   errorText: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.errorText,
-    paddingVertical: 2,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.error,
+    paddingVertical: SPACING.xs,
     textAlign: "right",
   },
   noteInput: {
@@ -186,33 +234,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: SPACING.sm,
   },
-  severityButton: {
-    flex: 1,
-    paddingVertical: SPACING.md - 2,
-    borderRadius: RADIUS.sm,
-    borderWidth: 1,
-    borderColor: COLORS.primary700,
-    alignItems: "center",
-  },
-  severityButtonActive: {
-    backgroundColor: COLORS.primary700,
-  },
-  severityLabel: {
-    fontFamily: FONTS.medium,
-    color: COLORS.primary700,
-    fontSize: 13,
-    lineHeight: 18,
-    textAlign: "right",
-  },
-  severityLabelActive: {
-    color: COLORS.surface,
-  },
   consultNote: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.mutedText,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.inkMuted,
     textAlign: "right",
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
   },
 });

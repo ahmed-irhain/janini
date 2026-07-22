@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import {
+  Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
@@ -11,17 +12,31 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Ionicons } from "@expo/vector-icons";
 import { Screen } from "../../components/Screen";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { Button } from "../../components/Button";
+import { IconButton } from "../../components/IconButton";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
+import { RADIUS } from "../../theme/radius";
+import { SPACING } from "../../theme/spacing";
 
 const SLIDES = [
-  { icon: "calendar-outline", titleKey: "onboarding.feature1Title", descKey: "onboarding.feature1Desc" },
-  { icon: "clipboard-outline", titleKey: "onboarding.feature2Title", descKey: "onboarding.feature2Desc" },
-  { icon: "moon-outline", titleKey: "onboarding.feature3Title", descKey: "onboarding.feature3Desc" },
+  {
+    image: require("../../../assets/illustrations/illu-fetal.png"),
+    titleKey: "onboarding.feature1Title",
+    descKey: "onboarding.feature1Desc",
+  },
+  {
+    image: require("../../../assets/illustrations/illu-tracking.png"),
+    titleKey: "onboarding.feature2Title",
+    descKey: "onboarding.feature2Desc",
+  },
+  {
+    image: require("../../../assets/illustrations/illu-newborn.png"),
+    titleKey: "onboarding.feature3Title",
+    descKey: "onboarding.feature3Desc",
+  },
 ] as const;
 
 export function OnboardingFeaturesScreen() {
@@ -54,14 +69,7 @@ export function OnboardingFeaturesScreen() {
   return (
     <Screen scroll={false} horizontalPadding={0} style={styles.screen}>
       <View style={styles.topRow}>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={12}
-          accessibilityRole="button"
-          accessibilityLabel={t("common.back")}
-        >
-          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
-        </Pressable>
+        <IconButton icon="chevron-back" onPress={() => router.back()} accessibilityLabel={t("common.back")} />
         <OnboardingStepIndicator currentStep={1} totalSteps={3} />
         <Pressable onPress={() => router.push("/due-date")} hitSlop={12} accessibilityRole="button">
           <Text style={styles.skipText}>{t("onboarding.skipButton")}</Text>
@@ -78,7 +86,7 @@ export function OnboardingFeaturesScreen() {
       >
         {SLIDES.map((slide) => (
           <View key={slide.titleKey} style={[styles.slide, { width }]}>
-            <Ionicons name={slide.icon} size={64} color={COLORS.accent} />
+            <Image source={slide.image} style={styles.slideImage} resizeMode="cover" />
             <Text style={styles.slideTitle}>{t(slide.titleKey)}</Text>
             <Text style={styles.slideDesc}>{t(slide.descKey)}</Text>
           </View>
@@ -109,14 +117,16 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
-    paddingHorizontal: 20,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.xs,
   },
   skipText: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: COLORS.mutedText,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   carousel: {
     flex: 1,
@@ -124,30 +134,38 @@ const styles = StyleSheet.create({
   slide: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 16,
-    paddingHorizontal: 32,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.xxl,
+    paddingVertical: SPACING.md,
+  },
+  slideImage: {
+    width: "100%",
+    height: 220,
+    borderRadius: RADIUS.lg,
   },
   slideTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: FONTS.bold,
-    lineHeight: 28,
+    lineHeight: 25,
     textAlign: "center",
+    paddingVertical: SPACING.xs,
   },
   slideDesc: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: FONTS.regular,
-    lineHeight: 22,
+    lineHeight: 20,
     textAlign: "center",
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   bottom: {
-    gap: 16,
-    paddingHorizontal: 20,
+    gap: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
   },
   dotsRow: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 8,
+    gap: SPACING.sm,
   },
   dot: {
     width: 8,
@@ -157,6 +175,6 @@ const styles = StyleSheet.create({
   },
   dotActive: {
     width: 20,
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.primary,
   },
 });

@@ -15,7 +15,9 @@ import { getBabySizeEmoji } from "../data/babySizeEmoji";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
+import { HeroPanel } from "../components/HeroPanel";
 import { ProgressBar } from "../components/ProgressBar";
+import { LoadingState } from "../components/LoadingState";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
 import { SPACING } from "../theme/spacing";
@@ -26,9 +28,10 @@ export function HomeScreen() {
   const router = useRouter();
   const { pregnancy } = usePregnancyData();
 
-  // Guaranteed non-null: Home only renders inside the (app) route group,
-  // which RootNavigator only allows once a pregnancy exists.
-  if (!pregnancy) return null;
+  // Home only renders inside the (app) route group, which RootNavigator only
+  // allows once a pregnancy exists — this is a defensive fallback for the
+  // brief window between that guard flipping and this screen's re-render.
+  if (!pregnancy) return <LoadingState />;
 
   const { weeks: currentWeek } = gestationalAge(new Date(pregnancy.lastMenstrualPeriod));
   const currentMonth = gestationalMonth(Math.max(1, currentWeek));
@@ -42,24 +45,26 @@ export function HomeScreen() {
   ).slice(0, 3);
 
   return (
-    <Screen style={styles.content}>
-      <ScreenTitle style={styles.title}>{t("home.welcome")}</ScreenTitle>
+    <Screen style={styles.content} insetsBottomTabBar>
+      <ScreenTitle>{t("home.welcome")}</ScreenTitle>
 
-      <Card elevation="lg">
+      {/* One hero-panel per screen (design.md) — the single standout feature
+          moment: this week/month + due-date progress. */}
+      <HeroPanel>
         <Text style={styles.weekMonthLabel}>
           {t("home.weekLabel", { week: currentWeek })} · {t("home.monthLabel", { month: currentMonth })}
         </Text>
 
-        <ProgressBar percent={percent} />
+        <ProgressBar percent={percent} tone="onPrimary" />
         <Text style={styles.progressCaption}>
           {t("home.dueInDaysLabel", { days: daysRemaining })}
         </Text>
 
         <Text style={styles.dueDateLabel}>{t("home.dueDateLabel")}</Text>
-        <Text style={styles.bodyText}>
+        <Text style={styles.heroBodyText}>
           {dueDate.toLocaleDateString("ar")} · {formatHijriDateAr(hijriDueDate)}
         </Text>
-      </Card>
+      </HeroPanel>
 
       {content ? (
         <>
@@ -117,39 +122,48 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    padding: 15,
-  },
   content: {
     gap: SPACING.lg,
   },
   weekMonthLabel: {
-    ...TYPE.heading,
-    fontSize: 18,
-    lineHeight: 26,
-    color: COLORS.ink,
+    ...TYPE.h2,
+    fontSize: 16,
+    lineHeight: 23,
+    color: COLORS.onPrimary,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   progressCaption: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.onPrimary,
+    opacity: 0.85,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   dueDateLabel: {
     fontFamily: FONTS.medium,
     paddingTop: SPACING.sm,
-    color: COLORS.ink,
+    paddingBottom: SPACING.xs,
+    color: COLORS.onPrimary,
     textAlign: "right",
+  },
+  heroBodyText: {
+    ...TYPE.body,
+    color: COLORS.onPrimary,
+    textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   bodyText: {
     ...TYPE.body,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   sectionTitle: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   babySizeRow: {
     flexDirection: "row-reverse",
@@ -160,12 +174,12 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: COLORS.primary100,
+    backgroundColor: COLORS.surfaceAlt,
     alignItems: "center",
     justifyContent: "center",
   },
   babySizeEmoji: {
-    fontSize: 36,
+    fontSize: 32,
   },
   babySizeTextContainer: {
     flex: 1,
@@ -173,24 +187,27 @@ const styles = StyleSheet.create({
   },
   babySize: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
-    color: COLORS.primary700,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.primary,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   tip: {
     ...TYPE.bodySmall,
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 13,
+    lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   linkButton: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: COLORS.primary700,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.primary,
     paddingTop: SPACING.xs,
+    paddingBottom: SPACING.xs,
     textAlign: "right",
   },
 });

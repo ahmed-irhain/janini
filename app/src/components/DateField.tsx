@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { formatHijriDateAr, gregorianToHijri } from "@janini/shared";
 import { FONTS } from "../theme/fonts";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 
@@ -54,7 +54,7 @@ export function DateField({
         onPress={openPicker}
         accessibilityRole="button"
       >
-        <Ionicons name="calendar-outline" size={20} color={COLORS.primary700} />
+        <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
         <View style={styles.textColumn}>
           <Text style={styles.primaryText}>{formatPrimary(value, mode)}</Text>
           {mode === "date" ? (
@@ -120,9 +120,9 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    paddingVertical: 2,
+    fontSize: 13,
+    lineHeight: 18,
+    paddingVertical: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
   },
@@ -132,41 +132,41 @@ const styles = StyleSheet.create({
     gap: SPACING.sm + 2,
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
   },
   fieldError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   textColumn: {
-    gap: 2,
+    gap: SPACING.xs,
   },
   primaryText: {
     fontFamily: FONTS.regular,
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 15,
+    lineHeight: 21,
     color: COLORS.ink,
     writingDirection: "rtl",
   },
   secondaryText: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.mutedText,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.inkMuted,
     writingDirection: "rtl",
   },
   errorText: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.errorText,
-    paddingVertical: 2,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.error,
+    paddingVertical: SPACING.xs,
     textAlign: "right",
   },
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(11,61,51,0.35)",
+    backgroundColor: withAlpha(COLORS.ink, 0.35),
   },
   sheet: {
     backgroundColor: COLORS.surface,
@@ -186,18 +186,18 @@ const styles = StyleSheet.create({
   },
   sheetTitle: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS.ink,
   },
   sheetActionText: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
-    color: COLORS.mutedText,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.inkMuted,
   },
   sheetConfirmText: {
-    color: COLORS.primary700,
+    color: COLORS.primary,
   },
   picker: {
     alignSelf: "center",

@@ -9,12 +9,16 @@ import { useDeviceIdentity } from "./DeviceIdentityContext";
 import { getSubscriptionStatus } from "../data/apiClient";
 
 // Must match the entitlement identifier configured in the RevenueCat dashboard.
+// Both the one-time pass and the monthly subscription grant this same entitlement.
 export const ENTITLEMENT_ID = "premium";
+
+export type SubscriptionPlan = "pass" | "monthly";
 
 interface EntitlementContextValue {
   isLoaded: boolean;
   isEntitled: boolean;
-  purchase: () => Promise<void>;
+  activePlan: SubscriptionPlan | null;
+  purchase: (plan: SubscriptionPlan) => Promise<void>;
   restore: () => Promise<void>;
 }
 
@@ -24,9 +28,15 @@ export function EntitlementProvider({ children }: PropsWithChildren) {
   const { isLoaded: deviceIdLoaded, userId } = useDeviceIdentity();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEntitled, setIsEntitled] = useState(false);
+  const [activePlan, setActivePlan] = useState<SubscriptionPlan | null>(null);
 
   const applyCustomerInfo = useCallback((customerInfo: CustomerInfo) => {
-    setIsEntitled(Boolean(customerInfo.entitlements.active[ENTITLEMENT_ID]?.isActive));
+    const entitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
+    setIsEntitled(Boolean(entitlement?.isActive));
+    // The one-time pass is configured as a Lifetime package, which RevenueCat
+    // always reports with a null expirationDate; the monthly subscription
+    // always has one. That's a more reliable signal than the product id.
+    setActivePlan(entitlement?.isActive ? (entitlement.expirationDate === null ? "pass" : "monthly") : null);
   }, []);
 
   useEffect(() => {
@@ -68,20 +78,25 @@ export function EntitlementProvider({ children }: PropsWithChildren) {
     };
   }, [deviceIdLoaded, userId, applyCustomerInfo]);
 
-  const purchase = useCallback(async () => {
-    const offerings = await Purchases.getOfferings();
-    const pkg = offerings.current?.availablePackages[0];
-    if (!pkg) {
-      throw new Error("No subscription package configured in RevenueCat's current offering.");
-    }
-    try {
-      const { customerInfo } = await Purchases.purchasePackage(pkg);
-      applyCustomerInfo(customerInfo);
-    } catch (error) {
-      if ((error as PurchasesError).userCancelled) return;
-      throw error;
-    }
-  }, [applyCustomerInfo]);
+  const purchase = useCallback(
+    async (plan: SubscriptionPlan) => {
+      const offerings = await Purchases.getOfferings();
+      const pkg = plan === "pass" ? offerings.current?.lifetime : offerings.current?.monthly;
+      if (!pkg) {
+        throw new Error(
+          `No "${plan === "pass" ? "Lifetime" : "Monthly"}" package configured in RevenueCat's current offering.`
+        );
+      }
+      try {
+        const { customerInfo } = await Purchases.purchasePackage(pkg);
+        applyCustomerInfo(customerInfo);
+      } catch (error) {
+        if ((error as PurchasesError).userCancelled) return;
+        throw error;
+      }
+    },
+    [applyCustomerInfo]
+  );
 
   const restore = useCallback(async () => {
     const customerInfo = await Purchases.restorePurchases();
@@ -89,8 +104,8 @@ export function EntitlementProvider({ children }: PropsWithChildren) {
   }, [applyCustomerInfo]);
 
   const value = useMemo(
-    () => ({ isLoaded, isEntitled, purchase, restore }),
-    [isLoaded, isEntitled, purchase, restore]
+    () => ({ isLoaded, isEntitled, activePlan, purchase, restore }),
+    [isLoaded, isEntitled, activePlan, purchase, restore]
   );
 
   return <EntitlementContext.Provider value={value}>{children}</EntitlementContext.Provider>;

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Alert, Linking, StyleSheet, Text } from "react-native";
+import { Alert, Linking, StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import Purchases, { type PurchasesPackage } from "react-native-purchases";
-import { useEntitlement } from "../context/EntitlementContext";
+import Purchases, { type PurchasesOffering } from "react-native-purchases";
+import { useEntitlement, type SubscriptionPlan } from "../context/EntitlementContext";
 import { Screen } from "../components/Screen";
-import { ScreenTitle } from "../components/ScreenTitle";
-import { LogoMark } from "../components/LogoMark";
+import { HeroPanel } from "../components/HeroPanel";
+import { PlanCard } from "../components/PlanCard";
 import { Button } from "../components/Button";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
@@ -20,7 +20,8 @@ const PRIVACY_URL = "https://YOUR_DOMAIN/privacy";
 export function PaywallScreen() {
   const { t } = useTranslation();
   const { purchase, restore } = useEntitlement();
-  const [pkg, setPkg] = useState<PurchasesPackage | null>(null);
+  const [offering, setOffering] = useState<PurchasesOffering | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan>("pass");
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
 
@@ -28,7 +29,7 @@ export function PaywallScreen() {
     let cancelled = false;
     Purchases.getOfferings()
       .then((offerings) => {
-        if (!cancelled) setPkg(offerings.current?.availablePackages[0] ?? null);
+        if (!cancelled) setOffering(offerings.current);
       })
       .catch(() => {
         // Offerings failed to load (no network, misconfigured dashboard, etc.) —
@@ -39,12 +40,16 @@ export function PaywallScreen() {
     };
   }, []);
 
+  const passPkg = offering?.lifetime ?? null;
+  const monthlyPkg = offering?.monthly ?? null;
+  const selectedPkg = selectedPlan === "pass" ? passPkg : monthlyPkg;
+
   const onSubscribe = async () => {
     setIsPurchasing(true);
     try {
-      await purchase();
+      await purchase(selectedPlan);
     } catch {
-      Alert.alert(t("paywall.purchaseErrorTitle"), t("paywall.purchaseErrorMessage"));
+      Alert.alert(t("subscription.purchaseErrorTitle"), t("subscription.purchaseErrorMessage"));
     } finally {
       setIsPurchasing(false);
     }
@@ -55,43 +60,60 @@ export function PaywallScreen() {
     try {
       await restore();
     } catch {
-      Alert.alert(t("paywall.restoreErrorTitle"), t("paywall.restoreErrorMessage"));
+      Alert.alert(t("subscription.restoreErrorTitle"), t("subscription.restoreErrorMessage"));
     } finally {
       setIsRestoring(false);
     }
   };
 
   return (
-    <Screen center style={styles.content}>
-      <LogoMark size={64} />
-      <ScreenTitle align="center">{t("paywall.title")}</ScreenTitle>
-      <Text style={styles.subtitle}>{t("paywall.subtitle")}</Text>
+    <Screen style={styles.content}>
+      <HeroPanel>
+        <Text style={styles.heroHeadline}>{t("subscription.heroHeadline")}</Text>
+        <Text style={styles.heroSubheading}>{t("subscription.heroSubheading")}</Text>
+      </HeroPanel>
 
-      {pkg ? (
-        <Text style={styles.price}>{t("paywall.priceLine", { price: pkg.product.priceString })}</Text>
-      ) : null}
+      <View style={styles.plans}>
+        <PlanCard
+          title={t("subscription.passTitle")}
+          description={t("subscription.passDescription")}
+          priceValue={passPkg?.product.priceString ?? "…"}
+          priceSuffix={t("subscription.passPriceSuffix")}
+          badgeLabel={t("subscription.passBadge")}
+          selected={selectedPlan === "pass"}
+          onPress={() => setSelectedPlan("pass")}
+        />
+        <PlanCard
+          title={t("subscription.monthlyTitle")}
+          description={t("subscription.monthlyDescription")}
+          priceValue={monthlyPkg?.product.priceString ?? "…"}
+          priceSuffix={t("subscription.monthlyPriceSuffix")}
+          selected={selectedPlan === "monthly"}
+          onPress={() => setSelectedPlan("monthly")}
+        />
+      </View>
 
-      <Text style={styles.terms}>{t("paywall.autoRenewalTerms")}</Text>
+      <Text style={styles.trustText}>
+        {t(selectedPlan === "pass" ? "subscription.trustLinePass" : "subscription.trustLineMonthly")}
+      </Text>
 
       <Button
-        label={t("paywall.subscribeButton")}
+        label={t("subscription.ctaLabel")}
         onPress={onSubscribe}
         loading={isPurchasing}
-        disabled={!pkg}
-        style={styles.button}
+        disabled={!selectedPkg}
       />
       <Button
-        label={t("paywall.restoreButton")}
+        label={t("subscription.restoreButton")}
         variant="outline"
         onPress={onRestore}
         loading={isRestoring}
-        style={styles.button}
       />
 
       <Text style={styles.legalLinks}>
-        <Text onPress={() => Linking.openURL(TERMS_URL)}>{t("paywall.termsLink")}</Text>
+        <Text onPress={() => Linking.openURL(TERMS_URL)}>{t("subscription.termsLink")}</Text>
         {"   "}
-        <Text onPress={() => Linking.openURL(PRIVACY_URL)}>{t("paywall.privacyLink")}</Text>
+        <Text onPress={() => Linking.openURL(PRIVACY_URL)}>{t("subscription.privacyLink")}</Text>
       </Text>
     </Screen>
   );
@@ -99,34 +121,32 @@ export function PaywallScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    alignItems: "center",
-    gap: SPACING.md,
+    gap: SPACING.lg,
   },
-  subtitle: {
+  heroHeadline: {
+    ...TYPE.display,
+    color: COLORS.onPrimary,
+    textAlign: "center",
+    paddingVertical: SPACING.sm,
+  },
+  heroSubheading: {
     ...TYPE.body,
-    fontSize: 16,
-    lineHeight: 24,
-    color: COLORS.mutedText,
+    color: withAlpha(COLORS.onPrimary, 0.85),
     textAlign: "center",
     paddingVertical: SPACING.xs,
   },
-  price: {
-    ...TYPE.title,
-    color: COLORS.ink,
-    textAlign: "center",
+  plans: {
+    gap: SPACING.md,
   },
-  terms: {
-    ...TYPE.bodySmall,
-    color: COLORS.mutedText,
-    textAlign: "center",
-    marginBottom: SPACING.md,
-  },
-  button: {
-    width: "100%",
+  trustText: {
+    ...TYPE.caption,
+    color: COLORS.inkMuted,
+    textAlign: "right",
+    paddingHorizontal: SPACING.xs,
   },
   legalLinks: {
     ...TYPE.bodySmall,
-    color: COLORS.primary700,
+    color: COLORS.primary,
     textAlign: "center",
     marginTop: SPACING.md,
   },

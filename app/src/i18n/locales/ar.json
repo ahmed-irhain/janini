@@ -6,7 +6,13 @@
     "cancel": "إلغاء",
     "back": "رجوع",
     "edit": "تعديل",
-    "delete": "حذف"
+    "delete": "حذف",
+    "retry": "إعادة المحاولة",
+    "loadFailed": "تعذر تحميل البيانات، حاولي مرة أخرى",
+    "deleteFailed": "تعذر الحذف، حاولي مرة أخرى"
+  },
+  "network": {
+    "offlineBanner": "أنتِ غير متصلة بالإنترنت حاليًا"
   },
   "home": {
     "welcome": "أهلاً مامي!",
@@ -24,12 +30,18 @@
   "discover": {
     "title": "اكتشفي",
     "disclaimerBanner": "محتوى تعليمي عام مبني على مصادر موثوقة، وليس بديلاً عن استشارة طبيبك المختص",
+    "filterAll": "الكل",
     "weekRowLabel": "الأسبوع {{week}}",
     "babySizeLabel": "حجم الجنين",
-    "sourceLabel": "المصدر: {{source}}"
+    "sourceLabel": "المصدر: {{source}}",
+    "loadError": "تعذّر تحميل المقالات، تحقّقي من اتصالك بالإنترنت",
+    "emptyArticles": "لا توجد مقالات متاحة حاليًا",
+    "contentNotFound": "لم يتم العثور على محتوى هذا الأسبوع"
   },
   "track": {
     "tabTitle": "المتابعة",
+    "symptomsTabLabel": "الأعراض",
+    "appointmentsTabLabel": "المواعيد",
     "recentSymptomsTitle": "الأعراض الأخيرة",
     "logSymptomButton": "تسجيل عرض",
     "upcomingAppointmentsTitle": "المواعيد القادمة",
@@ -65,8 +77,9 @@
     "dueDateSectionTitle": "الموعد المتوقع للولادة",
     "editDueDateButton": "تعديل",
     "subscriptionSectionTitle": "الاشتراك",
-    "subscriptionActiveLabel": "اشتراكك فعّال",
-    "subscriptionExpiredLabel": "اشتراكك غير فعّال",
+    "subscriptionActiveDescription": "اشتراكك مفعّل — استمتعي بالمحتوى الكامل",
+    "subscriptionBadgePass": "الباقة الكاملة",
+    "subscriptionBadgeMonthly": "اشتراك شهري",
     "restorePurchasesButton": "استعادة المشتريات",
     "manageSubscriptionButton": "إدارة الاشتراك",
     "notificationsSectionTitle": "الإشعارات",
@@ -105,16 +118,19 @@
     "track": "المتابعة",
     "settings": "الإعدادات"
   },
-  "validation": {
-    "required": "هذا الحقل مطلوب",
-    "saveFailed": "تعذر الحفظ، حاولي مرة ثانية"
-  },
-  "paywall": {
-    "title": "اشتركي لمتابعة رحلتك",
-    "subtitle": "محتوى أسبوعي، متابعة الأعراض والمواعيد، وكل ما تحتاجينه خلال حملك",
-    "priceLine": "{{price}} شهريًا",
-    "autoRenewalTerms": "يتجدد الاشتراك تلقائيًا كل شهر ما لم يتم الإلغاء قبل 24 ساعة من نهاية الفترة الحالية. يمكنك إدارة أو إلغاء الاشتراك من إعدادات حسابك في آب ستور في أي وقت",
-    "subscribeButton": "اشتركي الآن",
+  "subscription": {
+    "heroHeadline": "رحلتكِ كاملة، بخطوة وحدة",
+    "heroSubheading": "افتحي محتوى كل أسبوع من حملك، ومتابعة كاملة حتى الولادة",
+    "passTitle": "الدفع مرة واحدة",
+    "passDescription": "تغطي رحلة حملك بأكملها من اليوم إلى الولادة — دفعة واحدة، بلا تجديد",
+    "passBadge": "الأكثر توفيرًا",
+    "passPriceSuffix": "دفعة واحدة",
+    "monthlyTitle": "الاشتراك الشهري",
+    "monthlyDescription": "ادفعي شهرًا بشهر، وألغِ الاشتراك في أي وقت تريدين",
+    "monthlyPriceSuffix": "/ شهريًا",
+    "trustLinePass": "دفعة واحدة فقط، بلا أي تجديد تلقائي — تغطي رحلتكِ بأكملها حتى الولادة",
+    "trustLineMonthly": "يتجدد الاشتراك تلقائيًا كل شهر ما لم يتم الإلغاء قبل 24 ساعة من نهاية الفترة الحالية. يمكنك إدارة أو إلغاء الاشتراك من إعدادات حسابك في آب ستور في أي وقت",
+    "ctaLabel": "اشتركي الآن",
     "restoreButton": "استعادة المشتريات",
     "purchaseErrorTitle": "تعذرت عملية الاشتراك",
     "purchaseErrorMessage": "حدث خطأ أثناء إتمام الاشتراك، حاولي مرة أخرى",
@@ -122,5 +138,9 @@
     "restoreErrorMessage": "لم نتمكن من العثور على مشتريات سابقة لاستعادتها",
     "termsLink": "شروط الاستخدام",
     "privacyLink": "سياسة الخصوصية"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "saveFailed": "تعذر الحفظ، حاولي مرة ثانية"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "id": "518ee41a-3089-49c3-b8e2-cb9f8834f112",
+  "id": "5912ca61-69db-49ae-ba93-3844cb02b3e1",
   "prevId": "8f2e4c1a-9b3d-4e5f-a6c7-d8e9f0a1b2c3",
   "version": "7",
   "dialect": "postgresql",
@@ -85,6 +85,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "topic_id": {
+          "name": "topic_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "title_ar": {
           "name": "title_ar",
           "type": "text",
@@ -143,41 +149,21 @@
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
+        },
+        "articles_topic_id_topics_id_fk": {
+          "name": "articles_topic_id_topics_id_fk",
+          "tableFrom": "articles",
+          "tableTo": "topics",
+          "columnsFrom": [
+            "topic_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.devices": {
-      "name": "devices",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "first_seen_at": {
-          "name": "first_seen_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "last_seen_at": {
-          "name": "last_seen_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -316,106 +302,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.subscriptions": {
-      "name": "subscriptions",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "device_id": {
-          "name": "device_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "revenue_cat_app_user_id": {
-          "name": "revenue_cat_app_user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "subscription_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'none'"
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "rc_environment": {
-          "name": "rc_environment",
-          "type": "rc_environment",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_event_type": {
-          "name": "last_event_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_event_at": {
-          "name": "last_event_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "subscriptions_device_id_devices_id_fk": {
-          "name": "subscriptions_device_id_devices_id_fk",
-          "tableFrom": "subscriptions",
-          "tableTo": "devices",
-          "columnsFrom": [
-            "device_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "subscriptions_device_id_unique": {
-          "name": "subscriptions_device_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "device_id"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.symptom_logs": {
       "name": "symptom_logs",
       "schema": "",
@@ -479,6 +365,60 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.topics": {
+      "name": "topics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label_ar": {
+          "name": "label_ar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "topics_slug_unique": {
+          "name": "topics_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -624,14 +564,6 @@
     }
   },
   "enums": {
-    "public.rc_environment": {
-      "name": "rc_environment",
-      "schema": "public",
-      "values": [
-        "sandbox",
-        "production"
-      ]
-    },
     "public.locale": {
       "name": "locale",
       "schema": "public",
@@ -647,16 +579,6 @@
         "mild",
         "moderate",
         "severe"
-      ]
-    },
-    "public.subscription_status": {
-      "name": "subscription_status",
-      "schema": "public",
-      "values": [
-        "active",
-        "expired",
-        "billing_issue",
-        "none"
       ]
     }
   },

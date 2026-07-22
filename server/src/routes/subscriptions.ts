@@ -9,8 +9,9 @@ import { verifyRevenueCatSecret } from "../middleware/verifyRevenueCatSecret.js"
 
 export const subscriptionsRouter = Router();
 
-// RevenueCat event types that grant/restore access.
-const ACTIVE_EVENT_TYPES = new Set(["INITIAL_PURCHASE", "RENEWAL", "UNCANCELLATION"]);
+// RevenueCat event types that grant/restore access. NON_RENEWING_PURCHASE
+// covers the one-time pass (a non-consumable product, not a subscription).
+const ACTIVE_EVENT_TYPES = new Set(["INITIAL_PURCHASE", "RENEWAL", "UNCANCELLATION", "NON_RENEWING_PURCHASE"]);
 
 // CANCELLATION intentionally does NOT map to "expired" here: the user has
 // turned off auto-renew but keeps access through the end of the period

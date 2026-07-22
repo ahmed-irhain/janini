@@ -4,6 +4,7 @@ import cors from "cors";
 import { weeklyContentRouter } from "./routes/weeklyContent.js";
 import { recommendationsRouter } from "./routes/recommendations.js";
 import { articlesRouter } from "./routes/articles.js";
+import { topicsRouter } from "./routes/topics.js";
 import { authRouter } from "./routes/auth.js";
 import { subscriptionsRouter } from "./routes/subscriptions.js";
 
@@ -18,6 +19,7 @@ app.get("/health", (_req, res) => {
 app.use("/weekly-content", weeklyContentRouter);
 app.use("/recommendations", recommendationsRouter);
 app.use("/articles", articlesRouter);
+app.use("/topics", topicsRouter);
 app.use("/auth", authRouter);
 app.use("/subscriptions", subscriptionsRouter);
 

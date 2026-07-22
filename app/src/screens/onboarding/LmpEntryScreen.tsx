@@ -1,14 +1,15 @@
 import { useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Ionicons } from "@expo/vector-icons";
 import { estimateDueDate, estimateLmpFromDueDate } from "@janini/shared";
 import { DateField } from "../../components/DateField";
 import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { Button } from "../../components/Button";
+import { Chip } from "../../components/Chip";
+import { IconButton } from "../../components/IconButton";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
 import { SPACING } from "../../theme/spacing";
@@ -47,14 +48,7 @@ export function LmpEntryScreen() {
   return (
     <Screen center style={styles.content}>
       <View style={styles.topRow}>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={12}
-          accessibilityRole="button"
-          accessibilityLabel={t("common.back")}
-        >
-          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
-        </Pressable>
+        <IconButton icon="chevron-back" onPress={() => router.back()} accessibilityLabel={t("common.back")} />
         <OnboardingStepIndicator currentStep={2} totalSteps={3} />
         <View style={styles.skipSpacer} />
       </View>
@@ -62,22 +56,16 @@ export function LmpEntryScreen() {
       <ScreenTitle align="center">{t("onboarding.title")}</ScreenTitle>
 
       <View style={styles.toggleRow}>
-        <Pressable
-          style={[styles.toggleButton, mode === "lmp" && styles.toggleButtonActive]}
+        <Chip
+          label={t("onboarding.lmpModeLabel")}
+          selected={mode === "lmp"}
           onPress={() => onModeChange("lmp")}
-        >
-          <Text style={[styles.toggleLabel, mode === "lmp" && styles.toggleLabelActive]}>
-            {t("onboarding.lmpModeLabel")}
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[styles.toggleButton, mode === "dueDate" && styles.toggleButtonActive]}
+        />
+        <Chip
+          label={t("onboarding.dueDateModeLabel")}
+          selected={mode === "dueDate"}
           onPress={() => onModeChange("dueDate")}
-        >
-          <Text style={[styles.toggleLabel, mode === "dueDate" && styles.toggleLabelActive]}>
-            {t("onboarding.dueDateModeLabel")}
-          </Text>
-        </Pressable>
+        />
       </View>
 
       <DateField
@@ -98,47 +86,28 @@ export function LmpEntryScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
+    gap: SPACING.lg,
   },
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
-    marginBottom: 8,
+    gap: SPACING.lg,
+    marginBottom: SPACING.sm,
   },
   skipSpacer: {
-    width: 24,
+    width: 44,
   },
   toggleRow: {
     flexDirection: "row",
-    gap: 8,
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.accent,
-    alignItems: "center",
-  },
-  toggleButtonActive: {
-    backgroundColor: COLORS.accent,
-  },
-  toggleLabel: {
-    fontFamily: FONTS.medium,
-    lineHeight: 20,
-    color: COLORS.accent,
-  },
-  toggleLabelActive: {
-    color: "#fff",
+    gap: SPACING.sm,
   },
   privacyNote: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.mutedText,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.inkMuted,
     textAlign: "center",
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
   },
   button: {
     marginTop: SPACING.lg,

@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../theme/colors";
+import { COLORS, withAlpha } from "../theme/colors";
 import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
-type BadgeTone = "neutral" | "gold" | "warning";
+type BadgeTone = "neutral" | "warning";
 
 interface BadgeProps {
   label: string;
@@ -15,13 +15,12 @@ interface BadgeProps {
 }
 
 const TONE_STYLES: Record<BadgeTone, { bg: string; text: string }> = {
-  neutral: { bg: COLORS.primary100, text: COLORS.primary700 },
-  gold: { bg: COLORS.goldSoft, text: COLORS.gold },
-  warning: { bg: COLORS.warningBg, text: COLORS.warningText },
+  neutral: { bg: COLORS.surfaceAlt, text: COLORS.inkMuted },
+  warning: { bg: withAlpha(COLORS.warning, 0.15), text: COLORS.warning },
 };
 
-/** Small pill used for source citations (medical-trust signal per project rules) and
- * premium/status tags — replaces plain colored caption text used for the same purpose. */
+/** `chip-tag` — static, non-interactive label. Used for source citations
+ * (medical-trust signal per project rules) and premium/status tags. */
 export function Badge({ label, tone = "neutral", icon }: BadgeProps) {
   const t = TONE_STYLES[tone];
   return (
@@ -38,9 +37,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-start",
     gap: SPACING.xs,
-    borderRadius: RADIUS.pill,
-    paddingVertical: SPACING.xs,
-    paddingHorizontal: SPACING.sm + 2,
+    borderRadius: RADIUS.full,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.lg,
   },
   label: {
     textAlign: "right",

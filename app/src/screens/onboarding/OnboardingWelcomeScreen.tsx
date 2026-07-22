@@ -1,10 +1,11 @@
-import { StyleSheet, Text } from "react-native";
+import { Image, StyleSheet, Text } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Screen } from "../../components/Screen";
 import { LogoMark } from "../../components/LogoMark";
 import { Button } from "../../components/Button";
 import { COLORS } from "../../theme/colors";
+import { RADIUS } from "../../theme/radius";
 import { SPACING } from "../../theme/spacing";
 import { TYPE } from "../../theme/typography";
 
@@ -13,8 +14,8 @@ export function OnboardingWelcomeScreen() {
   const router = useRouter();
 
   return (
-    <Screen center style={styles.content}>
-      <LogoMark size={72} />
+    <Screen center backgroundGradient style={styles.content}>
+      <LogoMark size={175} />
       <Text style={styles.subtitle}>{t("onboarding.introSubtitle")}</Text>
 
       <Button label={t("onboarding.startButton")} onPress={() => router.push("/features")} />
@@ -29,11 +30,9 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...TYPE.body,
-    fontSize: 16,
-    lineHeight: 24,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "center",
-    paddingVertical: SPACING.xs,
+    paddingVertical: SPACING.sm,
     marginBottom: SPACING.xxl,
   },
 });

@@ -43,11 +43,7 @@ export function PreferencesProvider({ children }: PropsWithChildren) {
   );
 
   const value = useMemo(
-    () => ({
-      isHydrated,
-      notificationsEnabled,
-      setNotificationsEnabled,
-    }),
+    () => ({ isHydrated, notificationsEnabled, setNotificationsEnabled }),
     [isHydrated, notificationsEnabled, setNotificationsEnabled]
   );
 

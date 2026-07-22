@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Pressable, Alert, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -5,20 +6,24 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePregnancyData } from "../context/PregnancyDataContext";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
-import { SectionHeader } from "../components/SectionHeader";
 import { EmptyState } from "../components/EmptyState";
 import { Card } from "../components/Card";
+import { Button } from "../components/Button";
 import { COLORS } from "../theme/colors";
 import { FONTS } from "../theme/fonts";
+import { RADIUS } from "../theme/radius";
 import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
 const RECENT_SYMPTOM_COUNT = 5;
 
+type TrackTab = "symptoms" | "appointments";
+
 export function TrackScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { symptomLogs, appointments, deleteSymptomLog, deleteAppointment } = usePregnancyData();
+  const [tab, setTab] = useState<TrackTab>("symptoms");
 
   const recentSymptoms = symptomLogs.slice(0, RECENT_SYMPTOM_COUNT);
   const upcomingAppointments = [...appointments].sort(
@@ -44,88 +49,109 @@ export function TrackScreen() {
   };
 
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} insetsBottomTabBar>
       <ScreenTitle>{t("track.tabTitle")}</ScreenTitle>
 
-      <View style={styles.section}>
-        <SectionHeader
-          title={t("track.recentSymptomsTitle")}
-          actionLabel={t("track.logSymptomButton")}
-          onActionPress={() => router.push("/symptom-log/add")}
-        />
-        {recentSymptoms.length === 0 ? (
-          <EmptyState message={t("track.emptySymptoms")} icon="pulse-outline" />
-        ) : (
-          recentSymptoms.map((log) => (
-            <Card key={log.id} elevation="sm">
-              <View style={styles.cardHeader}>
-                <View style={styles.cardActions}>
-                  <Pressable
-                    onPress={() => router.push(`/symptom-log/${log.id}`)}
-                    hitSlop={8}
-                    accessibilityLabel={t("common.edit")}
-                  >
-                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => onDeleteSymptom(log.id)}
-                    hitSlop={8}
-                    accessibilityLabel={t("common.delete")}
-                  >
-                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
-                  </Pressable>
-                </View>
-                <Text style={styles.cardTitle}>{log.symptom}</Text>
-              </View>
-              <Text style={styles.cardSubtitle}>
-                {t(`symptomLog.severity${capitalize(log.severity)}`)} ·{" "}
-                {new Date(log.loggedAt).toLocaleDateString("ar")}
-              </Text>
-              {log.note ? <Text style={styles.cardNote}>{log.note}</Text> : null}
-            </Card>
-          ))
-        )}
+      <View style={styles.segmentedControl}>
+        <Pressable
+          onPress={() => setTab("symptoms")}
+          style={[styles.segment, tab === "symptoms" && styles.segmentActive]}
+        >
+          <Text style={[styles.segmentLabel, tab === "symptoms" && styles.segmentLabelActive]}>
+            {t("track.symptomsTabLabel")}
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => setTab("appointments")}
+          style={[styles.segment, tab === "appointments" && styles.segmentActive]}
+        >
+          <Text style={[styles.segmentLabel, tab === "appointments" && styles.segmentLabelActive]}>
+            {t("track.appointmentsTabLabel")}
+          </Text>
+        </Pressable>
       </View>
 
-      <View style={styles.section}>
-        <SectionHeader
-          title={t("track.upcomingAppointmentsTitle")}
-          actionLabel={t("track.addAppointmentButton")}
-          onActionPress={() => router.push("/appointments/add")}
-        />
-        {upcomingAppointments.length === 0 ? (
-          <EmptyState message={t("track.emptyAppointments")} icon="calendar-outline" />
-        ) : (
-          upcomingAppointments.map((appointment) => (
-            <Card key={appointment.id} elevation="sm">
-              <View style={styles.cardHeader}>
-                <View style={styles.cardActions}>
-                  <Pressable
-                    onPress={() => router.push(`/appointments/${appointment.id}`)}
-                    hitSlop={8}
-                    accessibilityLabel={t("common.edit")}
-                  >
-                    <Ionicons name="create-outline" size={18} color={COLORS.primary700} />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => onDeleteAppointment(appointment.id)}
-                    hitSlop={8}
-                    accessibilityLabel={t("common.delete")}
-                  >
-                    <Ionicons name="trash-outline" size={18} color={COLORS.errorText} />
-                  </Pressable>
+      {tab === "symptoms" ? (
+        <View style={styles.section}>
+          <Button
+            label={`+ ${t("track.logSymptomButton")}`}
+            variant="primary"
+            onPress={() => router.push("/symptom-log/add")}
+          />
+          {recentSymptoms.length === 0 ? (
+            <EmptyState message={t("track.emptySymptoms")} icon="pulse-outline" />
+          ) : (
+            recentSymptoms.map((log) => (
+              <Card key={log.id}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.cardActions}>
+                    <Pressable
+                      onPress={() => router.push(`/symptom-log/${log.id}`)}
+                      hitSlop={8}
+                      accessibilityLabel={t("common.edit")}
+                    >
+                      <Ionicons name="create-outline" size={18} color={COLORS.primary} />
+                    </Pressable>
+                    <Pressable
+                      onPress={() => onDeleteSymptom(log.id)}
+                      hitSlop={8}
+                      accessibilityLabel={t("common.delete")}
+                    >
+                      <Ionicons name="trash-outline" size={18} color={COLORS.error} />
+                    </Pressable>
+                  </View>
+                  <Text style={styles.cardTitle}>{log.symptom}</Text>
                 </View>
-                <Text style={styles.cardTitle}>{appointment.title}</Text>
-              </View>
-              <Text style={styles.cardSubtitle}>
-                {new Date(appointment.scheduledAt).toLocaleString("ar")}
-                {appointment.location ? ` · ${appointment.location}` : ""}
-              </Text>
-              {appointment.notes ? <Text style={styles.cardNote}>{appointment.notes}</Text> : null}
-            </Card>
-          ))
-        )}
-      </View>
+                <Text style={styles.cardSubtitle}>
+                  {t(`symptomLog.severity${capitalize(log.severity)}`)} ·{" "}
+                  {new Date(log.loggedAt).toLocaleDateString("ar")}
+                </Text>
+                {log.note ? <Text style={styles.cardNote}>{log.note}</Text> : null}
+              </Card>
+            ))
+          )}
+        </View>
+      ) : (
+        <View style={styles.section}>
+          <Button
+            label={`+ ${t("track.addAppointmentButton")}`}
+            variant="primary"
+            onPress={() => router.push("/appointments/add")}
+          />
+          {upcomingAppointments.length === 0 ? (
+            <EmptyState message={t("track.emptyAppointments")} icon="calendar-outline" />
+          ) : (
+            upcomingAppointments.map((appointment) => (
+              <Card key={appointment.id}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.cardActions}>
+                    <Pressable
+                      onPress={() => router.push(`/appointments/${appointment.id}`)}
+                      hitSlop={8}
+                      accessibilityLabel={t("common.edit")}
+                    >
+                      <Ionicons name="create-outline" size={18} color={COLORS.primary} />
+                    </Pressable>
+                    <Pressable
+                      onPress={() => onDeleteAppointment(appointment.id)}
+                      hitSlop={8}
+                      accessibilityLabel={t("common.delete")}
+                    >
+                      <Ionicons name="trash-outline" size={18} color={COLORS.error} />
+                    </Pressable>
+                  </View>
+                  <Text style={styles.cardTitle}>{appointment.title}</Text>
+                </View>
+                <Text style={styles.cardSubtitle}>
+                  {new Date(appointment.scheduledAt).toLocaleString("ar")}
+                  {appointment.location ? ` · ${appointment.location}` : ""}
+                </Text>
+                {appointment.notes ? <Text style={styles.cardNote}>{appointment.notes}</Text> : null}
+              </Card>
+            ))
+          )}
+        </View>
+      )}
     </Screen>
   );
 }
@@ -138,6 +164,31 @@ const styles = StyleSheet.create({
   content: {
     gap: SPACING.xl,
   },
+  segmentedControl: {
+    flexDirection: "row",
+    backgroundColor: COLORS.surfaceAlt,
+    borderRadius: RADIUS.full,
+    padding: SPACING.xs,
+  },
+  segment: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: SPACING.sm + 2,
+    borderRadius: RADIUS.full,
+  },
+  segmentActive: {
+    backgroundColor: COLORS.surface,
+  },
+  segmentLabel: {
+    ...TYPE.bodySmall,
+    fontFamily: FONTS.medium,
+    color: COLORS.inkMuted,
+    textAlign: "center",
+  },
+  segmentLabelActive: {
+    color: COLORS.ink,
+  },
   section: {
     gap: SPACING.sm,
   },
@@ -146,6 +197,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     gap: SPACING.sm,
+    paddingVertical: SPACING.xs,
   },
   cardActions: {
     flexDirection: "row",
@@ -157,16 +209,19 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   cardSubtitle: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   cardNote: {
     ...TYPE.bodySmall,
     marginTop: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
 });

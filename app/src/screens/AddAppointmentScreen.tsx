@@ -7,6 +7,7 @@ import { DateField } from "../components/DateField";
 import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Button } from "../components/Button";
+import { IconButton } from "../components/IconButton";
 import { appointmentSchema, getFieldErrors, type FieldErrors } from "../validation/schemas";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
@@ -27,6 +28,7 @@ export function AddAppointmentScreen() {
   );
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<typeof appointmentSchema>>({});
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -69,9 +71,17 @@ export function AddAppointmentScreen() {
         {
           text: t("common.delete"),
           style: "destructive",
-          onPress: () => {
-            deleteAppointment(existing.id);
-            router.back();
+          onPress: async () => {
+            setSaveError(null);
+            setIsDeleting(true);
+            try {
+              await deleteAppointment(existing.id);
+              router.back();
+            } catch {
+              setSaveError(t("common.deleteFailed"));
+            } finally {
+              setIsDeleting(false);
+            }
           },
         },
       ]
@@ -79,10 +89,18 @@ export function AddAppointmentScreen() {
   };
 
   return (
-    <Screen style={styles.content} hasNativeHeader>
-      <ScreenTitle>
-        {existing ? t("track.editAppointmentTitle") : t("track.addAppointmentButton")}
-      </ScreenTitle>
+    <Screen style={styles.content}>
+      <View style={styles.header}>
+        <IconButton
+          icon="close"
+          onPress={() => router.back()}
+          accessibilityLabel={t("common.cancel")}
+          size={36}
+        />
+        <ScreenTitle style={styles.headerTitle}>
+          {existing ? t("track.editAppointmentTitle") : t("track.addAppointmentButton")}
+        </ScreenTitle>
+      </View>
 
       <View style={styles.field}>
         <Text style={styles.label}>{t("appointment.titleLabel")}</Text>
@@ -131,13 +149,29 @@ export function AddAppointmentScreen() {
 
       {saveError ? <Text style={styles.errorText}>{saveError}</Text> : null}
 
-      <Button label={t("appointment.saveButton")} onPress={onSave} loading={isSubmitting} />
+      <View style={styles.actionsRow}>
+        <Button
+          label={t("common.cancel")}
+          variant="tonal"
+          fullWidth={false}
+          style={styles.actionButton}
+          onPress={() => router.back()}
+        />
+        <Button
+          label={t("appointment.saveButton")}
+          onPress={onSave}
+          loading={isSubmitting}
+          fullWidth={false}
+          style={styles.actionButton}
+        />
+      </View>
 
       {existing ? (
         <Button
           label={t("common.delete")}
           variant="destructive"
           onPress={onDelete}
+          loading={isDeleting}
           disabled={isSubmitting}
         />
       ) : null}
@@ -149,37 +183,55 @@ const styles = StyleSheet.create({
   content: {
     gap: SPACING.lg,
   },
+  header: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: SPACING.md,
+    paddingVertical: SPACING.xs,
+  },
+  headerTitle: {
+    flex: 1,
+    marginBottom: 0,
+  },
+  actionsRow: {
+    flexDirection: "row-reverse",
+    gap: SPACING.sm,
+  },
+  actionButton: {
+    flex: 1,
+  },
   field: {
     gap: SPACING.sm - 2,
   },
   label: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    paddingVertical: 2,
+    fontSize: 13,
+    lineHeight: 18,
+    paddingVertical: SPACING.xs,
     color: COLORS.ink,
     textAlign: "right",
   },
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.lg - 2,
     paddingVertical: SPACING.md,
     fontFamily: FONTS.regular,
-    fontSize: 16,
+    fontSize: 15,
     color: COLORS.ink,
     writingDirection: "rtl",
   },
   inputError: {
-    borderColor: COLORS.errorText,
+    borderColor: COLORS.error,
   },
   errorText: {
     fontFamily: FONTS.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: COLORS.errorText,
-    paddingVertical: 2,
+    fontSize: 11,
+    lineHeight: 16,
+    color: COLORS.error,
+    paddingVertical: SPACING.xs,
     textAlign: "right",
   },
   notesInput: {

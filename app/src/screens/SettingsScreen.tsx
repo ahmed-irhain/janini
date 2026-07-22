@@ -11,6 +11,7 @@ import { Screen } from "../components/Screen";
 import { ScreenTitle } from "../components/ScreenTitle";
 import { Card } from "../components/Card";
 import { SectionHeader } from "../components/SectionHeader";
+import { Badge } from "../components/Badge";
 import { Button } from "../components/Button";
 import { FONTS } from "../theme/fonts";
 import { COLORS } from "../theme/colors";
@@ -21,22 +22,9 @@ export function SettingsScreen() {
   const { t } = useTranslation();
   const { pregnancy, savePregnancy, resetLocalData } = usePregnancyData();
   const { notificationsEnabled, setNotificationsEnabled } = usePreferences();
-  const { isEntitled, restore } = useEntitlement();
+  const { activePlan, restore } = useEntitlement();
   const [isEditingDueDate, setIsEditingDueDate] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
-
-  const onRestorePurchases = async () => {
-    setIsRestoring(true);
-    try {
-      await restore();
-    } finally {
-      setIsRestoring(false);
-    }
-  };
-
-  const onManageSubscription = () => {
-    Linking.openURL("itms-apps://apps.apple.com/account/subscriptions");
-  };
 
   const dueDate = pregnancy ? new Date(pregnancy.dueDateGregorian) : null;
 
@@ -59,8 +47,24 @@ export function SettingsScreen() {
     ]);
   };
 
+  const onRestorePurchases = async () => {
+    setIsRestoring(true);
+    try {
+      await restore();
+    } finally {
+      setIsRestoring(false);
+    }
+  };
+
+  // Real cancellation/plan management happens in Apple's own subscription
+  // screen, not in-app — there is nothing to cancel locally for the
+  // one-time pass, and RevenueCat is the source of truth either way.
+  const onManageSubscription = () => {
+    Linking.openURL("itms-apps://apps.apple.com/account/subscriptions");
+  };
+
   return (
-    <Screen style={styles.content}>
+    <Screen style={styles.content} insetsBottomTabBar>
       <ScreenTitle align="right">{t("settings.title")}</ScreenTitle>
 
       {dueDate ? (
@@ -96,19 +100,25 @@ export function SettingsScreen() {
 
       <Card>
         <SectionHeader title={t("settings.subscriptionSectionTitle")} />
-        <Text style={styles.bodyText}>
-          {isEntitled ? t("settings.subscriptionActiveLabel") : t("settings.subscriptionExpiredLabel")}
-        </Text>
+        <Badge
+          label={t(
+            activePlan === "monthly" ? "settings.subscriptionBadgeMonthly" : "settings.subscriptionBadgePass"
+          )}
+          icon="checkmark-circle"
+        />
+        <Text style={styles.mutedText}>{t("settings.subscriptionActiveDescription")}</Text>
+        {activePlan === "monthly" ? (
+          <Button
+            label={t("settings.manageSubscriptionButton")}
+            variant="outline"
+            onPress={onManageSubscription}
+          />
+        ) : null}
         <Button
           label={t("settings.restorePurchasesButton")}
           variant="outline"
           loading={isRestoring}
           onPress={onRestorePurchases}
-        />
-        <Button
-          label={t("settings.manageSubscriptionButton")}
-          variant="outline"
-          onPress={onManageSubscription}
         />
       </Card>
 
@@ -117,7 +127,7 @@ export function SettingsScreen() {
           <Switch
             value={notificationsEnabled}
             onValueChange={setNotificationsEnabled}
-            trackColor={{ true: COLORS.primary700 }}
+            trackColor={{ true: COLORS.primary }}
           />
           <Text style={styles.switchLabel}>{t("settings.notificationsToggleLabel")}</Text>
         </View>
@@ -141,30 +151,35 @@ const styles = StyleSheet.create({
     gap: SPACING.lg,
   },
   sectionTitle: {
-    ...TYPE.heading,
+    ...TYPE.h2,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   bodyText: {
     ...TYPE.body,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   mutedText: {
     ...TYPE.bodySmall,
-    color: COLORS.mutedText,
+    color: COLORS.inkMuted,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   switchRow: {
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingVertical: SPACING.xs,
   },
   switchLabel: {
     fontFamily: FONTS.medium,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
 });

@@ -3,6 +3,13 @@
 Arabic-first pregnancy tracking app for Saudi Arabia and the Gulf. Full business/product plan
 is in `docs/plan.md` — read it before making product or scope decisions.
 
+The design system (colors, typography, spacing, radius, gradients, components) is specced in
+`docs/design.md` — read it before making visual/UI decisions. `docs/design.html` is a
+self-contained, browser-viewable mirror of the same tokens for humans; the two are always kept
+in sync, `design.md` is the source of truth. This replaced the jewel-tone system that used to
+live in `app/src/theme/colors.ts`; `design.md`'s tokens are now the current state of the app's
+theme layer (`app/src/theme/*`) and core components, not just a target.
+
 ## Stack and why
 
 - **App** (`/app`): Expo (managed workflow), React Native, TypeScript. Chosen over bare React
@@ -75,7 +82,7 @@ user explicitly asks for it by name.
 app/       Expo app. src/i18n (i18next + RTL setup), src/screens
 server/    Express API. src/db (Drizzle schema/client/migrations), src/routes
 shared/    @janini/shared — types.ts, dates.ts (Hijri/Gregorian + gestational age)
-docs/      Business/product plan
+docs/      Business/product plan (plan.md), design system (design.md + design.html mirror)
 ```
 
 ## Dev workflow

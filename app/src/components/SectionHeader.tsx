@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../theme/colors";
 import { FONTS } from "../theme/fonts";
+import { SPACING } from "../theme/spacing";
 import { TYPE } from "../theme/typography";
 
 interface SectionHeaderProps {
@@ -19,7 +20,7 @@ export function SectionHeader({ title, actionLabel, onActionPress }: SectionHead
           <Text style={[TYPE.bodySmall, styles.action]}>{actionLabel}</Text>
         </Pressable>
       ) : null}
-      <Text style={[TYPE.heading, styles.title]}>{title}</Text>
+      <Text style={[TYPE.h2, styles.title]}>{title}</Text>
     </View>
   );
 }
@@ -29,13 +30,16 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingVertical: SPACING.xs,
   },
   title: {
     color: COLORS.ink,
     textAlign: "right",
+    paddingVertical: SPACING.xs,
   },
   action: {
-    color: COLORS.primary700,
+    color: COLORS.primary,
     fontFamily: FONTS.medium,
+    paddingVertical: SPACING.xs,
   },
 });

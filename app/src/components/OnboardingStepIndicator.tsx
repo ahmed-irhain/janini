@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 4,
     borderRadius: 2,
-    backgroundColor: COLORS.progressTrack,
+    backgroundColor: COLORS.border,
   },
   segmentFilled: {
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.primary,
   },
 });

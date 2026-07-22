@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,8 +9,11 @@ import { Screen } from "../../components/Screen";
 import { ScreenTitle } from "../../components/ScreenTitle";
 import { OnboardingStepIndicator } from "../../components/OnboardingStepIndicator";
 import { Button } from "../../components/Button";
+import { IconButton } from "../../components/IconButton";
 import { FONTS } from "../../theme/fonts";
 import { COLORS } from "../../theme/colors";
+import { RADIUS } from "../../theme/radius";
+import { SPACING } from "../../theme/spacing";
 
 export function OnboardingConfirmationScreen() {
   const { t } = useTranslation();
@@ -49,14 +52,7 @@ export function OnboardingConfirmationScreen() {
   return (
     <Screen center style={styles.content}>
       <View style={styles.topRow}>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={12}
-          accessibilityRole="button"
-          accessibilityLabel={t("common.back")}
-        >
-          <Ionicons name="chevron-back" size={24} color={COLORS.ink} />
-        </Pressable>
+        <IconButton icon="chevron-back" onPress={() => router.back()} accessibilityLabel={t("common.back")} />
         <OnboardingStepIndicator currentStep={3} totalSteps={3} />
         <View style={styles.skipSpacer} />
       </View>
@@ -87,60 +83,64 @@ export function OnboardingConfirmationScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 16,
+    gap: SPACING.lg,
     alignItems: "center",
   },
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
+    gap: SPACING.lg,
     width: "100%",
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
   },
   skipSpacer: {
-    width: 24,
+    width: 44,
   },
   icon: {
-    marginTop: 8,
+    marginTop: SPACING.sm,
   },
   card: {
     width: "100%",
     borderWidth: 1,
     borderColor: COLORS.border,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    gap: 4,
+    borderRadius: RADIUS.lg,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md + 2,
+    gap: SPACING.xs,
     alignItems: "center",
   },
   cardLabel: {
     fontFamily: FONTS.medium,
-    fontSize: 14,
-    lineHeight: 20,
-    color: COLORS.mutedText,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.inkMuted,
+    paddingVertical: SPACING.xs,
   },
   cardPrimary: {
     fontFamily: FONTS.bold,
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: 16,
+    lineHeight: 23,
+    color: COLORS.ink,
     writingDirection: "rtl",
+    paddingVertical: SPACING.xs,
   },
   cardSecondary: {
     fontFamily: FONTS.regular,
-    fontSize: 13,
-    lineHeight: 20,
-    color: COLORS.mutedText,
+    fontSize: 12,
+    lineHeight: 18,
+    color: COLORS.inkMuted,
     writingDirection: "rtl",
+    paddingVertical: SPACING.xs,
   },
   error: {
     fontFamily: FONTS.regular,
-    fontSize: 14,
-    lineHeight: 20,
-    color: COLORS.errorText,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS.error,
     textAlign: "center",
-    paddingVertical: 4,
+    paddingVertical: SPACING.sm,
   },
   button: {
-    marginTop: 8,
+    marginTop: SPACING.sm,
   },
 });
